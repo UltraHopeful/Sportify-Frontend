@@ -19,7 +19,7 @@
 
 ## Authors
 
-* [Alagu Swrnam Karruppiah](al581093@dal.ca) - *(MAINTENER)*
+* [Alagu Swrnam Karruppiah],email:<al581093@dal.ca> - *(MAINTENER)*
 
 
 ## Sources Used
