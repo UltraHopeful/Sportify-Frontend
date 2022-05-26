@@ -5,21 +5,20 @@
 * *Date Created*: 25 MAY 2025
 * *Last Modification Date*: 25 MAY 2025
 
-## Individual Tutorial Links
+## *Individual Tutorial Links*
 
 * *Heroku URL*: <https://webtutorial-2.herokuapp.com/>
 * *Git URL*: <https://git.cs.dal.ca/karruppiah/tutorial2.git>
 
-## Group Tutorial Links
+## *Group Tutorial Links*
 
 * *Group Repo URL*: <https://git.cs.dal.ca/ajayanthi/5709-group10.git>
 * *Individual Branch URL*: <https://git.cs.dal.ca/ajayanthi/5709-group10/-/tree/alagu_swrnam_karruppiah>
 
 
-
 ## Authors
 
-* [Alagu Swrnam Karruppiah],email:<al581093@dal.ca> - *(MAINTENER)*
+* [Alagu Swrnam Karruppiah], *email:* <al581093@dal.ca> - *(MAINTENER)*
 
 
 ## Sources Used
