@@ -1,0 +1,57 @@
+.Nav {
+    margin: 2.5px 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.Logo {
+    height: 40px;
+    width: 75px;
+}
+
+.Nav-btn-list {
+    display: inline;
+}
+
+.Outline {
+    /* font-size: 32px; */
+    margin: 21px 0;
+    display: block;
+}
+
+.Home {
+    text-align: left;
+}
+
+.Basic-btn {
+    padding: 10px 21px;
+    margin-left: 10px;
+    margin-right: 300px;
+    border-radius: 7px;
+    /* background-color: navy;
+    color: white; */
+}
+
+.Profile-logo {
+    height: 5vmin;
+    padding: 5px 0px;
+    pointer-events: auto;
+}
+
+.mt-5 {
+    margin-top: 5px;
+    display: inline;
+}
+
+.Margin-top-10 {
+    margin-top: 10px;
+}
+
+.Margin-bottom-20 {
+    margin-bottom: 5px;
+}
+
+.Margin-right-10 {
+    margin-right: 10px;
+}
