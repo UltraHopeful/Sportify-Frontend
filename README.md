@@ -1,175 +1,92 @@
-#  Assignment - 1
-* *Date Created*: 04 JUN 2022
-* *Last Modification Date*: 04 JUN 2022
-* *Lab URL*: <https://csci-5709-assignment-1.herokuapp.com/>
-* *Git URL*: <https://git.cs.dal.ca/ajayanthi/csci-5709-aravind-jayanthi/-/tree/assignment-1>
+# 5709-Group10
 
-## Authors
 
-* [Aravind Jayanthi](ar687531@dal.ca)
 
-## Built With
+## Getting started
 
-<!--- Provide a list of the frameworks used to build this application, your list should include the name of the framework used, the url where the framework is available for download and what the framework was used for, see the example below --->
+To make it easy for you to get started with GitLab, here's a list of recommended next steps.
 
-* [React](https://reactjs.org/) - The web framework used to build UI.
-* [Material UI](https://mui.com/) - This library is used for styling components.
-* [React Router](https://reactrouter.com/) - This library is used for routing in the frontend application.
+Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
 
-## Sources Used
+## Add your files
 
-* [App bar](https://mui.com/material-ui/react-app-bar/#main-content) is referred to build the navigation bar of the application.
-* [Card](https://mui.com/material-ui/react-card/#main-content) is referred to build mutiple components like list items.
-* [Grid](https://mui.com/material-ui/react-grid/) is referred to structure the pages.
-* [Stack](https://mui.com/material-ui/react-stack/) is referred to align text fields in the pages.
-* Following images are using in the application as placeholder for the actula data:
-    * [Stationary Bicycle](https://nymag.com/strategist/article/best-exercise-bikes.html)
-    * [Rowing Machine](https://www.prevention.com/fitness/workout-clothes-gear/g27547247/best-rowing-machines/)
-    * [Pool](https://www.halifax.ca/parks-recreation/programs-activities/swimming)
-    * [Peck Deck](https://fitnessexperience.ca/collections/specialty-benches-single-stations/products/body-solid-gpm65-pec-dec-machine)
-    * [Treadmill](https://m.media-amazon.com/images/I/719uh1Um6aL._AC_SL1500_.jpg)
-    * [Treadmill](https://www.zalora.com.ph/kemilng-m12-treadmill-multifunction-manual-incline-black-2344322.html)
-
-### Navbar.tsx
-
-*Lines 25 - 62*
+- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
+- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
 
 ```
-const Search = styled('div')(({ theme }) => ({
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    '&:hover': {
-        backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-        marginLeft: theme.spacing(3),
-        width: 'auto',
-    },
-}));
-
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: 'inherit',
-    '& .MuiInputBase-input': {
-        padding: theme.spacing(1, 1, 1, 0),
-        // vertical padding + font size from searchIcon
-        paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-        transition: theme.transitions.create('width'),
-        width: '100%',
-        [theme.breakpoints.up('md')]: {
-            width: '20ch',
-        },
-    },
-}));
-
+cd existing_repo
+git remote add origin https://git.cs.dal.ca/ajayanthi/5709-group10.git
+git branch -M main
+git push -uf origin main
 ```
 
-The code above was created by adapting the code in [App Bar](https://mui.com/material-ui/react-app-bar/) as shown below: 
+## Integrate with your tools
 
-```
-const Search = styled('div')(({ theme }) => ({
-  position: 'relative',
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  '&:hover': {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
-  marginLeft: 0,
-  width: '100%',
-  [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(1),
-    width: 'auto',
-  },
-}));
+- [ ] [Set up project integrations](https://git.cs.dal.ca/ajayanthi/5709-group10/-/settings/integrations)
 
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: '100%',
-  position: 'absolute',
-  pointerEvents: 'none',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-}));
+## Collaborate with your team
 
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: 'inherit',
-  '& .MuiInputBase-input': {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      width: '12ch',
-      '&:focus': {
-        width: '20ch',
-      },
-    },
-  },
-}));
+- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
+- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
+- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
+- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
+- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
 
-```
+## Test and Deploy
 
-- The code in [App Bar](https://mui.com/material-ui/react-app-bar/) was implemented by material UI team.
-- [App Bar](https://mui.com/material-ui/react-app-bar/)'s Code was used to keep the consistency in the material UI theme.
+Use the built-in continuous integration in GitLab.
 
-### Navbar.tsx
+- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
+- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
+- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
+- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
+- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
 
-*Lines 60 - 82*
+***
 
-```
-const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
-    const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+# Editing this README
 
-    const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorElNav(event.currentTarget);
-    };
-    const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorElUser(event.currentTarget);
-    };
+When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!).  Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
 
-    const handleCloseNavMenu = () => {
-        setAnchorElNav(null);
-    };
+## Suggestions for a good README
+Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
 
-    const handleCloseUserMenu = () => {
-        setAnchorElUser(null);
-    };
-```
-The code above was created by adapting the code in [App Bar](https://mui.com/material-ui/react-app-bar/) as shown below: 
+## Name
+Choose a self-explaining name for your project.
 
-```
-const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
-    const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+## Description
+Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
 
-    const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorElNav(event.currentTarget);
-    };
-    const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorElUser(event.currentTarget);
-    };
+## Badges
+On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
 
-    const handleCloseNavMenu = () => {
-        setAnchorElNav(null);
-    };
+## Visuals
+Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
 
-    const handleCloseUserMenu = () => {
-        setAnchorElUser(null);
-    };
-```
-- The code in [App Bar](https://mui.com/material-ui/react-app-bar/) was implemented by material UI team.
-- [App Bar](https://mui.com/material-ui/react-app-bar/)'s Code was used to keep maintain the dropdown button's state in the app bar.
+## Installation
+Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+
+## Usage
+Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+
+## Support
+Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+
+## Roadmap
+If you have ideas for releases in the future, it is a good idea to list them in the README.
+
+## Contributing
+State if you are open to contributions and what your requirements are for accepting them.
+
+For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+
+You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+
+## Authors and acknowledgment
+Show your appreciation to those who have contributed to the project.
+
+## License
+For open source projects, say how it is licensed.
+
+## Project status
+If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
