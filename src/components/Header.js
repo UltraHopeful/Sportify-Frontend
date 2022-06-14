@@ -65,7 +65,7 @@ const Header = () => {
                             src={`${Logo}`}
                             alt="Sportify"
                             loading="lazy"
-                            class="brand-img"
+                            className="brand-img"
                         />
                     </Typography>
 
@@ -102,7 +102,7 @@ const Header = () => {
                         >
                             {pages.map((page) => (
                                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                    <Link to={page} textAlign="center" underline="none">{page}</Link>
+                                    <Link to={`/${page.toLowerCase()}`} textalign="center" underline="none">{page}</Link>
                                 </MenuItem>
                             ))}
                         </Menu>
@@ -140,7 +140,7 @@ const Header = () => {
                                 key={page}
                                 onClick={handleCloseNavMenu}
                                 sx={{my: 2, color: '#326DD9', display: 'block'}}
-                                href={page}
+                                href={`/${page.toLowerCase()}`}
                             >
                                 {page}
                             </Button>
@@ -174,7 +174,7 @@ const Header = () => {
                         >
                             {settings.map((setting) => (
                                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                    <Typography textAlign="center">{setting}</Typography>
+                                    <Typography textalign="center">{setting}</Typography>
                                 </MenuItem>
                             ))}
                         </Menu>
