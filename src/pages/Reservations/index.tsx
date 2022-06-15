@@ -45,20 +45,8 @@ const ReservationList = (props: any) => {
         setPage(pageNumber);
     }
 
-    // /**
-    //  * This function updates the page number of the pagination,
-    //  * if the number of items per page makes the current page number invalid.
-    //  * @param pageNumber 
-    //  * @param itemsPerPage 
-    //  */
-    // const updatePageNumberIfInvalid = (pageNumber: number, itemsPerPage: number) => {
-
-    // }
-
     const onPaginationChange = (event: React.ChangeEvent<unknown>, value: number) => {
         updatePagination(value, defaultItemsPerPage);
-        // updatePageList(value, defaultItemsPerPage);
-        // setPage(value);
     }
 
     const reservationList = list.map((reservation: ReservationInterface) => {
@@ -116,12 +104,10 @@ const ReservationList = (props: any) => {
                 }
                 <div className="Select-items">
                     <FormControl sx={{ m: 1, minWidth: 120 }}>
-                        {/* <InputLabel id="demo-controlled-open-select-label"></InputLabel> */}
                         <Select
                             labelId="demo-controlled-open-select-label"
                             id="demo-controlled-open-select"
                             value={defaultItemsPerPage}
-                            // label="Age"
                             onChange={updateDefaulItemsPerPage}
                         >
                             <MenuItem value={5}>5 per page</MenuItem>
