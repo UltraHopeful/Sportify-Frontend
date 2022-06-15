@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
@@ -22,7 +22,27 @@ import Logo from "../assets/images/Sportify.png";
 const pages = ['Resources', 'Store', 'Membership', 'Events', 'Rewards', 'Blogs'];
 const settings = ['My Account', 'Logout'];
 
+const primaryColor = '#326DD9';
+const secondaryColor = '#234C99';
+
+const profileDropdownList = [
+    {
+        displayName: 'My Account',
+        redirectTo: ''
+    },
+    {
+        displayName: 'Logout',
+        redirectTo: ''
+    },
+    {
+        displayName: 'My Reservations',
+        redirectTo: 'resources'
+    }
+];
+
 const Header = () => {
+
+    const navigate = useNavigate();
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -40,6 +60,11 @@ const Header = () => {
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
+
+    const navigateTo = (path) => {
+        navigate(path);
+    }
+
 
     return (
         <AppBar position="static" sx={{ bgcolor: "white" }}>
@@ -79,7 +104,7 @@ const Header = () => {
                             onClick={handleOpenNavMenu}
                             color="inherit"
                         >
-                            <MenuIcon/>
+                            <MenuIcon sx={{color: primaryColor}}/>
                         </IconButton>
 
                         <Menu
@@ -102,7 +127,8 @@ const Header = () => {
                         >
                             {pages.map((page) => (
                                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                    <Link to={`/${page.toLowerCase()}`} textalign="center" underline="none">{page}</Link>
+                                    <Button sx={{color: secondaryColor, backgroundColor: 'white'}} onClick={() => navigateTo(page.toLowerCase())} textalign="center" underline="none">{page}</Button>
+                                    {/* <Link to={`/${page.toLowerCase()}`} textalign="center" underline="none">{page}</Link> */}
                                 </MenuItem>
                             ))}
                         </Menu>
@@ -138,9 +164,10 @@ const Header = () => {
                         {pages.map((page) => (
                             <Button
                                 key={page}
-                                onClick={handleCloseNavMenu}
+                                // onClick={handleCloseNavMenu}
                                 sx={{my: 2, color: '#326DD9', display: 'block'}}
-                                href={`/${page.toLowerCase()}`}
+                                // href={`/${page.toLowerCase()}`}
+                                onClick={() => navigateTo(page.toLowerCase())}
                             >
                                 {page}
                             </Button>
@@ -172,9 +199,10 @@ const Header = () => {
                             open={Boolean(anchorElUser)}
                             onClose={handleCloseUserMenu}
                         >
-                            {settings.map((setting) => (
-                                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                    <Typography textalign="center">{setting}</Typography>
+                            {profileDropdownList.map((setting) => (
+                                <MenuItem key={setting.displayName} onClick={handleCloseUserMenu}>
+                                    <Button sx={{color: secondaryColor}} onClick={() => navigateTo(setting.redirectTo)} textalign="center" underline="none">{setting.displayName}</Button>
+                                    {/* <Typography textalign="center">{setting}</Typography> */}
                                 </MenuItem>
                             ))}
                         </Menu>

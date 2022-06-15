@@ -11,6 +11,8 @@ import Home from "./pages/Home/index"
 import ReservationList from "./pages/Reservations";
 import userReservations from "./data/Data";
 import LogIn from "./pages/LogIn/index"
+import Pricing from './pages/Membership/pricing';
+import Checkout from './pages/Membership/checkout';
 import { ReservationDetails } from './pages/ReservationDetails';
 import CreateBlog from './pages/Blogging/CreateBlog/CreateBlog';
 import EditBlog from './pages/Blogging/EditBlog/EditBlog';
@@ -30,7 +32,8 @@ root.render(
           <Route path="resources" element={<ReservationList reservations={userReservations} />} />
           <Route path='resources/:reservationId' element={<ReservationDetails />} />
           <Route path="store" element={<Home />} />
-          <Route path="membership" element={<Home />} />
+          <Route path="membership" element={<Pricing />} />
+          <Route path="membership/checkout" element={<Checkout />} />
           <Route path="events" element={<Home />} />
           <Route path="rewards" element={<Home />} />
           <Route path="blogs" element={<Home />} />
