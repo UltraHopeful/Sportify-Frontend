@@ -12,6 +12,9 @@ import ReservationList from "./pages/Reservations";
 import userReservations from "./data/Data";
 import LogIn from "./pages/LogIn/index"
 import { ReservationDetails } from './pages/ReservationDetails';
+import CreateBlog from './pages/Blogging/CreateBlog/CreateBlog';
+import EditBlog from './pages/Blogging/EditBlog/EditBlog';
+import BlogPost from './pages/Blogging/BlogPost/BlogPost';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -31,6 +34,9 @@ root.render(
           <Route path="events" element={<Home />} />
           <Route path="rewards" element={<Home />} />
           <Route path="blogs" element={<Home />} />
+          <Route path="createblog" element={<CreateBlog />} />
+          <Route path="editblogs" element={<EditBlog />} />
+          <Route path="blogpost" element={<BlogPost />} />
         </Route>
         {/* todo add path only which doesn't need header */}
         <Route path="/login" element={<LogIn />} />
