@@ -11,6 +11,7 @@ import Home from "./pages/Home/index"
 import ReservationList from "./pages/Reservations";
 import userReservations from "./data/Data";
 import LogIn from "./pages/LogIn/index"
+import Pricing from './pages/Membership/pricing';
 import { ReservationDetails } from './pages/ReservationDetails';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -27,7 +28,7 @@ root.render(
           <Route path="resources" element={<ReservationList reservations={userReservations} />} />
           <Route path='resources/:reservationId' element={<ReservationDetails />} />
           <Route path="store" element={<Home />} />
-          <Route path="membership" element={<Home />} />
+          <Route path="membership" element={<Pricing />} />
           <Route path="events" element={<Home />} />
           <Route path="rewards" element={<Home />} />
           <Route path="blogs" element={<Home />} />
