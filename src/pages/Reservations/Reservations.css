@@ -1,0 +1,15 @@
+.Footer {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.Pagination {
+    align-items: center;
+    align-content: center;
+}
+
+.Select-items {
+    justify-content: flex-end;
+}
