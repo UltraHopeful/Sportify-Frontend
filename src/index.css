@@ -12,3 +12,28 @@ code {
     monospace;
 }
 
+.img-responsive{
+  max-width: 100%;
+  height:auto;
+}
+#loginPage{
+  height:100vh;
+}
+
+.loginSide{
+  height: 100%;
+  background:linear-gradient(130deg, rgba(2,0,36,0.78) 0%, rgba(238,53,42,0.35) 60%), url("assets/images/loginBack.jpg");
+  /*background:linear-gradient(130deg, rgba(238,53,42,0.45) 20%, rgba(2,0,36,0.45) 60%, rgba(255,255,255,0.25) 81%), url("assets/images/loginBack.jpg");*/
+  /*background: rgba(238, 53, 42,0.5);*/
+  background-size: cover;
+}
+
+.loginSideText{
+  float: left;
+  margin-left:20%;
+  margin-top:25%;
+}
+
+.bg-gray{
+  background: #E5E6E8;
+}
