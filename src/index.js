@@ -19,6 +19,8 @@ import EditBlog from './pages/Blogging/EditBlog/EditBlog';
 import BlogPost from './pages/Blogging/BlogPost/BlogPost';
 import { AllBlogs } from './pages/Blogging/AllBlogs/AllBlogs';
 import YourBlogs from './pages/Blogging/YourBlogs/YourBlogs';
+import Facilities from './pages/Facilities';
+import FacilityDetails from './pages/FacilityDetails';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -31,8 +33,10 @@ root.render(
         {/* todo add path only which needs header */}
         <Route path="/" element={<App />}>
           <Route index element={<Home />} />
-          <Route path="resources" element={<ReservationList reservations={userReservations} />} />
-          <Route path='resources/:reservationId' element={<ReservationDetails />} />
+          <Route path='my-reservations' element={<ReservationList reservations={userReservations} />} />
+          <Route path="resources" element={<Facilities />} />
+          <Route path='resources/:resourceId' element={<FacilityDetails />}/>
+          <Route path='my-reservations/:reservationId' element={<ReservationDetails />} />
           <Route path="store" element={<Home />} />
           <Route path="membership" element={<Pricing />} />
           <Route path="membership/checkout" element={<Checkout />} />

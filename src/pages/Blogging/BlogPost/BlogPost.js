@@ -1,4 +1,3 @@
-import React,{useState,useEffect} from 'react'
 import './BlogPost.css';
 import Card_custom from '../../../components/Card_custom/Card_custom';
 /**

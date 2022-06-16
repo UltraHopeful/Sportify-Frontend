@@ -1,19 +1,31 @@
-import { Box, FormControl, MenuItem, Pagination, Select, SelectChangeEvent } from "@mui/material";
+import { Box, FormControl, MenuItem, Pagination, Select, Snackbar } from "@mui/material";
 import { useState } from "react";
-import { ReservationInterface } from "../../data/ReservationInterface";
 import ReservationItem from "./ReservationItem";
 import '../../App.css';
 import './Reservations.css'
+import { useLocation } from "react-router-dom";
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+import MuiAlert from '@mui/material/Alert';
 
-const ReservationList = (props: any) => {
+
+const ReservationList = (props) => {
 
     const [page, setPage] = useState(1);
 
     const [list, setList] = useState(props.reservations.slice(0, 5));
 
-    const itemsPerPage: number = 5;
+    const itemsPerPage = 5;
 
-    // const totalPages: number = Math.ceil(props.reservations.length / 5);
+    const [defaultItemsPerPage, setDetaultItemsPerPage] = useState(itemsPerPage);
+
+    const [totalPages, setTotalPages] = useState(Math.ceil(props.reservations.length / defaultItemsPerPage));
+
+    const { state } = useLocation();
+
+    const [snackbarOpen, setSnackbarOpen] = useState({ open: (!!state?.snackbar), vertical: 'top', horizontal: 'right' });
+
+    const { open, vertical, horizontal } = snackbarOpen;
 
     const maxPagesMd = 5;
 
@@ -21,37 +33,49 @@ const ReservationList = (props: any) => {
 
     const maxPagesXs = -1;
 
-    const [defaultItemsPerPage, setDetaultItemsPerPage] = useState<number>(itemsPerPage);
-
-    const [totalPages, setTotalPages] = useState<number>(Math.ceil(props.reservations.length / defaultItemsPerPage));
-
-    const updateDefaulItemsPerPage = (event: SelectChangeEvent<typeof defaultItemsPerPage>) => {
-        const itemsPerPageTemp: number = (+event.target.value);
-        const totalPagesTemp: number = Math.ceil(props.reservations.length / itemsPerPageTemp);
-        console.log('Update total pages: '+ totalPagesTemp);
+    const updateDefaulItemsPerPage = (event) => {
+        const itemsPerPageTemp = (+event.target.value);
+        const totalPagesTemp = Math.ceil(props.reservations.length / itemsPerPageTemp);
+        console.log('Update total pages: ' + totalPagesTemp);
         setDetaultItemsPerPage((+event.target.value));
         updatePagination(1, itemsPerPageTemp);
         setTotalPages(totalPagesTemp);
     }
 
-    const updatePageList = (pageNumber: number, itemsPerPage: number) => {
-        const start: number = (pageNumber - 1) * itemsPerPage;
-        const end: number = (pageNumber) * itemsPerPage;
+    const updatePageList = (pageNumber, itemsPerPage) => {
+        const start = (pageNumber - 1) * itemsPerPage;
+        const end = (pageNumber) * itemsPerPage;
         setList(props.reservations.slice(start, end));
     }
 
-    const updatePagination = (pageNumber: number, itemsPerPage: number) => {
+    const updatePagination = (pageNumber, itemsPerPage) => {
         updatePageList(pageNumber, itemsPerPage);
         setPage(pageNumber);
     }
 
-    const onPaginationChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    const onPaginationChange = (event, value) => {
         updatePagination(value, defaultItemsPerPage);
     }
 
-    const reservationList = list.map((reservation: ReservationInterface) => {
+    const reservationList = list.map((reservation) => {
         return (<ReservationItem key={reservation.id} reservationDetails={reservation}></ReservationItem>);
     });
+
+    const onCloseSnackbar = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setSnackbarOpen({ ...snackbarOpen, open: false });
+    }
+
+    const snackbarCloseAction = (<IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={onCloseSnackbar}
+    >
+        <CloseIcon fontSize="small" />
+    </IconButton>);
 
     return (
         <div>
@@ -118,6 +142,17 @@ const ReservationList = (props: any) => {
                     </FormControl>
                 </div>
             </div>
+            <Snackbar
+                anchorOrigin={{ vertical, horizontal }}
+                open={open}
+                autoHideDuration={3000}
+                onClose={onCloseSnackbar}
+                action={snackbarCloseAction}
+            >
+                <MuiAlert onClose={onCloseSnackbar} severity="success" sx={{ width: '100%' }} elevation={6} variant="filled">
+                    Successfuly cancelled your reservation.
+                </MuiAlert>
+            </Snackbar>
         </div>
     );
 }
