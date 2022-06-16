@@ -5,9 +5,6 @@ import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "./checkout";
 import './membershipPlan.css'
 
-// Make sure to call loadStripe outside of a component’s render to avoid
-// recreating the Stripe object on every render.
-// This is your test publishable API key.
 const stripePromise = loadStripe("pk_test_51LAz4KC9WWOmeUQqQnjG12zdy2nfQtoTOTtTqfKI2n29aZzvrXfa5JSLkHvlzQ1M4M5PHiWA31eyTVog8hgllFRv00CUHckRs6");
 
 export default function MembershipPlan() {
@@ -20,7 +17,6 @@ export default function MembershipPlan() {
     headers.append('Accept', 'application/json');
     headers.append('Origin','http://localhost:3000');
 
-    // Create PaymentIntent as soon as the page loads
     fetch("http://localhost:8080/create-payment-intent", {
       method: "POST",
       headers: headers,
@@ -31,7 +27,7 @@ export default function MembershipPlan() {
   }, []);
 
   const appearance = {
-    theme: 'night',
+    theme: 'stripe',
   };
   const options = {
     clientSecret,
