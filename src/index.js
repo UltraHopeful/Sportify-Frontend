@@ -35,10 +35,8 @@ root.render(
     <BrowserRouter>
       <Routes>
         {/* todo add path only which needs header */}
-          <Route path="/" element={<App />} />
+        <Route path="/" element={<App />}>
           <Route index element={<Home />} />
-          <Route path="resources" element={<ReservationList reservations={userReservations} />} />
-          <Route path='resources/:reservationId' element={<ReservationDetails />} />
           <Route path="store" element={<Products />} />
           <Route path='my-reservations' element={<ReservationList reservations={userReservations} />} />
           <Route path="resources" element={<Facilities />} />
@@ -56,6 +54,7 @@ root.render(
           <Route path="editblogs" element={<EditBlog />} />
           <Route path="blogpost" element={<BlogPost />} />
           <Route path="yourblogs" element={<YourBlogs />} />
+        </Route>
         {/* todo add path only which doesn't need header */}
         <Route path="/login" element={<LogIn />} />
       </Routes>
