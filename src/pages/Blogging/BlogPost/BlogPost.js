@@ -2,45 +2,33 @@ import './BlogPost.css';
 import Card_custom from '../../../components/Card_custom/Card_custom';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import blogsData from '../../../data/BlogsData';
 /**
 * @author
 * @function BlogPost
 **/
 
-const BlogPost = () => {
+const BlogPost = (props) => {
     const navigate = useNavigate();
-    const params = useParams();
+    let params = useParams();
     const [data, setData] = useState([]);
-    const resId = (!params.params) ? 1 : params.params;
-  //  console.log(props + " props");
-        console.log(resId + " resId");
-        
-        
-       // console.log(details+ " details[0]");
-       //setData(require('../../../blogs.json'));
-    // useEffect(() => {
-    //     setData(require('../../../blogs.json'));
-    //     const details = data.filter(res => res.id === (resId));
-    //     const answer = details[0];
-    //     console.log(answer)
-    // }, [])
+    const resId = params.id;
+    const details = blogsData.filter(res => res.id === (+resId));
+    const answer = details[0];
+    console.log({answer}, " details[0]");
     
-    console.log(data)
-    const details = data[0].filter(res => res.id === (resId));
-    const answer = details;
-    console.log(answer)
     return (
         <div className="blogPostContainer">
             <Card_custom style={{ marginBottom: '20px' }}>
                 <div className="blogHeader">
                     <span className="blogCategory" style={{ fontSize: '20px' }}>Featured</span>
-                    <h1 className="postTitle" style={{ padding: '0 50px', fontWeight: 500, fontSize: '40px' }}></h1>
+                    <h1 className="postTitle" style={{ padding: '0 50px', fontWeight: 500, fontSize: '40px' }}>{answer.title}</h1>
                     {/* <h1 className="postTitle">Beautiful is always beautiful</h1> */}
-                    <span clasdsName="postedBy">posted on 04 June,2022 by Navya Jayapal</span>
+                    <span className="postedBy">posted on 04 June,2022 by Navya Jayapal</span>
                 </div>
 
                 <div className="postImageContainer">
-                    {/* <img src={require(`../../../assets/images/${answer.image}`)} alt="Post Image" /> */}
+                    <img src={require(`../../../assets/images/${answer.image}`)} alt="Post Image" />
                 </div>
 
                 <div className="postContent">

@@ -1,7 +1,7 @@
 import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Grid, IconButton, Typography } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import React, { useEffect, useState } from 'react'
-import blogs from '../../../blogs.json';
+import blogs from '../../../blogs';
 import { Box } from '@mui/system';
 import { Link, useNavigate } from 'react-router-dom';
 /**
@@ -13,10 +13,10 @@ const Blogs = (props) => {
     const [data, setData] = useState([]);
     const navigate = useNavigate();
     useEffect(() => {
-        setData(require('../../../blogs.json'));
-        console.log(data);
+        setData(require('../../../blogs'));
+        // console.log(data);
     }, [])
-    console.log(data);
+    // console.log(data);
     // sx={{ maxWidth: 345,marginX:"20%",marginY:"5%" }}
     return (
         <Grid>
