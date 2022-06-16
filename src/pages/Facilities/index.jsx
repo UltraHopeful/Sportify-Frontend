@@ -1,10 +1,11 @@
-import { Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid } from "@mui/material";
+import { Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, Snackbar } from "@mui/material";
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
 import FacilityItem from "../../components/FacilityItem";
 import { clubFacilities } from "../../data/FacilitiesData";
-import { FacilitiesInterface } from "../../data/FacilitiesInterfac";
-
-
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+import MuiAlert from '@mui/material/Alert';
 
 export default function Facilities() {
     const [categoryFilters, setCategoryFilters] = useState({
@@ -13,13 +14,33 @@ export default function Facilities() {
         pool: false,
         basketBall: false
     });
-    const originalList: FacilitiesInterface[] = clubFacilities;
+    const { state } = useLocation();
+    const [snackbarOpen, setSnackbarOpen] = useState({ open: (!!state?.snackbar), vertical: 'top', horizontal: 'right' });
+    const { open, vertical, horizontal } = snackbarOpen;
+
+    const onCloseSnackbar = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setSnackbarOpen({ ...snackbarOpen, open: false });
+    }
+
+    const snackbarCloseAction = (<IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={onCloseSnackbar}
+    >
+        <CloseIcon fontSize="small" />
+    </IconButton>);
+
+    const originalList = clubFacilities;
 
     const [displayList, setDisplayList] = useState(clubFacilities);
     const { gym, badminton, pool, basketBall } = categoryFilters;
 
 
-    const onFiltersChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const onFiltersChange = (event) => {
         let updatedFilters = {...categoryFilters, [event.target.name]: event.target.checked};
         setCategoryFilters({
             ...categoryFilters,
@@ -28,9 +49,9 @@ export default function Facilities() {
         applyFilters(updatedFilters);
     };
 
-    const applyFilters = (filters: any) => {
-        let filteredList: FacilitiesInterface[] = originalList.filter((item) => {
-            let result: boolean = false;
+    const applyFilters = (filters) => {
+        let filteredList = originalList.filter((item) => {
+            let result = false;
             if (filters.gym) {
                 result = result || (item.category === 'Gym');
             }
@@ -91,6 +112,17 @@ export default function Facilities() {
                     );
                 })}
             </Grid>
+            <Snackbar
+                anchorOrigin={{ vertical, horizontal }}
+                open={open}
+                autoHideDuration={3000}
+                onClose={onCloseSnackbar}
+                action={snackbarCloseAction}
+            >
+                <MuiAlert onClose={onCloseSnackbar} severity="success" sx={{ width: '100%' }} elevation={6} variant="filled">
+                    Successfuly booked facility!
+                </MuiAlert>
+            </Snackbar>
         </div>
     );
 }
