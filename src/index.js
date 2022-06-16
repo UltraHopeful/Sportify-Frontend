@@ -19,6 +19,10 @@ import Products from "./pages/Merchandise/products";
 import CreateBlog from './pages/Blogging/CreateBlog/CreateBlog';
 import EditBlog from './pages/Blogging/EditBlog/EditBlog';
 import BlogPost from './pages/Blogging/BlogPost/BlogPost';
+import YourBlogs from './pages/Blogging/YourBlogs/YourBlogs';
+import Facilities from './pages/Facilities';
+import FacilityDetails from './pages/FacilityDetails';
+import Blogs from './pages/Blogging/Blogs/Blogs';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -34,6 +38,11 @@ root.render(
           <Route path="resources" element={<ReservationList reservations={userReservations} />} />
           <Route path='resources/:reservationId' element={<ReservationDetails />} />
           <Route path="store" element={<Products />} />
+          <Route path='my-reservations' element={<ReservationList reservations={userReservations} />} />
+          <Route path="resources" element={<Facilities />} />
+          <Route path='resources/:resourceId' element={<FacilityDetails />}/>
+          <Route path='my-reservations/:reservationId' element={<ReservationDetails />} />
+          <Route path="store" element={<Home />} />
           <Route path="membership" element={<Pricing />} />
           <Route path="membership/checkout" element={<Checkout />} />
           <Route path="events" element={<Home />} />
@@ -43,6 +52,11 @@ root.render(
           <Route path="createblog" element={<CreateBlog />} />
           <Route path="editblogs" element={<EditBlog />} />
           <Route path="blogpost" element={<BlogPost />} />
+          <Route path="blogs" element={<Blogs />} />
+          <Route path="createblog" element={<CreateBlog />} />
+          <Route path="editblogs" element={<EditBlog />} />
+          <Route path="blogpost" element={<BlogPost />} />
+          <Route path="yourblogs" element={<YourBlogs />} />
         {/* todo add path only which doesn't need header */}
         <Route path="/login" element={<LogIn />} />
       </Routes>

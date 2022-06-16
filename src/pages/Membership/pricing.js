@@ -10,20 +10,20 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
 import StarIcon from '@mui/icons-material/StarBorder';
 import Typography from '@mui/material/Typography';
-import Link from '@mui/material/Link';
 import GlobalStyles from '@mui/material/GlobalStyles';
 import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router-dom';
+import "./membership.css";
 
 const tiers = [
   {
     title: 'Basic',
     price: '20',
     description: [
-      'Cardio - Workout',
-      'Stretch Room',
-      '24/7 Access',
-      'Customer Support',
+      ' Cardio - Workout',
+      ' Stretch Room',
+      ' 24/7 Access',
+      ' Customer Support',
     ],
     buttonText: 'Get started',
     buttonVariant: 'contained',
@@ -33,11 +33,11 @@ const tiers = [
     subheader: 'Most popular',
     price: '50',
     description: [
-      'Cardio, Stretch Room',
-      'Yoga and Zumba',
-      'Swimming, Badminton',
-      'Basketball, Floor Hockey',
-      'Priority email support',
+      ' Cardio, Stretch Room',
+      ' Yoga and Zumba',
+      ' Swimming, Badminton',
+      ' Basketball, Floor Hockey',
+      ' Priority email support',
     ],
     buttonText: 'Get started',
     buttonVariant: 'contained',
@@ -46,11 +46,11 @@ const tiers = [
     title: 'Regular',
     price: '30',
     description: [
-      'Cardio - Workout',
-      'Stretch Room',
-      'Yoga and Zumba',
-      '24/7 Access',
-      'Customer Support',
+      ' Cardio - Workout',
+      ' Stretch Room',
+      ' Yoga and Zumba',
+      ' 24/7 Access',
+      ' Customer Support',
     ],
     buttonText: 'Get started',
     buttonVariant: 'contained',
@@ -64,18 +64,15 @@ const tiers = [
 function Pricing() {
 
   const navigate = useNavigate();
-
+  
   const handlePayment = () => {
-    navigate('/payment');
-
-
+    navigate('/payment',{state:{'product': {'name':tier.title, 'desc': tier.description, 'price': tier.price}}});
   }
 
   return (
     <React.Fragment>
       <GlobalStyles styles={{ ul: { margin: 0, padding: 0, listStyle: 'none' } }} />
       <CssBaseline />
-      {/* Hero unit */}
       <Container disableGutters maxWidth="sm" component="main" sx={{ pt: 8, pb: 6 }}>
         <Typography
           component="h1"
@@ -138,7 +135,8 @@ function Pricing() {
                   </Box>
                   <ul>
                     {tier.description.map((line) => (
-                      <Typography
+                      <Typography 
+                        
                         component="li"
                         variant="subtitle1"
                         align="center"

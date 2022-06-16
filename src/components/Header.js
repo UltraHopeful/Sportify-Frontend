@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
@@ -20,7 +20,7 @@ import Logo from "../assets/images/Sportify.png";
 
 
 const pages = ['Resources', 'Store', 'Membership', 'Events', 'Rewards', 'Blogs'];
-const settings = ['My Account', 'Logout'];
+// const settings = ['My Account', 'Logout'];
 
 const primaryColor = '#326DD9';
 const secondaryColor = '#234C99';
@@ -36,7 +36,7 @@ const profileDropdownList = [
     },
     {
         displayName: 'My Reservations',
-        redirectTo: 'resources'
+        redirectTo: 'my-reservations'
     }
 ];
 
