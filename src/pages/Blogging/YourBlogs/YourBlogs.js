@@ -2,25 +2,22 @@ import { Button, Card, CardActions, CardContent, CardMedia, Grid, Typography, Bo
 import React from 'react'
 import { styled } from '@mui/material/styles';
 import Cards from '../../../components/Cards/Cards';
-import { useNavigate } from 'react-router-dom';
 
 /**
 * @author
-* @function AllBlogs
+* @function YourBlogs
 **/
 
 
 
 
-export const AllBlogs = (props) => {
-    const usenavigate = useNavigate();
+const YourBlogs = (props) => {
     return (
-        
-        <Grid container direction="row" spacing={2} columns={12}
+        <Grid container  spacing={2} columns={12}
                 >
-                    <Grid item xs={8}>
+                    <Grid item xs={11}>
                         <div className="createblog">
-                            <h2>Create Blogs</h2>
+                            <h2>Your Blogs</h2>
                         </div>
             <Box >
             <Grid container spacing={1}>
@@ -46,7 +43,8 @@ export const AllBlogs = (props) => {
                                     </Typography>
                                 </CardContent>
                                 <CardActions>
-                                    
+                                    <Button size="small">Edit</Button>
+                                    <Button size="small">Delete</Button>
                                 </CardActions>
                             </Card>
 
@@ -70,7 +68,8 @@ export const AllBlogs = (props) => {
                                     </Typography>
                                 </CardContent>
                                 <CardActions>
-                                   
+                                    <Button size="small">Edit</Button>
+                                    <Button size="small">Delete</Button>
                                 </CardActions>
                             </Card>
 
@@ -94,7 +93,8 @@ export const AllBlogs = (props) => {
                                     </Typography>
                                 </CardContent>
                                 <CardActions>
-                                   
+                                    <Button size="small">Edit</Button>
+                                    <Button size="small">Delete</Button>
                                 </CardActions>
                             </Card>
 
@@ -122,7 +122,8 @@ export const AllBlogs = (props) => {
                                     </Typography>
                                 </CardContent>
                                 <CardActions>
-                                    
+                                <Button size="small">Edit</Button>
+                                    <Button size="small">Delete</Button>
                                 </CardActions>
                             </Card>
 
@@ -146,7 +147,8 @@ export const AllBlogs = (props) => {
                                     </Typography>
                                 </CardContent>
                                 <CardActions>
-                                    
+                                <Button size="small">Edit</Button>
+                                    <Button size="small">Delete</Button>
                                 </CardActions>
                             </Card>
 
@@ -170,7 +172,8 @@ export const AllBlogs = (props) => {
                                     </Typography>
                                 </CardContent>
                                 <CardActions>
-                                    
+                                <Button size="small">Edit</Button>
+                                    <Button size="small">Delete</Button>
                                 </CardActions>
                             </Card>
 
@@ -198,7 +201,8 @@ export const AllBlogs = (props) => {
                                     </Typography>
                                 </CardContent>
                                 <CardActions>
-                                    
+                                <Button size="small">Edit</Button>
+                                    <Button size="small">Delete</Button>
                                 </CardActions>
                             </Card>
 
@@ -222,7 +226,8 @@ export const AllBlogs = (props) => {
                                     </Typography>
                                 </CardContent>
                                 <CardActions>
-                                   
+                                <Button size="small">Edit</Button>
+                                    <Button size="small">Delete</Button>
                                 </CardActions>
                             </Card>
 
@@ -247,7 +252,8 @@ export const AllBlogs = (props) => {
                                     </Typography>
                                 </CardContent>
                                 <CardActions>
-                                    
+                                <Button size="small">Edit</Button>
+                                    <Button size="small">Delete</Button>
                                 </CardActions>
                             </Card>
 
@@ -258,39 +264,11 @@ export const AllBlogs = (props) => {
             </Grid>
         </Box>
                     </Grid>
-                    <Grid item xs={4}>
-                        <Grid container direction="column"spacing={2} columns={12}>
-                            <Grid item xs={6}>
-                            <Box
-                            sx={{
-                                marginX: "10%",
-                                marginY: "15%",
-                                paddingY:"25%"
-                            }}
-                        >
-                         <Button sx={{width:"50%"}} variant="contained">
-                           
-                            Your Blogs
-                        </Button>
-                        </Box>
-                            
-                            </Grid>
-                            <Grid item xs={6}>
-                            <Box
-                            sx={{
-                                marginX: "10%",
-                                marginY: "5%",
-                                paddingY:"25%"
-                            }}
-                        >
-                         <Button sx={{width:"50%"}} variant="contained">Create Blog</Button>
-                        </Box>
-                            </Grid>
-                        </Grid>
-                        
-                    </Grid>
+                    
                 </Grid>
         
     )
 
 }
+
+export default YourBlogs;
