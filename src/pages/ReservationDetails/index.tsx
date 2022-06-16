@@ -3,15 +3,26 @@ import { useNavigate, useParams } from "react-router-dom";
 import userReservations from "../../data/Data";
 import './ReservationDetails.css';
 
+const primaryColor = '#326DD9';
 
 const DetailRow = (props: any) => {
     return (
-        <Stack sx={{ width: '100%' }} alignItems='center' direction='row' spacing={2}>
+        <Stack sx={{ width: '100%' }} alignItems='center' direction='row' spacing={1}>
             <Typography sx={{ width: '50%', display: 'flex', justifyContent: 'flex-end', fontSize: '14px', fontWeight: 'bold' }} variant="h6">
                 {props.columnName}
             </Typography>
             <Typography sx={{ display: 'flex', justifyContent: 'flex-start', fontSize: '12px' }} component="div">
                 {props.columnData}
+            </Typography>
+        </Stack>
+    );
+}
+
+const DetailHeader = (props: any) => {
+    return (
+        <Stack sx={{ width: '100%' }} alignItems='center' direction='row' spacing={2}>
+            <Typography sx={{ width: '100%', display: 'flex', justifyContent: 'center', fontSize: '20px', fontWeight: 'bold', mr: '40px', color: primaryColor }} variant="h4">
+                {props.heading}
             </Typography>
         </Stack>
     );
@@ -35,7 +46,8 @@ const ReservationDetails = () => {
                     {/* Primary Reservation Grid */}
                     <Grid item xs={12} md={4} sm={6}>
                         <Card sx={{ margin: '20px', width: '90%', height: '90%' }} elevation={6}>
-                            <Stack sx={{ my: '30px' }} alignItems='center' spacing={3} divider={<Divider orientation="horizontal" variant="middle" flexItem />}>
+                            <Stack sx={{ my: '30px' }} alignItems='center' spacing={2.5} divider={<Divider orientation="horizontal" variant="middle" flexItem />}>
+                                <DetailHeader heading='Reservation Details' />
                                 <DetailRow columnName='Reference ID :' columnData={details.id} />
                                 <DetailRow columnName='Reservation Start :' columnData={details.reservationFrom} />
                                 <DetailRow columnName='Reservation End :' columnData={details.reservationTo} />
@@ -48,6 +60,7 @@ const ReservationDetails = () => {
                     <Grid item xs={12} md={4} sm={6}>
                         <Card sx={{ margin: '20px', width: '90%', height: '90%' }} elevation={6}>
                             <Stack sx={{ my: '30px' }} alignItems='center' spacing={3} divider={<Divider orientation="horizontal" variant="middle" flexItem />}>
+                                <DetailHeader heading='Property Details' />
                                 <DetailRow columnName="Property Name :" columnData={details.equipmentName} />
                                 <DetailRow columnName="Property Location :" columnData={details.equipmentLoc} />
                             </Stack>
@@ -55,7 +68,7 @@ const ReservationDetails = () => {
                     </Grid>
                     <Grid item xs={12} md={12} sm={6} sx={{
                         display: 'flex',
-                        justifyContent: 'center'
+                        justifyContent: 'center',
                     }}>
                         <Button sx={{
                             color: '#000000',
@@ -64,7 +77,9 @@ const ReservationDetails = () => {
                                 backgroundColor: '#000000',
                                 color: '#ffffff'
                             },
-                            mr: '10px'
+                            mr: '10px',
+                            height: '36.5px'
+                            // height: 'auto'
                         }}
                             variant='contained'
                             onClick={() => {
@@ -83,7 +98,9 @@ const ReservationDetails = () => {
                             },
                             ':disabled': {
                                 color: '#ffff'
-                            }
+                            },
+                            height: '36.5px'
+                            // height: 'auto'
                         }}
                             disabled
                         >
