@@ -31,10 +31,13 @@ const DetailHeader = (props: any) => {
 
 const ReservationDetails = () => {
     const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
+    
     let navigate = useNavigate();
     let params = useParams();
     let resId = (!params.reservationId) ? 1 : params.reservationId;
     const details = userReservations.filter(res => res.id === (+resId))[0];
+
+
 
     const closeDialog = () => {
         setCancelDialogOpen(false);

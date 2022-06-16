@@ -1,11 +1,22 @@
 import './BlogPost.css';
 import Card_custom from '../../../components/Card_custom/Card_custom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 /**
 * @author
 * @function BlogPost
 **/
 
 const BlogPost = (props) => {
+    const navigate = useNavigate();
+    const params = useParams();
+    const [data,setData]=useState([]);
+    useEffect(() => {
+        setData(require('../../../blogs.json'));
+      //  console.log(data);
+    }, [])
+    const resId = (!params.id) ? 1 : params.id;
+    const details = data.filter(res => res.id === (+resId))[0];
   return(
     <div className="blogPostContainer">
         <Card_custom style={{marginBottom:'20px'}}>
