@@ -6,14 +6,14 @@ import { Box } from '@mui/system';
 import { Link, useNavigate } from 'react-router-dom';
 /**
 * @author
-* @function YourBlogs
+* @function Blogs
 **/
 
-const YourBlogs = (props) => {
+const Blogs = (props) => {
     const [data, setData] = useState([]);
-    const navigate = useNavigate();
+    const usenavigate = useNavigate();
     useEffect(() => {
-        setData(require('../../../yourblogs.json'));
+        setData(require('../../../blogs.json'));
         console.log(data);
     }, [])
     console.log(data);
@@ -23,23 +23,24 @@ const YourBlogs = (props) => {
             <Grid item sx={{marginY:"4%",marginLeft:"20%",alignContent:"center"}}>
                         <Grid container direction="row"spacing={2} columns={12}>
                             <Grid item xs={6}>   
-                         <Button sx={{width:"50%"}} variant="contained" onClick={() => {
-                                navigate("/blogs");
-                            }}>      
-                         {/* <Link sx={{color:"white"}} to={
-                                 {pathname:'/blogs'}
-                              }> */}
-                              Back to All Blogs
-                             {/* </Link> */}
+                          <Button sx={{width:"50%"}} variant="contained" >      
+                            <Link sx={{color:"white"}} to={
+                                 {pathname:'/yourblogs'}
+                              }>
+                            Your Blogs
+                             </Link>
+                           {/*  */}
                         </Button>
                             </Grid>
                             <Grid item xs={6}>
                            
-                         <Button sx={{width:"50%"}} variant="contained" onClick={() => {
-                                navigate("/createblog");
-                            }}>
+                         <Button sx={{width:"50%"}} variant="contained">
+                         <Link sx={{color:"white"}} to={
+                                 {pathname:'/createblog'}
+                              }>
                             Create Blog
-                            </Button>
+                             </Link>
+                         </Button>
                        
                             </Grid>
                         </Grid>
@@ -83,4 +84,4 @@ const YourBlogs = (props) => {
 
 }
 
-export default YourBlogs;
+export default Blogs;
