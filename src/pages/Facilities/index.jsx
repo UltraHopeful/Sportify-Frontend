@@ -1,4 +1,4 @@
-import { Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, Snackbar } from "@mui/material";
+import { Checkbox, Container, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, Snackbar, Stack } from "@mui/material";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import FacilityItem from "../../components/FacilityItem";
@@ -73,11 +73,12 @@ export default function Facilities() {
     }
 
     return (
-        <div className="Container">
+        <Container maxWidth='xl'>
             <div>
-                <FormControl sx={{ display: 'flex', flexDirection: 'row', my: '30px', justifyContent: 'center' }}>
+                <FormControl sx={{ display: 'flex', flexDirection: {md: 'row', sm: 'column', xs: 'column'}, m: '10px auto', alignItems: 'center', justifyContent: 'center' }}>
                     <FormLabel sx={{ mt: '8px', mr: '20px' }} component="legend">Categories:</FormLabel>
-                    <FormGroup sx={{ display: 'flex', flexDirection: 'row' }}>
+                    <Stack directions={{xs: 'row', sm: 'row', md: 'column', lg:'row', xl: 'row'}}>
+                    <FormGroup sx={{ flexDirection: {md: 'row', sm: 'column', xs: 'column'} }}>
                         <FormControlLabel
                             control={
                                 <Checkbox checked={gym} onChange={onFiltersChange} name="gym" />
@@ -103,9 +104,11 @@ export default function Facilities() {
                             label="Basket Ball"
                         />
                     </FormGroup>
+                    </Stack>
                 </FormControl>
+
             </div>
-            <Grid container sx={{ m: '10px' }} spacing={2}>
+            <Grid container spacing={2}>
                 {displayList.map((facility) => {
                     return (
                         <FacilityItem key={facility.id} facility={facility}></FacilityItem>
@@ -123,6 +126,6 @@ export default function Facilities() {
                     Successfuly booked facility!
                 </MuiAlert>
             </Snackbar>
-        </div>
+        </Container>
     );
 }

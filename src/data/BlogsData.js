@@ -1,4 +1,4 @@
-[
+let blogsData = [
     {
         "id": 1,
         "title": "Can i be fit?",
@@ -72,3 +72,5 @@
         "Likes":5
     }
 ]
+
+export default blogsData;

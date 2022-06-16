@@ -19,7 +19,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import Logo from "../assets/images/Sportify.png";
 
 
-const pages = ['Resources', 'Store', 'Membership', 'Events', 'Rewards', 'Blogs'];
+const pages = ['Membership', 'Store', 'Resources', 'Events', 'Rewards', 'Blogs'];
 // const settings = ['My Account', 'Logout'];
 
 const primaryColor = '#326DD9';
