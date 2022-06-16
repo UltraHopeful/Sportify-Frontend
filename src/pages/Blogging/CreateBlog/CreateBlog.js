@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import parse from 'html-react-parser';
 import { Box, Button, Grid, TextField } from '@mui/material';
 /**
 * @author
@@ -14,7 +15,7 @@ const CreateBlog = (props) => {
             <div>
                 <Grid container direction="row" spacing={2} columns={12}
                 >
-                    <Grid item xs={12} sm={12} md={6} lg={6} >
+                    <Grid item xs={6}>
                         <div className="createblog">
                             <h2>Create Blogs</h2>
                         </div>
@@ -48,7 +49,7 @@ const CreateBlog = (props) => {
                             <div className="gridmargins">
                                 <CKEditor
                                     editor={ClassicEditor}
-                                    data="<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>"
+                                    data="<p>Hello from CKEditor 5!</p>"
                                     onReady={editor => {
                                         // You can store the "editor" and use when it is needed.
                                         console.log('Editor is ready to use!', editor);
@@ -67,8 +68,8 @@ const CreateBlog = (props) => {
                             </div>
                         </Box>
                     </Grid>
-                    <Grid item xs={12} sm={12} md={6} lg={6}>
-                        <Grid container direction="column"spacing={2} columns={12} sx={{marginLeft:"10%"}}>
+                    <Grid item xs={6}>
+                        <Grid container direction="column"spacing={2} columns={12}>
                             <Grid item xs={6}>
                             <Box
                             sx={{

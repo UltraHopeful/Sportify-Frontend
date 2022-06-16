@@ -1,4 +1,5 @@
-import * as React from 'react';
+import React from 'react';
+import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -58,11 +59,14 @@ const tiers = [
 
 
 
-function Pricing() {
-  const navigate = useNavigate();
 
-  const moveToCheckout = (tier) => {
-    navigate('/membership/checkout', {state:{'product': {'name':tier.title, 'desc': tier.description, 'price': tier.price}}});
+
+function Pricing() {
+
+  const navigate = useNavigate();
+  
+  const handlePayment = (tier) => {
+    navigate('/payment',{state:{'product': {'name':tier.title, 'desc': tier.description, 'price': tier.price}}});
   }
 
   return (
@@ -144,8 +148,8 @@ function Pricing() {
                   </ul>
                 </CardContent>
                 <CardActions>
-                  <Button fullWidth variant={tier.buttonVariant} onClick={() => moveToCheckout(tier)}>
-                    {tier.buttonText}
+                  <Button fullWidth variant={tier.buttonVariant} onClick={handlePayment}>
+                    {tier.buttonText} 
                   </Button>
                 </CardActions>
               </Card>

@@ -1,17 +1,17 @@
 import { Button, Card, CardActions, CardHeader, CardMedia, Grid } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { FacilitiesInterface } from "../data/FacilitiesInterfac";
+import { EventInterface } from "../data/EventInterface";
 import { primaryColor, seondaryColor, whiteThemeColor } from "../Theme/colors";
 
-const FacilityItem = (props: any) => {
+const EventItem = (props: any) => {
     const navigate = useNavigate();
-    const facility: FacilitiesInterface = props.facility;
+    const event: EventInterface = props.event;
 
     const redirectToDetailsPage = (resourceId: string) => {
-        navigate('/resources/' + resourceId);
+        navigate('/events/' + resourceId);
     }
     return (
-        <Grid key={facility.id} item sx={{ height: 'auto' }} xl={3} xs={12} sm={6} md={4}>
+        <Grid key={event.id} item sx={{ height: 'auto' }} xl={3} xs={12} sm={6} md={4}>
             <Card
                 // sx={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'spaceBetween' }} 
                 elevation={6}>
@@ -28,8 +28,9 @@ const FacilityItem = (props: any) => {
                             color: seondaryColor
                         }
                     }}
-                    title={facility.name}
-                    subheader={facility.category} />
+                    title={event.name}
+                    subheader={event.date.toDateString()}
+                     />
                 <CardMedia
                     component="img"
                     sx={{
@@ -39,7 +40,7 @@ const FacilityItem = (props: any) => {
                         height: '250px',
                         m: '0 auto'
                     }}
-                    image={facility.image}
+                    image={event.image}
                     alt="Equipment image"
                 />
                 <CardActions
@@ -51,7 +52,7 @@ const FacilityItem = (props: any) => {
                 >
                     <Button
                         sx={{ color: whiteThemeColor, width: '100%' }}
-                        onClick={() => redirectToDetailsPage(facility.id)}>
+                        onClick={() => redirectToDetailsPage(event.id)}>
                         Reserve Property
                     </Button>
                 </CardActions>
@@ -59,4 +60,4 @@ const FacilityItem = (props: any) => {
         </Grid>);
 }
 
-export default FacilityItem;
+export default EventItem;
