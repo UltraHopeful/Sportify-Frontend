@@ -17,6 +17,8 @@ import { ReservationDetails } from './pages/ReservationDetails';
 import CreateBlog from './pages/Blogging/CreateBlog/CreateBlog';
 import EditBlog from './pages/Blogging/EditBlog/EditBlog';
 import BlogPost from './pages/Blogging/BlogPost/BlogPost';
+import { AllBlogs } from './pages/Blogging/AllBlogs/AllBlogs';
+import YourBlogs from './pages/Blogging/YourBlogs/YourBlogs';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -40,6 +42,8 @@ root.render(
           <Route path="createblog" element={<CreateBlog />} />
           <Route path="editblogs" element={<EditBlog />} />
           <Route path="blogpost" element={<BlogPost />} />
+          <Route path="allblogs" element={<AllBlogs />} />
+          <Route path="yourblogs" element={<YourBlogs />} />
         </Route>
         {/* todo add path only which doesn't need header */}
         <Route path="/login" element={<LogIn />} />
