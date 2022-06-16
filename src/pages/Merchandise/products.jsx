@@ -1,117 +1,104 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { Button, CardActionArea, CardActions, Paper } from '@mui/material';
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
+import { CardMedia } from '@mui/material';
+import { Grid, Container, TextField } from '@mui/material';
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
+import InputAdornment from '@mui/material/InputAdornment';
+import Sportify from '../../assets/images/Sportify.png'
 
 function Products() {
+    const [products, setProducts] = useState([
+        { id: '1', name: 'Product Name 1', price: 12312, desc: 'Description text 1' },
+        { id: '2', name: 'Product Name 2', price: 12312, desc: 'Description text 2' },
+        { id: '3', name: 'Product Name 3', price: 12312, desc: 'Description text 3' },
+        { id: '4', name: 'Product Name 4', price: 12312, desc: 'Description text 4' },
+        { id: '5', name: 'Product Name 5', price: 12312, desc: 'Description text 5' },
+        { id: '6', name: 'Product Name 6', price: 12312, desc: 'Description text 6' },
+        { id: '7', name: 'Product Name 7', price: 12312, desc: 'Description text 7' },
+        { id: '8', name: 'Product Name 8', price: 12312, desc: 'Description text 8' },
+        { id: '9', name: 'Product Name 9', price: 12312, desc: 'Description text 9' },
+        { id: '10', name: 'Product Name 10', price: 12312, desc: 'Description text 10' },
+        { id: '11', name: 'Product Name 11', price: 12312, desc: 'Description text 11' },
+        { id: '12', name: 'Product Name 12', price: 12312, desc: 'Description text 12' },
+        { id: '13', name: 'Product Name 13', price: 12312, desc: 'Description text 13' },
+        { id: '14', name: 'Product Name 14', price: 12312, desc: 'Description text 14' },
+        { id: '15', name: 'Product Name 15', price: 12312, desc: 'Description text 15' },
+        { id: '16', name: 'Product Name 16', price: 12312, desc: 'Description text 16' },
+        { id: '17', name: 'Product Name 17', price: 12312, desc: 'Description text 17' },
+        { id: '18', name: 'Product Name 18', price: 12312, desc: 'Description text 18' },
+        { id: '19', name: 'Product Name 19', price: 12312, desc: 'Description text 19' },
+        { id: '20', name: 'Product Name 20', price: 12312, desc: 'Description text 20' },
+        { id: '21', name: 'Product Name 21', price: 12312, desc: 'Description text 21' },
+        { id: '22', name: 'Product Name 22', price: 12312, desc: 'Description text 22' },
+        { id: '23', name: 'Product Name 23', price: 12312, desc: 'Description text 23' },
+    ]);
 
-    // const [state, setState] = React.useState({
-    //     top: false,
-    //     left: false,
-    //     bottom: false,
-    //     right: false,
-    //   });
-    
-    //   const toggleDrawer = (anchor, open) => (event) => {
-    //     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-    //       return;
-    //     }
-    
-    //     setState({ ...state, [anchor]: open });
-    //   };
-    
-    //   const list = (anchor) => (
-      
-   //   );
+    const [search, setSearch] = useState('');
 
+    const handleSearchChange = (e) => {
+        setSearch(e.target.value);
+    };
 
     return (
 
         <>
-{/* <div>
-      {['left', 'right', 'top', 'bottom'].map((anchor) => (
-        <React.Fragment key={anchor}>
-          <Button onClick={toggleDrawer(anchor, true)}>{anchor}</Button>
-          <Drawer
-            anchor={anchor}
-            open={state[anchor]}
-            onClose={toggleDrawer(anchor, false)}
-          >
-            {list(anchor)}
-          </Drawer>
-        </React.Fragment>
-      ))}
-    </div> */}
-
-    <Box
-          sx={{ width: 250 }} alignContent="flex-start"
-          role="presentation"
-         // onClick={toggleDrawer(anchor, false)}
-         // onKeyDown={toggleDrawer(anchor, false)}
-        >
-          <List>
-            {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-              <ListItem key={text} disablePadding>
-                <ListItemButton>
-                  <ListItemIcon>
-                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                  </ListItemIcon>
-                  <ListItemText primary={text} />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
-          <Divider />
-          <List>
-            {['All mail', 'Trash', 'Spam'].map((text, index) => (
-              <ListItem key={text} disablePadding>
-                <ListItemButton>
-                  <ListItemIcon>
-                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                  </ListItemIcon>
-                  <ListItemText primary={text} />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
-        </Box>
-        
-            <Card sx={{ maxWidth: 345 }}>
-                <CardActionArea>
-                    <CardMedia
-                        component="img"
-                        height="140"
-                        image="/static/images/cards/contemplative-reptile.jpg"
-                        alt="green iguana"
+            <Container maxWidth="md" sx={{ mb: 3, mt: 4 }}>
+                <Typography gutterBottom variant="h3" component="div" align='center' marginBottom={3}>
+                    Products
+                </Typography>
+                <Grid container justifyContent='center'>
+                    <TextField placeholder='Search...' value={search} color='secondary' onChange={handleSearchChange} variant='outlined' sx={{ width: '50ch' }}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <SearchOutlinedIcon />
+                                </InputAdornment>
+                            ),
+                        }}
                     />
-                    <CardContent>
-                        <Typography gutterBottom variant="h5" component="div">
-                            Lizard
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                            Lizards are a widespread group of squamate reptiles, with over 6,000
-                            species, ranging across all continents except Antarctica
-                        </Typography>
-                    </CardContent>
-                </CardActionArea>
-                <CardActions>
-                    <Button size="small" color="primary">
-                        Share
-                    </Button>
-                </CardActions>
-            </Card>
+                </Grid>
+            </Container>
+            <Grid
+                container
+                style={{ padding:20 }}
+                // height="100%"
+                alignItems="center"
+                justifyContent="center"
+                // className="bg-gray padding-ub"
+                rowSpacing={{ xs: 5, sm: 5, md: 5, lg: 5, xl: 7 }}
+                columnSpacing={{ xs: 1, sm: 2, md: 5, lg: 6, xl: 8 }}>
+                {products.filter((product)=>product.name.toLowerCase().includes(search.toLowerCase())).map((product) => (
+                    <Grid item xl={3} lg={4} md={6} sm={6} xs={11}>
+                        <Card elevation={7}>
+                            <CardMedia
+                                component="img"
+                                height="150"
+                                width="150"
+                                margin="15px auto 15px auto"
+                                image={Sportify}
+                                alt={product.id}
+                            />
+                            <CardContent>
+                                <Typography align="center" gutterBottom variant="h6" component="div"
+                                    style={{ textTransform: 'capitalize' }}>
+                                    {product.name}
+                                </Typography>
+                                <Typography align="center" gutterBottom variant="subtitle1" component="div"
+                                    style={{ textTransform: 'capitalize' }}>
+                                    {product.price}
+                                </Typography>
+                                <Typography align="center" gutterBottom variant="body2" component="div"
+                                    style={{ textTransform: 'capitalize' }}>
+                                    {product.desc}
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                ))
+                }
+            </Grid>
         </>
     )
 }
