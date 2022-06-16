@@ -23,6 +23,8 @@ import YourBlogs from './pages/Blogging/YourBlogs/YourBlogs';
 import Facilities from './pages/Facilities';
 import FacilityDetails from './pages/FacilityDetails';
 import Blogs from './pages/Blogging/Blogs/Blogs';
+import EventsList from './pages/Events/index';
+import EventDetails from './pages/EventDetails';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -40,12 +42,13 @@ root.render(
           <Route path="store" element={<Products />} />
           <Route path='my-reservations' element={<ReservationList reservations={userReservations} />} />
           <Route path="resources" element={<Facilities />} />
-          <Route path='resources/:resourceId' element={<FacilityDetails />}/>
+          <Route path='resources/:resourceId' element={<FacilityDetails />} />
           <Route path='my-reservations/:reservationId' element={<ReservationDetails />} />
           <Route path="store" element={<Home />} />
           <Route path="membership" element={<Pricing />} />
           <Route path="membership/checkout" element={<Checkout />} />
-          <Route path="events" element={<Home />} />
+          <Route path="events" element={<EventsList />} />
+          <Route path="events/:eventId" element={<EventDetails />} />
           <Route path="rewards" element={<Home />} />
           <Route path="payment" element={<MembershipPlan />} />
           <Route path="blogs" element={<Blogs />} />
