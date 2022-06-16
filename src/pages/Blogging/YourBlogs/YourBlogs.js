@@ -1,7 +1,7 @@
 import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Grid, IconButton, Typography } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import React, { useEffect, useState } from 'react'
-import blogs from '../../../blogs.json';
+import blogs from '../../../blogs';
 import { Box } from '@mui/system';
 import { Link, useNavigate } from 'react-router-dom';
 /**
@@ -17,7 +17,6 @@ const YourBlogs = (props) => {
         console.log(data);
     }, [])
     console.log(data);
-    // sx={{ maxWidth: 345,marginX:"20%",marginY:"5%" }}
     return (
         <Grid>
             <Grid item sx={{marginY:"4%",marginLeft:"20%",alignContent:"center"}}>
@@ -50,7 +49,9 @@ const YourBlogs = (props) => {
             {data.map((display, index) => (
                 <Grid item xs={12} sm={4} md={4} key={index}>
                     <Card sx={{ maxWidth: 345, marginY: "5%", marginLeft: "15%" }}>
-                        <CardActionArea>
+                        <CardActionArea onClick={() => {
+                                navigate("/blogpost/"+display.id);
+                            }}>
                             <CardMedia
                                 component="img"
                                 height="140"
@@ -65,14 +66,16 @@ const YourBlogs = (props) => {
                                 {display.shortContent}
                                 </Typography>
                             </CardContent>
-                            <CardActions>
+                        </CardActionArea>
+                        <CardActions>
+                            <Button size="small" onClick={() => {
+                                navigate("/editblogs/"+display.id);
+                            }}>Edit</Button>
+                            <Button size="small">Delete</Button>
                                 <IconButton aria-label="add to favorites">
                                     <FavoriteIcon />
                                 </IconButton>
                             </CardActions>
-
-                        </CardActionArea>
-
                     </Card>
                 </Grid>
             ))}
