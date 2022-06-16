@@ -13,6 +13,7 @@ import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import GlobalStyles from '@mui/material/GlobalStyles';
 import Container from '@mui/material/Container';
+import {useNavigate} from 'react-router-dom';
 
 function Copyright(props) {
   return (
@@ -98,6 +99,13 @@ const footers = [
 
 function Pricing() {
 
+  const navigate = useNavigate();
+
+  const handlePayment = () => {
+    navigate('/payment');
+
+  }
+
   return (
     <React.Fragment>
       <GlobalStyles styles={{ ul: { margin: 0, padding: 0, listStyle: 'none' } }} />
@@ -177,7 +185,7 @@ function Pricing() {
                   </ul>
                 </CardContent>
                 <CardActions>
-                  <Button fullWidth variant={tier.buttonVariant} >
+                  <Button fullWidth variant={tier.buttonVariant} onClick={handlePayment}>
                     {tier.buttonText} 
                   </Button>
                 </CardActions>

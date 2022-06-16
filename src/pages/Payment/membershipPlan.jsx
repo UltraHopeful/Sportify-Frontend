@@ -3,6 +3,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 
 import CheckoutForm from "./checkout";
+import './membershipPlan.css'
 
 // Make sure to call loadStripe outside of a component’s render to avoid
 // recreating the Stripe object on every render.
@@ -30,7 +31,7 @@ export default function MembershipPlan() {
   }, []);
 
   const appearance = {
-    theme: 'stripe',
+    theme: 'night',
   };
   const options = {
     clientSecret,
@@ -38,7 +39,7 @@ export default function MembershipPlan() {
   };
 
   return (
-    <div className="App">
+    <div className="membershipPlan">
       {clientSecret && (
         <Elements options={options} stripe={stripePromise}>
           <CheckoutForm />

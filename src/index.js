@@ -13,7 +13,7 @@ import userReservations from "./data/Data";
 import LogIn from "./pages/LogIn/index"
 import Pricing from './pages/Membership/pricing';
 import { ReservationDetails } from './pages/ReservationDetails';
-import Payment from "./pages/Payment/membershipPlan";
+import MembershipPlan from "./pages/Payment/membershipPlan";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -33,7 +33,7 @@ root.render(
           <Route path="events" element={<Home />} />
           <Route path="rewards" element={<Home />} />
           <Route path="blogs" element={<Home />} />
-          <Route path="/payment" element={<Payment />} />
+          <Route path="payment" element={<MembershipPlan />} />
         {/* todo add path only which doesn't need header */}
         <Route path="/login" element={<LogIn />} />
       </Routes>
