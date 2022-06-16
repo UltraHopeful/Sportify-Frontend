@@ -1,7 +1,7 @@
 import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Grid, IconButton, Typography } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import React, { useEffect, useState } from 'react'
-import blogs from '../../../blogs.json';
+import blogs from '../../../blogs';
 import { Box } from '@mui/system';
 import { Link, useNavigate } from 'react-router-dom';
 /**
@@ -11,35 +11,32 @@ import { Link, useNavigate } from 'react-router-dom';
 
 const Blogs = (props) => {
     const [data, setData] = useState([]);
-    const usenavigate = useNavigate();
+    const navigate = useNavigate();
     useEffect(() => {
-        setData(require('../../../blogs.json'));
-        console.log(data);
+        setData(require('../../../blogs'));
+        // console.log(data);
     }, [])
-    console.log(data);
+    // console.log(data);
     // sx={{ maxWidth: 345,marginX:"20%",marginY:"5%" }}
     return (
         <Grid>
             <Grid item sx={{marginY:"4%",marginLeft:"20%",alignContent:"center"}}>
                         <Grid container direction="row"spacing={2} columns={12}>
                             <Grid item xs={6}>   
-                          <Button sx={{width:"50%"}} variant="contained" >      
-                            <Link sx={{color:"white"}} to={
-                                 {pathname:'/yourblogs'}
-                              }>
+                          <Button sx={{width:"50%"}} variant="contained" onClick={() => {
+                                navigate("/yourblogs");
+                            }}>      
                             Your Blogs
-                             </Link>
-                           {/*  */}
                         </Button>
                             </Grid>
                             <Grid item xs={6}>
                            
-                         <Button sx={{width:"50%"}} variant="contained">
-                         <Link sx={{color:"white"}} to={
-                                 {pathname:'/createblog'}
-                              }>
+                         <Button sx={{width:"50%"}} variant="contained" onClick={() => {
+                                navigate("/createblog");
+                            }}>
+                         
                             Create Blog
-                             </Link>
+                             
                          </Button>
                        
                             </Grid>
@@ -51,7 +48,9 @@ const Blogs = (props) => {
             {data.map((display, index) => (
                 <Grid item xs={12} sm={4} md={4} key={index}>
                     <Card sx={{ maxWidth: 345, marginY: "5%", marginLeft: "15%" }}>
-                        <CardActionArea>
+                        <CardActionArea onClick={() => {
+                                navigate("/blogpost/"+display.id);
+                            }}>
                             <CardMedia
                                 component="img"
                                 height="140"
