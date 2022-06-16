@@ -45,7 +45,7 @@ root.render(
           <Route path="blogs" element={<Blogs />} />
           <Route path="createblog" element={<CreateBlog />} />
           <Route path="editblogs" element={<EditBlog />} />
-          <Route path="blogpost" element={<BlogPost />} />
+          <Route exact path="blogpost/:params" element={<BlogPost />} />
           <Route path="yourblogs" element={<YourBlogs />} />
         </Route>
         {/* todo add path only which doesn't need header */}

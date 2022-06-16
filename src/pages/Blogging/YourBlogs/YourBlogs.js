@@ -50,7 +50,9 @@ const YourBlogs = (props) => {
             {data.map((display, index) => (
                 <Grid item xs={12} sm={4} md={4} key={index}>
                     <Card sx={{ maxWidth: 345, marginY: "5%", marginLeft: "15%" }}>
-                        <CardActionArea>
+                        <CardActionArea onClick={() => {
+                                navigate("/blogpost"+display.id);
+                            }}>
                             <CardMedia
                                 component="img"
                                 height="140"
@@ -66,6 +68,8 @@ const YourBlogs = (props) => {
                                 </Typography>
                             </CardContent>
                             <CardActions>
+                            <Button size="small">Edit</Button>
+                            <Button size="small">Delete</Button>
                                 <IconButton aria-label="add to favorites">
                                     <FavoriteIcon />
                                 </IconButton>

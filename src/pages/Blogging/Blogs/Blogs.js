@@ -11,7 +11,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 const Blogs = (props) => {
     const [data, setData] = useState([]);
-    const usenavigate = useNavigate();
+    const navigate = useNavigate();
     useEffect(() => {
         setData(require('../../../blogs.json'));
         console.log(data);
@@ -23,23 +23,20 @@ const Blogs = (props) => {
             <Grid item sx={{marginY:"4%",marginLeft:"20%",alignContent:"center"}}>
                         <Grid container direction="row"spacing={2} columns={12}>
                             <Grid item xs={6}>   
-                          <Button sx={{width:"50%"}} variant="contained" >      
-                            <Link sx={{color:"white"}} to={
-                                 {pathname:'/yourblogs'}
-                              }>
+                          <Button sx={{width:"50%"}} variant="contained" onClick={() => {
+                                navigate("/yourblogs");
+                            }}>      
                             Your Blogs
-                             </Link>
-                           {/*  */}
                         </Button>
                             </Grid>
                             <Grid item xs={6}>
                            
-                         <Button sx={{width:"50%"}} variant="contained">
-                         <Link sx={{color:"white"}} to={
-                                 {pathname:'/createblog'}
-                              }>
+                         <Button sx={{width:"50%"}} variant="contained" onClick={() => {
+                                navigate("/createblog");
+                            }}>
+                         
                             Create Blog
-                             </Link>
+                             
                          </Button>
                        
                             </Grid>
@@ -51,7 +48,9 @@ const Blogs = (props) => {
             {data.map((display, index) => (
                 <Grid item xs={12} sm={4} md={4} key={index}>
                     <Card sx={{ maxWidth: 345, marginY: "5%", marginLeft: "15%" }}>
-                        <CardActionArea>
+                        <CardActionArea onClick={() => {
+                                navigate("/blogpost/"+display.id);
+                            }}>
                             <CardMedia
                                 component="img"
                                 height="140"
