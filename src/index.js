@@ -47,11 +47,7 @@ root.render(
           <Route path="membership/checkout" element={<Checkout />} />
           <Route path="events" element={<Home />} />
           <Route path="rewards" element={<Home />} />
-          <Route path="blogs" element={<Home />} />
           <Route path="payment" element={<MembershipPlan />} />
-          <Route path="createblog" element={<CreateBlog />} />
-          <Route path="editblogs" element={<EditBlog />} />
-          <Route path="blogpost" element={<BlogPost />} />
           <Route path="blogs" element={<Blogs />} />
           <Route path="createblog" element={<CreateBlog />} />
           <Route path="editblogs" element={<EditBlog />} />

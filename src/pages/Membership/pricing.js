@@ -65,7 +65,7 @@ function Pricing() {
 
   const navigate = useNavigate();
   
-  const handlePayment = () => {
+  const handlePayment = (tier) => {
     navigate('/payment',{state:{'product': {'name':tier.title, 'desc': tier.description, 'price': tier.price}}});
   }
 
