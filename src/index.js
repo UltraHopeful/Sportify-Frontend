@@ -15,6 +15,7 @@ import Pricing from './pages/Membership/pricing';
 import Checkout from './pages/Membership/checkout';
 import { ReservationDetails } from './pages/ReservationDetails';
 import MembershipPlan from "./pages/Payment/membershipPlan";
+import Products from "./pages/Merchandise/products";
 import CreateBlog from './pages/Blogging/CreateBlog/CreateBlog';
 import EditBlog from './pages/Blogging/EditBlog/EditBlog';
 import BlogPost from './pages/Blogging/BlogPost/BlogPost';
@@ -32,7 +33,7 @@ root.render(
           <Route index element={<Home />} />
           <Route path="resources" element={<ReservationList reservations={userReservations} />} />
           <Route path='resources/:reservationId' element={<ReservationDetails />} />
-          <Route path="store" element={<Home />} />
+          <Route path="store" element={<Products />} />
           <Route path="membership" element={<Pricing />} />
           <Route path="membership/checkout" element={<Checkout />} />
           <Route path="events" element={<Home />} />
