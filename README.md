@@ -48,13 +48,6 @@ after that to run the site you have to type
 npm start
 ```
 
-## Built With
-
-- [React](https://reactjs.org/docs/getting-started.html) - Frontend framework
-- [MaterialUI](https://mui.com/material-ui/getting-started/installation/) - CSS library to build frontend
-- [React-Router](https://reactrouter.com/docs/en/v6) - Used to route through different pages with link
-- [Formik](https://formik.org/docs/overview) - To put validation in form (yup is required library in this)
-
 ## Sources Used
 
 - [CkEditor - React](https://ckeditor.com/docs/ckeditor5/latest/installation/getting-started/frameworks/react.html)
