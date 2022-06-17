@@ -8,7 +8,7 @@ const FacilityItem = (props: any) => {
     const facility: FacilitiesInterface = props.facility;
 
     const redirectToDetailsPage = (resourceId: string) => {
-        navigate('/resources/' + resourceId);
+        navigate('/facility/' + resourceId);
     }
     return (
         <Grid key={facility.id} item sx={{ height: 'auto' }} xl={3} xs={12} sm={6} md={4}>

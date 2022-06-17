@@ -61,8 +61,8 @@ root.render(
           <Route index element={<Home />} />
           <Route path="store" element={<Products />} />
           <Route path='my-reservations' element={<ReservationList reservations={userReservations} />} />
-          <Route path="resources" element={<Facilities />} />
-          <Route path='resources/:resourceId' element={<FacilityDetails />} />
+          <Route path="facility" element={<Facilities />} />
+          <Route path='facility/:resourceId' element={<FacilityDetails />} />
           <Route path='my-reservations/:reservationId' element={<ReservationDetails />} />
           <Route path="store" element={<Home />} />
             <Route path="my-account" element={<Profile/>} />
