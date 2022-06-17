@@ -3,7 +3,6 @@ body {
   font-family: 'Montserrat', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #a2bef1;
 }
 
 code {
@@ -27,6 +26,8 @@ code {
   height:100vh;
 }
 
+
+
 .loginSide{
   height: 100%;
   background:linear-gradient(297deg, rgba(50,109,217,0.4) 35%, rgba(0,0,0,0.6) 100%), url("assets/images/loginBack.jpg");
@@ -39,6 +40,15 @@ code {
 .loginSide1{
   height: 100%;
   background:linear-gradient(297deg, rgba(50,109,217,0.4) 35%, rgba(0,0,0,0.6) 100%), url("https://img.freepik.com/free-photo/3d-rendering-modern-loft-gym-fitness_105762-2020.jpg?t=st=1655365941~exp=1655366541~hmac=9a211fdea2f4390c59d12f64d3eab6ce199a01b33cf8ed77cbc252a33d1a3791&w=740");
+  /*background:linear-gradient(130deg, rgba(238,53,42,0.45) 20%, rgba(2,0,36,0.45) 60%, rgba(255,255,255,0.25) 81%), url("assets/images/loginBack.jpg");*/
+  /*background: rgba(238, 53, 42,0.5);*/
+  background-size: cover;
+  background-position: center;
+}
+
+.homeback{
+  height:100vh;
+  background:linear-gradient(297deg, rgba(50,109,217,0.4) 35%, rgba(0,0,0,0.6) 100%), url("../public/Homeback.jpg");
   /*background:linear-gradient(130deg, rgba(238,53,42,0.45) 20%, rgba(2,0,36,0.45) 60%, rgba(255,255,255,0.25) 81%), url("assets/images/loginBack.jpg");*/
   /*background: rgba(238, 53, 42,0.5);*/
   background-size: cover;
@@ -82,5 +92,33 @@ code {
   border-width: 1px;
   border-radius: 20px;
   border-color: #a2bef1;
+}
+
+.bg-dark{
+  background: #152d59;
+}
+
+.bg-medium{
+  background: #234c99;
+}
+
+.bg-main{
+  background: #326dd9;
+}
+
+.bg-light{
+  background: #a2bef1;
+}
+
+.bg-lighter{
+  background: #f5eeee;
+}
+
+.sideBox{
+  padding:100px;
+}
+
+.img-box{
+  padding:100px;
 }
 
