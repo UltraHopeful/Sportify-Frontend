@@ -33,6 +33,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { ToastContainer } from "material-react-toastify";
 import Profile from './pages/Profile/index';
 import 'material-react-toastify/dist/ReactToastify.css';
+import AppSearch from './pages/Search/search';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -79,6 +80,7 @@ root.render(
           <Route path="editblogs/:id" element={<EditBlog />} />
           <Route exact path="blogpost/:id" element={<BlogPost />} />
           <Route path="yourblogs" element={<YourBlogs />} />
+          <Route path="search" element={<AppSearch />} />
         </Route>
         {/* todo add path only which doesn't need header */}
         <Route path="/login" element={<LogIn />} />

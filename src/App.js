@@ -14,10 +14,10 @@ class App extends Component {
         return (
             <div className="App">
                 <Header/>
-                <Container maxWidth="xl" sx={{height:'100vh'}}>
+                <div maxWidth="xl" sx={{height:'100vh'}}>
                     <Outlet></Outlet>
                     <ToastContainer/>
-                </Container>
+                </div>
             </div>
         );
     }
