@@ -185,7 +185,7 @@ const FacilityDetails = () => {
             return;
         }
         else {
-            navigate('/resources', {state: {snackbar: true}})
+            navigate('/facility', {state: {snackbar: true}})
         }
     }
 
@@ -320,7 +320,7 @@ const FacilityDetails = () => {
                             mt: '20px'
                         }}
                             variant='contained'
-                            onClick={() => {navigate('/resources')}}
+                            onClick={() => {navigate('/facility')}}
                         >
                             Back
                         </Button>
