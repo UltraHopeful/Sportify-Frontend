@@ -28,7 +28,7 @@ const secondaryColor = '#234C99';
 const profileDropdownList = [
     {
         displayName: 'My Account',
-        redirectTo: ''
+        redirectTo: 'my-account'
     },
     {
         displayName: 'Logout',
