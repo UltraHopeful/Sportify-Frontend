@@ -39,6 +39,10 @@ const profileDropdownList = [
         redirectTo: 'my-reservations'
     },
     {
+        displayName: 'login',
+        redirectTo: 'login'
+    },
+    {
         displayName: 'Logout',
         redirectTo: ''
     },
