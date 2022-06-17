@@ -25,7 +25,9 @@ import FacilityDetails from './pages/FacilityDetails';
 import Blogs from './pages/Blogging/Blogs/Blogs';
 import AfterPayment from './pages/Payment/afterPayment';
 import EventsList from './pages/Events/index';
-import EventDetails from './pages/EventDetails';
+import { EventDetails } from './pages/EventDetails';
+import MyEvents from './pages/MyEvents/MyEvents';
+import MyEventDetails from './pages/MyEventDetails';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -48,6 +50,8 @@ root.render(
           <Route path="membership/checkout" element={<Checkout />} />
           <Route path="events" element={<EventsList />} />
           <Route path="events/:eventId" element={<EventDetails />} />
+          <Route path='my-events' element={<MyEvents />}/>
+          <Route path='my-events/:bookingId' element={<MyEventDetails />}/>
           <Route path="rewards" element={<Home />} />
           <Route path="payment" element={<MembershipPlan />} />
           <Route path="afterpayment" element={<AfterPayment/>} />

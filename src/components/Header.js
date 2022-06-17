@@ -37,6 +37,10 @@ const profileDropdownList = [
     {
         displayName: 'My Reservations',
         redirectTo: 'my-reservations'
+    }, 
+    {
+        displayName: 'My Events',
+        redirectTo: 'my-events'
     }
 ];
 
