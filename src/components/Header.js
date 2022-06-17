@@ -161,7 +161,7 @@ const Header = () => {
                             className="brand-img"
                         />
                     </Typography>
-                    <IconButton size="large" aria-label="search" color="inherit" sx={{color:'black',display: {xs: 'inline-flex',sm:'none', md: 'none'}}}>
+                    <IconButton size="large" aria-label="search" color="inherit" href="/search" sx={{color:'black',display: {xs: 'inline-flex',sm:'none', md: 'none'}}}>
                         <SearchIcon />
                     </IconButton>
                     <Box sx={{flexGrow: 1,gap: '12px' ,display: {xs: 'none', md: 'flex'}}}>
@@ -179,7 +179,7 @@ const Header = () => {
                     </Box>
 
                     <Box sx={{flexGrow: 0}}>
-                        <IconButton size="large" aria-label="search" color="inherit" sx={{color:'black',mr:'20px',display: {xs: 'none',sm:'inline-flex', md: 'inline-flex'} }}>
+                        <IconButton size="large" aria-label="search" href="/search" color="inherit" sx={{color:'black',mr:'20px',display: {xs: 'none',sm:'inline-flex', md: 'inline-flex'} }}>
                             <SearchIcon />
                         </IconButton>
                         <Tooltip title="Open settings">
