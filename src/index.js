@@ -3,14 +3,13 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {
-  BrowserRouter, Routes, Route,
-} from 'react-router-dom';
+import { BrowserRouter, Route, Routes, } from 'react-router-dom';
 
 import Home from "./pages/Home/index"
 import ReservationList from "./pages/Reservations";
 import userReservations from "./data/Data";
 import LogIn from "./pages/LogIn/index"
+import Signup from "./pages/Signup/index"
 import Pricing from './pages/Membership/pricing';
 import Checkout from './pages/Membership/checkout';
 import { ReservationDetails } from './pages/ReservationDetails';
@@ -25,16 +24,36 @@ import FacilityDetails from './pages/FacilityDetails';
 import Blogs from './pages/Blogging/Blogs/Blogs';
 import AfterPayment from './pages/Payment/afterPayment';
 import EventsList from './pages/Events/index';
-import EventDetails from './pages/EventDetails';
+import { EventDetails } from './pages/EventDetails';
+import MyEvents from './pages/MyEvents/MyEvents';
+import MyEventDetails from './pages/MyEventDetails';
+import ChangePassword from "./pages/ChangePassword/index";
+import ForgotPassword from "./pages/ForgotPassword/index";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { ToastContainer } from "material-react-toastify";
+import 'material-react-toastify/dist/ReactToastify.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
+const theme = createTheme({
+  typography: {
+    fontFamily: [
+      'Montserrat',
+      'sans-serif',
+    ].join(','),
+  },
+  palette: {
+    primary: { main: '#326dd9' },
+  },
+});
 
 // cite : https://reactrouter.com/docs/en/v6/components/routes
 // I used some of the code for routing
 root.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <Routes>
+    <React.StrictMode>
+        <ThemeProvider theme={theme}>
+            <BrowserRouter>
+            <Routes>
         {/* todo add path only which needs header */}
         <Route path="/" element={<App />}>
           <Route index element={<Home />} />
@@ -48,9 +67,11 @@ root.render(
           <Route path="membership/checkout" element={<Checkout />} />
           <Route path="events" element={<EventsList />} />
           <Route path="events/:eventId" element={<EventDetails />} />
+          <Route path='my-events' element={<MyEvents />} />
+          <Route path='my-events/:bookingId' element={<MyEventDetails />} />
           <Route path="rewards" element={<Home />} />
           <Route path="payment" element={<MembershipPlan />} />
-          <Route path="afterpayment" element={<AfterPayment/>} />
+          <Route path="afterpayment" element={<AfterPayment />} />
           <Route path="blogs" element={<Blogs />} />
           <Route path="createblog" element={<CreateBlog />} />
           <Route path="editblogs/:id" element={<EditBlog />} />
@@ -59,9 +80,14 @@ root.render(
         </Route>
         {/* todo add path only which doesn't need header */}
         <Route path="/login" element={<LogIn />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="forgot-password" element={<ForgotPassword />} />
+        <Route path="change-password" element={<ChangePassword />} />
       </Routes>
-    </BrowserRouter>
-  </React.StrictMode>
+                <ToastContainer/>
+            </BrowserRouter>
+        </ThemeProvider>
+    </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

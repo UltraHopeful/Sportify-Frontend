@@ -210,4 +210,4 @@ const EventDetails = () => {
     );
 }
 
-export default EventDetails;
+export {EventDetails, DetailDescription};

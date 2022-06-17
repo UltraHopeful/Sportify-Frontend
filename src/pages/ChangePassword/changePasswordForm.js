@@ -1,9 +1,9 @@
 import React,{useState} from "react";
 import {Button, TextField, styled, FormControlLabel, Checkbox, InputAdornment} from "@mui/material";
-import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined';
 import IconButton from "@mui/material/IconButton";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
+import LockResetOutlinedIcon from '@mui/icons-material/LockResetOutlined';
 
 const ValidationTextField = styled((props) => (<TextField
     InputProps={{disableUnderline: true}}
@@ -41,15 +41,18 @@ const ValidationTextField = styled((props) => (<TextField
 // cite : https://dev.to/finallynero/react-form-using-formik-material-ui-and-yup-2e8h
 // I used some of the code from article, but I change as per my preferences
 
-// @ts-ignore
-export const LoginForm = props => {
+export const ChangePasswordForm = props => {
 
     const [visiblePassword, setVisiblePassword] = useState(false);
     const showPassword = () => setVisiblePassword(!visiblePassword);
     const hiddenPassword = () => setVisiblePassword(!visiblePassword);
 
+    const [visibleCPassword, setVisibleCPassword] = useState(false);
+    const showCPassword = () => setVisibleCPassword(!visibleCPassword);
+    const hiddenCPassword = () => setVisibleCPassword(!visibleCPassword);
+
     const {
-        values: {email, password},
+        values: {password,confirmPassword},
         errors,
         handleSubmit,
         handleChange,
@@ -64,10 +67,13 @@ export const LoginForm = props => {
                 error={Boolean(errors.email)}
                 label="Email*"
                 type="email"
-                value={email}
+                value="john@gmail.com"
                 variant="filled"
                 placeholder="Enter your email"
                 onChange={handleChange}
+                InputProps={{ // <-- This is where the toggle button is added.
+                    disableUnderline: true,
+                    readonly:true}}
             />
 
             <ValidationTextField
@@ -96,17 +102,42 @@ export const LoginForm = props => {
                 }}
                 onChange={handleChange}
             />
-            <FormControlLabel control={<Checkbox defaultChecked />} label="Remember me" sx={{marginBottom:"10px"}} />
+            <ValidationTextField
+                name="confirmPassword"
+                helperText={errors.confirmPassword ? errors.confirmPassword : " "}
+                error={Boolean(errors.confirmPassword)}
+                label="Confirm Password*"
+                type={visibleCPassword ? "text" : "password"}
+                value={confirmPassword}
+                variant="filled"
+                placeholder="Enter your password again"
+                sx={{marginBottom:"1px"}}
+                InputProps={{ // <-- This is where the toggle button is added.
+                    disableUnderline: true
+                    ,endAdornment: (
+                        <InputAdornment position="end">
+                            <IconButton
+                                aria-label="toggle show password"
+                                onClick={showCPassword}
+                                onMouseDown={hiddenCPassword}
+                            >
+                                {visibleCPassword ? <VisibilityOutlinedIcon /> : <VisibilityOffOutlinedIcon />}
+                            </IconButton>
+                        </InputAdornment>
+                    )
+                }}
+                onChange={handleChange}
+            />
             <Button
                 type="submit"
                 variant="contained"
                 color="primary"
                 size="large"
                 className="flex-center"
-                startIcon={<LoginOutlinedIcon/>}
+                startIcon={<LockResetOutlinedIcon/>}
                 disabled={!isValid}
             >
-                Login
+                Change Password
             </Button>
         </form>
 

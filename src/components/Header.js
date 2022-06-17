@@ -28,7 +28,7 @@ const secondaryColor = '#234C99';
 const profileDropdownList = [
     {
         displayName: 'My Account',
-        redirectTo: ''
+        redirectTo: 'my-account'
     },
     {
         displayName: 'Logout',
@@ -37,6 +37,10 @@ const profileDropdownList = [
     {
         displayName: 'My Reservations',
         redirectTo: 'my-reservations'
+    }, 
+    {
+        displayName: 'My Events',
+        redirectTo: 'my-events'
     }
 ];
 
