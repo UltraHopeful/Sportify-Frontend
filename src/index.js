@@ -31,6 +31,7 @@ import ChangePassword from "./pages/ChangePassword/index";
 import ForgotPassword from "./pages/ForgotPassword/index";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { ToastContainer } from "material-react-toastify";
+import Profile from './pages/Profile/index';
 import 'material-react-toastify/dist/ReactToastify.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -63,6 +64,7 @@ root.render(
           <Route path='resources/:resourceId' element={<FacilityDetails />} />
           <Route path='my-reservations/:reservationId' element={<ReservationDetails />} />
           <Route path="store" element={<Home />} />
+            <Route path="my-account" element={<Profile/>} />
           <Route path="membership" element={<Pricing />} />
           <Route path="membership/checkout" element={<Checkout />} />
           <Route path="events" element={<EventsList />} />
