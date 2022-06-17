@@ -33,7 +33,6 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { ToastContainer } from "material-react-toastify";
 import Profile from './pages/Profile/index';
 import 'material-react-toastify/dist/ReactToastify.css';
-import EventDetails from './pages/EventDetails';
 import AppSearch from './pages/Search/search';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

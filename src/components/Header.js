@@ -19,7 +19,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import Logo from "../assets/images/Sportify.png";
 
 
-const pages = ['Membership', 'Store', 'Resources', 'Events', 'Rewards', 'Blogs'];
+const pages = ['Membership', 'Resources', 'Events', 'Blogs', 'Store'];
 // const settings = ['My Account', 'Logout'];
 
 const primaryColor = '#326DD9';
@@ -31,17 +31,17 @@ const profileDropdownList = [
         redirectTo: 'my-account'
     },
     {
-        displayName: 'Logout',
-        redirectTo: ''
+        displayName: 'My Events',
+        redirectTo: 'my-events'
     },
     {
         displayName: 'My Reservations',
         redirectTo: 'my-reservations'
-    }, 
+    },
     {
-        displayName: 'My Events',
-        redirectTo: 'my-events'
-    }
+        displayName: 'Logout',
+        redirectTo: ''
+    },
 ];
 
 const Header = () => {
