@@ -186,7 +186,7 @@ const EventDetails = () => {
                             }}
                                 onClick={onSubmitBooking}
                             >
-                                Book Facility
+                                Book Tickets
                             </Button>
                         </Stack>
                     </Stack>

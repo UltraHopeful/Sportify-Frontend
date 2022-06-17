@@ -53,7 +53,7 @@ const EventItem = (props: any) => {
                     <Button
                         sx={{ color: whiteThemeColor, width: '100%' }}
                         onClick={() => redirectToDetailsPage(event.id)}>
-                        Reserve Property
+                        Book Event
                     </Button>
                 </CardActions>
             </Card>
