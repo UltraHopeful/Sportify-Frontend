@@ -51,7 +51,7 @@ I used Formik documentation to put validation in login form
 https://dev.to/finallynero/react-form-using-formik-material-ui-and-yup-2e8h
 <br/>
 I used above file to add some code for validation and ***comments are added in files*** <br/>
-**src/pages/LogIn/loginForm.js** <br/>
+**src/pages/LogIn/signupForm.js** <br/>
 **src/pages/LogIn/index.js**
 <br/>
 

@@ -14,18 +14,18 @@ const ReservationItem = (props: any) => {
         }}>
             <CardMedia
                 component="img"
-                sx={{ 
+                sx={{
                     width: '20%',
-                    py: '4px', 
-                    height: 'auto', 
+                    py: '4px',
+                    height: 'auto',
                     objectFit: 'contain',
-                    display: {xs: "block", md: 'flex'} 
+                    display: { xs: "block", md: 'flex' }
                 }}
                 image={props.reservationDetails.equipmentImg}
                 alt="Equipment image"
             />
             <Box sx={{
-                display: {xs: 'flex', md: 'flex'},
+                display: { xs: 'flex', md: 'flex' },
                 flexGrow: 0.5,
                 flexDirection: 'row',
                 alignItems: 'center'
@@ -81,7 +81,7 @@ const ReservationItem = (props: any) => {
                 </CardContent>
             </Box>
             <Box sx={{
-                display: {xs: "none", md: "flex", sm: "flex"},
+                display: { xs: "none", md: "flex", sm: "flex" },
                 flexGrow: 0.5,
                 flexDirection: 'column',
                 alignItems: 'center'
@@ -90,7 +90,7 @@ const ReservationItem = (props: any) => {
                     flex: '1 0 auto',
                     textAlign: 'left',
                 }}>
-                    <Typography sx = {{
+                    <Typography sx={{
                         display: 'flex'
                     }} component='div'>
                         <Typography sx={{
@@ -110,7 +110,7 @@ const ReservationItem = (props: any) => {
                             {props.reservationDetails.reservationFrom}
                         </Typography>
                     </Typography>
-                    <Typography sx = {{
+                    <Typography sx={{
                         display: 'flex'
                     }} component='div'>
                         <Typography sx={{
@@ -124,7 +124,7 @@ const ReservationItem = (props: any) => {
                             To:
                         </Typography>
                         <Typography sx={{
-                            fontSize: 13, 
+                            fontSize: 13,
                             mt: '2px'
                         }} component='span'>
                             {props.reservationDetails.reservationTo}
@@ -133,7 +133,7 @@ const ReservationItem = (props: any) => {
                 </CardContent>
             </Box>
             <Box sx={{
-                display: {xs: "flex", md: "none", sm: 'none'},
+                display: { xs: "flex", md: "none", sm: 'none' },
                 flexGrow: 0.5,
                 flexDirection: 'row',
                 alignItems: 'center'
@@ -142,7 +142,7 @@ const ReservationItem = (props: any) => {
                     flex: '1 0 auto',
                     textAlign: 'left',
                 }}>
-                    <Typography sx = {{
+                    <Typography sx={{
                         display: 'flex'
                     }} component='div'>
                         <Typography sx={{
@@ -165,22 +165,22 @@ const ReservationItem = (props: any) => {
                 </CardContent>
             </Box>
             <CardActions sx={{
-                display: {xs: 'none', md: 'flex'},
+                display: { xs: 'none', md: 'flex' },
                 justifyContent: 'center'
             }}>
                 <Button sx={{
                     color: primaryThemeColor
-                }} onClick={() => navigate("/resources/" + props.reservationDetails.id)}
+                }} onClick={() => navigate("/my-reservations/" + props.reservationDetails.id)}
                 > View Details</Button>
             </CardActions>
             <CardActions sx={{
-                display: {xs: 'inline', md: 'none'},
+                display: { xs: 'inline', md: 'none' },
                 my: 'auto'
             }}>
                 <Button sx={{
                     color: primaryThemeColor
                 }}
-                onClick={() => navigate("/resources/" + props.reservationDetails.id)}>
+                    onClick={() => navigate("/my-reservations/" + props.reservationDetails.id)}>
                     Details
                 </Button>
             </CardActions>

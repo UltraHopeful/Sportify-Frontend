@@ -1,0 +1,11 @@
+.gridmargins{
+  height: max-content;
+}
+
+.ck-editor__editable_inline {
+    min-height: 400px;
+}
+
+.createblog{
+    margin-left: 20%;
+}

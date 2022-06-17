@@ -2,9 +2,14 @@ import React from 'react';
 import {Formik} from "formik";
 import {LoginForm} from "./loginForm";
 import * as Yup from "yup";
-import {Divider, Grid, Hidden, Link} from "@mui/material";
+import {Card, Grid, Link} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import Logo from "../../assets/images/Sportify.png";
+import {ToastContainer,toast} from 'material-react-toastify';
+import 'material-react-toastify/dist/ReactToastify.css';
+import {useNavigate} from "react-router-dom";
+
 
 // cite : https://dev.to/finallynero/react-form-using-formik-material-ui-and-yup-2e8h
 // I used some of the code from article, but I change as per my preferences
@@ -23,58 +28,63 @@ const validations = Yup.object({
         .required("Password is required")
 });
 
-class InputForm extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {};
+
+export default function InputForm(props) {
+    const navigate = useNavigate();
+
+    const notify = () => {
+        toast.success("Login Successfully",{position: toast.POSITION.TOP_RIGHT});
     }
+    const values = {email: "", password: ""};
 
-    render() {
-        const values = {email: "", password: ""};
-        return (
-            <React.Fragment>
-                <Grid container id="loginPage" height="100%" alignItems="center" className="bg-gray">
-                    <Hidden smDown xsDown>
-                        <Grid id="loginSideBack" item xl={9} lg={9} md={7} sm={0} xs={0} className="loginSide"
-                              justifyContent="flex-start">
-                            <div className="loginSideText">
-                                {/*<img src={backImage} height="100%" className="img-responsive">*/}
-                                {/*</img>*/}
-                                <Typography variant="h3" color="white" textAlign='left'>
-                                    Just Bring Yourself
-                                </Typography>
-                                <Typography variant="h2" color="white" textAlign='left'>
-                                    Fitness
-                                </Typography>
-                                <Typography variant="h5" color="white" textAlign='left'>
-                                    In this day in age, keeping fit has<br/> become one of the hectic task.<br/>To keep
-                                    your body in shape you have<br/> to do different workout.
-                                </Typography>
-
-                            </div>
-                        </Grid>
-                    </Hidden>
-                    <Grid item xl={3} lg={3} md={5} sm xs={12}>
-                        <div>
-                            <Typography variant="h3" color="black" marginBottom="20px">
-                                Login
-                            </Typography>
-                            <Divider variant="middle"></Divider>
-                            <Box sx={{m: 4}}></Box>
-                            <Formik initialValues={values}
-                                    validationSchema={validations}
-                                    onSubmit={(values) => {
-                                        console.log(values)
-                                    }}>
-                                {(props) => (<LoginForm {...props} />)}
-                            </Formik>
-                        </div>
+    return (
+        <React.Fragment>
+            <Grid container id="loginPage"
+                  height="100%"
+                  justifyContent="center"
+                  alignItems="center"
+                  className="loginSide1">
+                <Grid item xl={3} lg={4} md={5} sm={7} xs={11}>
+                    <Card sx={{p: '1.5rem'}} elevation={5}>
+                        <Typography
+                            variant="h6"
+                            noWrap
+                            component="a"
+                            href="/"
+                            sx={{display: 'flex', mb: '10px'}}
+                        >
+                            <img
+                                src={`${Logo}`}
+                                alt="Sportify"
+                                loading="lazy"
+                                className="logo-img"
+                            />
+                        </Typography>
+                        {/*<Divider variant="middle"></Divider>*/}
+                        <Typography align="center"
+                                    variant="h4"
+                                    fontWeight='medium'
+                                    color="black" marginBottom="20px">
+                            Login
+                        </Typography>
+                        <Box sx={{m: 4}}></Box>
+                        <Formik initialValues={values}
+                                validationSchema={validations}
+                                onSubmit={(values) => {
+                                    // alert("Login Successfully");
+                                    console.log(values);
+                                    navigate('/');
+                                    notify();
+                                }}>
+                            {(props) => (<LoginForm {...props} />)}
+                        </Formik>
                         <Box component="div"
-                             sx={{m: 3, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start'}}>
-                            <Link display='flex' justifySelf='flex-start' marginBottom={1} href="#" underline="none">
-                                {'Create a new account'}
+                             sx={{mt: 3, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start'}}>
+                            <Link display='flex' justifySelf='flex-start' marginBottom={1} href="/signup"
+                                  underline="none">
+                                {'Not a member? Signup'}
                             </Link>
-                            <Link display='flex' marginBottom={1} href="#" underline="none">
+                            <Link display='flex' marginBottom={1} href="/forgot-password" underline="none">
                                 {'Forgot password?'}
                             </Link>
 
@@ -82,11 +92,10 @@ class InputForm extends React.Component {
                                 {'Back to Home'}
                             </Link>
                         </Box>
-                    </Grid>
+                    </Card>
                 </Grid>
-            </React.Fragment>
-        );
-    }
+                <ToastContainer />
+            </Grid>
+        </React.Fragment>
+    );
 }
-
-export default (InputForm);
