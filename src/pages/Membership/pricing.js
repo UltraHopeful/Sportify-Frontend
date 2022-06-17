@@ -65,8 +65,8 @@ function Pricing() {
 
   const navigate = useNavigate();
   
-  const handlePayment = (tier) => {
-    navigate('/payment',{state:{'product': {'name':tier.title, 'desc': tier.description, 'price': tier.price}}});
+  const moveToBilling = (tier) => {
+    navigate('/membership/checkout',{state:{'product': {'name':tier.title, 'desc': tier.description, 'price': tier.price}}});
   }
 
   return (
@@ -148,7 +148,7 @@ function Pricing() {
                   </ul>
                 </CardContent>
                 <CardActions>
-                  <Button fullWidth variant={tier.buttonVariant} onClick={handlePayment}>
+                  <Button fullWidth variant={tier.buttonVariant} onClick={() =>moveToBilling(tier)}>
                     {tier.buttonText} 
                   </Button>
                 </CardActions>

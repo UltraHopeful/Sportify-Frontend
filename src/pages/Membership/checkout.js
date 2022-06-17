@@ -30,8 +30,15 @@ export default function Checkout() {
   const [activeStep, setActiveStep] = React.useState(0);
   const navigate = useNavigate();
   const handleNext = () => {
-    
-    setActiveStep(activeStep + 1);
+    if (error == false){
+      setActiveStep(activeStep + 1);
+      if(activeStep===1){
+        navigate('/payment');
+      }
+    }
+    else{
+      alert("Please fill the details to proceed.");
+    }
   };
 
     
@@ -52,6 +59,7 @@ export default function Checkout() {
     const [country, setCountry] = useState();
     const [city, setCity] = useState();
     const [state, setState] = useState();
+    const [error, setError] = useState(true);
     const [formErrors, setFormErrors]= useState({firstName: '', lastName:'', address:'', zip:'', city:'',state:'', country:''});
     
     const handleValueChange = (event) =>{
@@ -60,13 +68,10 @@ export default function Checkout() {
         validateField(name, value);
     }
 
-    const validateField = (fieldName, value) =>{
-        console.log('-----fieldName---------');
-        console.log(fieldName);
-        console.log('-----value---------');
-        console.log(value);
+    const validateField = (fieldName, value) => {
+       
         let updatedFormErrors = formErrors
-        switch(fieldName){
+        switch(fieldName) {
             case 'firstName':
                 setFirstName(value);
                 updatedFormErrors.firstName = '';
@@ -144,6 +149,12 @@ export default function Checkout() {
                 break;
         }
         setFormErrors(updatedFormErrors);
+        setError(false);
+        for (let x in updatedFormErrors) {
+          if (updatedFormErrors[x] !== '') {
+              setError(true);
+          }
+        }
     }
     //end of billing
 
