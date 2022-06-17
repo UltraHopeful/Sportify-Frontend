@@ -2,28 +2,28 @@ import React, { useState } from 'react'
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import parse from 'html-react-parser';
-import { Box, Button, Grid, TextField } from '@mui/material';
+import { Box, Button, Grid, TextField, Typography } from '@mui/material';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 /**
 * @author
 * @function CreateBlog
 **/
 
 const CreateBlog = (props) => {
-    const [text, setText] = useState('');
+    const notify = () => toast("Under Construction as it involves database!");
     return (
         <div>
             <div>
                 <Grid container direction="row" spacing={2} columns={12}
                 >
-                    <Grid item xs={6}>
-                        <div className="createblog">
-                            <h2>Create Blogs</h2>
-                        </div>
+                    <Grid item xs={8}>
+                    
                         <Box
                             sx={{
-                                marginX: "15%",
-                                marginY: "15%",
-                                width: "70%",
+                                marginLeft: "15%",
+                                marginY: "20%",
+                                width: "80%",
                                 height: "100%",
                                 backgroundColor: '#DFF6FF',
                                 '&:hover': {
@@ -31,11 +31,14 @@ const CreateBlog = (props) => {
                                     opacity: [0.9, 0.8, 0.7],
                                 },
                             }}
-                        >
+                        >   
+                        <Typography  variant="h4" component="h2" sx={{display: 'flex', flexDirection:'row', justifyContent:"center",color:"#234c99"}} >
+                         Create Blog
+                        </Typography>
                             <div>
                                 <TextField fullWidth label="Title" id="fullWidth"
                                     sx={{
-                                        marginX: "5%",
+                                        marginX: "8%",
                                         marginY: "5%",
                                         width: "80%",
                                         backgroundColor: 'white',
@@ -68,17 +71,17 @@ const CreateBlog = (props) => {
                             </div>
                         </Box>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={4}>
                         <Grid container direction="column"spacing={2} columns={12}>
                             <Grid item xs={6}>
                             <Box
                             sx={{
                                 marginX: "10%",
-                                marginY: "15%",
+                                marginTop: "25%",
                                 paddingY:"25%"
                             }}
                         >
-                         <Button sx={{width:"50%"}} variant="contained">Upload Blog image</Button>
+                         <Button sx={{width:"50%"}} variant="contained" onClick={notify}><ToastContainer />Upload Blog image</Button>
                         </Box>
                             
                             </Grid>
@@ -90,7 +93,7 @@ const CreateBlog = (props) => {
                                 paddingY:"25%"
                             }}
                         >
-                         <Button sx={{width:"50%"}} variant="contained">Create Blog</Button>
+                         <Button sx={{width:"50%"}} variant="contained"onClick={notify}><ToastContainer />Create Blog</Button>
                         </Box>
                             </Grid>
                         </Grid>

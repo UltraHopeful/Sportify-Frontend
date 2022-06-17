@@ -1,15 +1,21 @@
 import { useState } from 'react'
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { Box, Button, Grid, TextField } from '@mui/material';
+import { Box, Button, Grid, TextField, Typography } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import blogsData from '../../../data/BlogsData';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 /**
 * @author
 * @function EditBlog
 **/
 
 const EditBlog = (props) => {
+
+    const notify = () => toast("Under Construction as it involves database!");
+
+
     const navigate = useNavigate();
     let params = useParams();
     const resId = params.id;
@@ -20,16 +26,13 @@ const EditBlog = (props) => {
             <div>
                 <Grid container direction="row" spacing={2} columns={12}
                 >
-                    <Grid item xs={6}>
-                        <div className="createblog">
-                            <h2>Edit Blog</h2>
-                        </div>
+                    <Grid item xs={8}>
                         <Box
                             sx={{
-                                marginX: "15%",
+                                marginLeft: "15%",
                                 marginY: "15%",
-                                width: "70%",
-                                height: "100%",
+                                width: "80%",
+                                height: "80%",
                                 backgroundColor: '#DFF6FF',
                                 '&:hover': {
                                     backgroundColor: '#DFF6FF',
@@ -37,6 +40,9 @@ const EditBlog = (props) => {
                                 },
                             }}
                         >
+                            <Typography  variant="h4" component="h2" sx={{display: 'flex', flexDirection:'row', justifyContent:"center",color:"#234c99"}} >
+                         Edit Blog
+                        </Typography>
                             <div>
                                 <TextField fullWidth label="Title" id="fullWidth" defaultValue= {answer.title}
                                     sx={{
@@ -79,7 +85,7 @@ const EditBlog = (props) => {
                             </div>
                         </Box>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={4}>
                         <Grid container direction="column"spacing={2} columns={12}>
                             <Grid item xs={6}>
                             <Box
@@ -89,7 +95,7 @@ const EditBlog = (props) => {
                                 paddingY:"25%"
                             }}
                         >
-                         <Button sx={{width:"50%"}} variant="contained">Upload Blog image</Button>
+                         <Button sx={{width:"50%"}} variant="contained" onClick={notify}><ToastContainer />Upload Image</Button>
                         </Box>
                             
                             </Grid>
@@ -101,7 +107,7 @@ const EditBlog = (props) => {
                                 paddingY:"25%"
                             }}
                         >
-                         <Button sx={{width:"50%"}} variant="contained">Create Blog</Button>
+                         <Button sx={{width:"50%"}} variant="contained" onClick={notify}>Create Blog!</Button>
                         </Box>
                             </Grid>
                         </Grid>
