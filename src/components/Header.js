@@ -19,7 +19,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import Logo from "../assets/images/Sportify.png";
 
 
-const pages = ['Membership', 'Store', 'Resources', 'Events', 'Rewards', 'Blogs'];
+const pages = ['Membership', 'Resources', 'Events', 'Blogs', 'Store'];
 // const settings = ['My Account', 'Logout'];
 
 const primaryColor = '#326DD9';
@@ -31,17 +31,17 @@ const profileDropdownList = [
         redirectTo: 'my-account'
     },
     {
-        displayName: 'Logout',
-        redirectTo: ''
+        displayName: 'My Events',
+        redirectTo: 'my-events'
     },
     {
         displayName: 'My Reservations',
         redirectTo: 'my-reservations'
-    }, 
+    },
     {
-        displayName: 'My Events',
-        redirectTo: 'my-events'
-    }
+        displayName: 'Logout',
+        redirectTo: ''
+    },
 ];
 
 const Header = () => {
@@ -161,7 +161,7 @@ const Header = () => {
                             className="brand-img"
                         />
                     </Typography>
-                    <IconButton size="large" aria-label="search" color="inherit" sx={{color:'black',display: {xs: 'inline-flex',sm:'none', md: 'none'}}}>
+                    <IconButton size="large" aria-label="search" color="inherit" href="/search" sx={{color:'black',display: {xs: 'inline-flex',sm:'none', md: 'none'}}}>
                         <SearchIcon />
                     </IconButton>
                     <Box sx={{flexGrow: 1,gap: '12px' ,display: {xs: 'none', md: 'flex'}}}>
@@ -179,7 +179,7 @@ const Header = () => {
                     </Box>
 
                     <Box sx={{flexGrow: 0}}>
-                        <IconButton size="large" aria-label="search" color="inherit" sx={{color:'black',mr:'20px',display: {xs: 'none',sm:'inline-flex', md: 'inline-flex'} }}>
+                        <IconButton size="large" aria-label="search" href="/search" color="inherit" sx={{color:'black',mr:'20px',display: {xs: 'none',sm:'inline-flex', md: 'inline-flex'} }}>
                             <SearchIcon />
                         </IconButton>
                         <Tooltip title="Open settings">

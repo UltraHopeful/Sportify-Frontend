@@ -132,21 +132,8 @@ const EventDetails = () => {
                         <Stack sx={{ mt: '30px', }} alignItems='center' spacing={3}>
                             <DetailHeader heading='Booking Details' />
                             {/* Full Name */}
-                            <TextField
-                                required
-                                name='fullName'
-                                label="Full Name"
-                                defaultValue='John Doe'
-                                disabled
-                            />
-                            <TextField
-                                required
-                                name='age'
-                                label="Age"
-                                type='number'
-                                value={25}
-                                disabled
-                            />
+                            <DetailRow columnName='Full Name' columnData='John Doe'/>
+                            <DetailRow columnName='Age' columnData='25'/>
                         </Stack>
                     </Card>
                 </Grid>

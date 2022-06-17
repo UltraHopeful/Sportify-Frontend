@@ -28,7 +28,7 @@ const YourBlogs = (props) => {
                          {/* <Link sx={{color:"white"}} to={
                                  {pathname:'/blogs'}
                               }> */}
-                              Back to All Blogs
+                              All Blogs
                              {/* </Link> */}
                         </Button>
                             </Grid>
@@ -48,7 +48,7 @@ const YourBlogs = (props) => {
             <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
             {data.map((display, index) => (
                 <Grid item xs={12} sm={4} md={4} key={index}>
-                    <Card sx={{ maxWidth: 345, marginY: "5%", marginLeft: "15%" }}>
+                    <Card sx={{ maxWidth: 345, marginY: "5%", marginLeft: "15%" ,marginRight:"10%",}}>
                         <CardActionArea onClick={() => {
                                 navigate("/blogpost/"+display.id);
                             }}>
