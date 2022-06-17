@@ -3,7 +3,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 
 import CheckoutForm from "./checkout";
-// import './membershipPlan.css'
+import { Container, Paper } from "@mui/material";
 
 const stripePromise = loadStripe("pk_test_51LAz4KC9WWOmeUQqQnjG12zdy2nfQtoTOTtTqfKI2n29aZzvrXfa5JSLkHvlzQ1M4M5PHiWA31eyTVog8hgllFRv00CUHckRs6");
 
@@ -15,7 +15,7 @@ export default function MembershipPlan() {
 
     headers.append('Content-Type', 'application/json');
     headers.append('Accept', 'application/json');
-    headers.append('Origin','http://localhost:3000');
+    headers.append('Origin', 'http://localhost:3000');
 
     fetch("http://localhost:8080/create-payment-intent", {
       method: "POST",
@@ -35,12 +35,16 @@ export default function MembershipPlan() {
   };
 
   return (
-    <div className="membershipPlan">
-      {clientSecret && (
-        <Elements options={options} stripe={stripePromise}>
-          <CheckoutForm />
-        </Elements>
-      )}
-    </div>
+    <Container component="main" maxWidth={"md"} sx={{ mb: 8 }}>
+      <Paper variant="outlined" sx={{ p: { xs: 2, md: 3 }, my: { xs: 3, md: 6 }, display: 'flex', justifyContent: 'center', alignContent: 'center' }}>
+        <div>
+          {clientSecret && (
+            <Elements options={options} stripe={stripePromise}>
+              <CheckoutForm />
+            </Elements>
+          )}
+        </div>
+      </Paper>
+    </Container>
   );
 }

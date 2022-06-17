@@ -23,6 +23,7 @@ import YourBlogs from './pages/Blogging/YourBlogs/YourBlogs';
 import Facilities from './pages/Facilities';
 import FacilityDetails from './pages/FacilityDetails';
 import Blogs from './pages/Blogging/Blogs/Blogs';
+import AfterPayment from './pages/Payment/afterPayment';
 import EventsList from './pages/Events/index';
 import EventDetails from './pages/EventDetails';
 
@@ -49,6 +50,7 @@ root.render(
           <Route path="events/:eventId" element={<EventDetails />} />
           <Route path="rewards" element={<Home />} />
           <Route path="payment" element={<MembershipPlan />} />
+          <Route path="afterpayment" element={<AfterPayment/>} />
           <Route path="blogs" element={<Blogs />} />
           <Route path="createblog" element={<CreateBlog />} />
           <Route path="editblogs/:id" element={<EditBlog />} />

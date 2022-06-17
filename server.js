@@ -8,17 +8,17 @@ const cors = require('cors');
 
 // Serve only the static files form the dist 
 // directory
-const corsOptions ={
+const corsOptions = {
 
     allowedHeaders: ["Origin", "Content-Type", "Accept", "Authorization"],
-  
+
     origin: "*",
-  
+
     methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE",
-  
+
     preflightContinue: false,
-  
-  };
+
+};
 app.use(cors(corsOptions));
 app.use(express.static(__dirname + '/build'));
 app.get('/*',
@@ -33,15 +33,13 @@ const calculateOrderAmount = (items) => {
 };
 
 app.post("/create-payment-intent", async (req, res) => {
-    const items  = req.body;
+    const items = req.body;
 
     // Create a PaymentIntent with the order amount and currency
     const paymentIntent = await stripe.paymentIntents.create({
         amount: calculateOrderAmount(items),
         currency: "cad",
-        automatic_payment_methods: {
-            enabled: true,
-        },
+        payment_method_types: ["card", "afterpay_clearpay"]
     });
 
     res.send({
