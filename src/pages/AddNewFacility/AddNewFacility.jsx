@@ -11,9 +11,9 @@ const AddNewFacility = () => {
     const [image, setImage] = useState(null);
     const [imageUrl, setImageUrl] = useState(null);
     const [facilityData, setFacilityData] = useState({
-        facilityName: null,
-        location: null,
-        description: null,
+        facilityName: '',
+        location: '',
+        description: '',
         category: 'Gym'
     });
     const [backDialogOpen, setBackDialogOpen] = useState(false);
