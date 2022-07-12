@@ -1,20 +1,37 @@
-import { Checkbox, Container, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, Snackbar, Stack } from "@mui/material";
-import { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { Checkbox, Container, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, Snackbar, Stack, Button } from "@mui/material";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import FacilityItem from "../../components/FacilityItem";
-import { clubFacilities } from "../../data/FacilitiesData";
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import MuiAlert from '@mui/material/Alert';
+import axios from "axios";
+import './Facilities.css';
+import AddIcon from '@mui/icons-material/Add';
+import { primaryColor, whiteThemeColor } from "../../Theme/colors";
+import Loader from "../../components/Loader";
 
 export default function Facilities() {
+
+    const navigate = useNavigate();
     const [categoryFilters, setCategoryFilters] = useState({
         gym: false,
         badminton: false,
         pool: false,
         basketBall: false
     });
+    const [isLoading, setIsLoading] = useState(true);
+    useEffect(() => {
+        axios.get("http://localhost:5000/facility/all")
+            .then(response => response.data)
+            .then(content => {
+                setIsLoading(false);
+                setOriginalList(content.data);
+                setDisplayList(content.data);
+            });
+    }, []);
     const { state } = useLocation();
+    const [snackbarMsg] = useState(state?.snackbarMsg);
     const [snackbarOpen, setSnackbarOpen] = useState({ open: (!!state?.snackbar), vertical: 'top', horizontal: 'right' });
     const { open, vertical, horizontal } = snackbarOpen;
 
@@ -23,6 +40,7 @@ export default function Facilities() {
             return;
         }
         setSnackbarOpen({ ...snackbarOpen, open: false });
+        navigate(".", {replace: true});
     }
 
     const snackbarCloseAction = (<IconButton
@@ -34,14 +52,13 @@ export default function Facilities() {
         <CloseIcon fontSize="small" />
     </IconButton>);
 
-    const originalList = clubFacilities;
-
-    const [displayList, setDisplayList] = useState(clubFacilities);
+    const [displayList, setDisplayList] = useState([]);
+    const [originalList, setOriginalList] = useState([]);
     const { gym, badminton, pool, basketBall } = categoryFilters;
 
 
     const onFiltersChange = (event) => {
-        let updatedFilters = {...categoryFilters, [event.target.name]: event.target.checked};
+        let updatedFilters = { ...categoryFilters, [event.target.name]: event.target.checked };
         setCategoryFilters({
             ...categoryFilters,
             [event.target.name]: event.target.checked
@@ -72,49 +89,59 @@ export default function Facilities() {
         setDisplayList(filteredList);
     }
 
+    const onAddNewFacilityClick = () => {
+        navigate('/facility/add-new');
+    }
+
     return (
         <Container maxWidth='xl'>
-            <div>
-                <FormControl sx={{ display: 'flex', flexDirection: {md: 'row', sm: 'column', xs: 'column'}, m: '10px auto', alignItems: 'center', justifyContent: 'center' }}>
+            <div className="Filters">
+                <FormControl sx={{ display: 'flex', flexDirection: { md: 'row', sm: 'column', xs: 'column' }, m: '10px auto', alignItems: 'center', justifyContent: 'center' }}>
                     <FormLabel sx={{ mt: '8px', mr: '20px' }} component="legend">Categories:</FormLabel>
-                    <Stack directions={{xs: 'row', sm: 'row', md: 'column', lg:'row', xl: 'row'}}>
-                    <FormGroup sx={{ flexDirection: {md: 'row', sm: 'column', xs: 'column'} }}>
-                        <FormControlLabel
-                            control={
-                                <Checkbox checked={gym} onChange={onFiltersChange} name="gym" />
-                            }
-                            label="Gym"
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox checked={badminton} onChange={onFiltersChange} name="badminton" />
-                            }
-                            label="Badminton"
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox checked={pool} onChange={onFiltersChange} name="pool" />
-                            }
-                            label="Swimming Pool"
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox checked={basketBall} onChange={onFiltersChange} name="basketBall" />
-                            }
-                            label="Basket Ball"
-                        />
-                    </FormGroup>
+                    <Stack directions={{ xs: 'row', sm: 'row', md: 'column', lg: 'row', xl: 'row' }}>
+                        <FormGroup sx={{ flexDirection: { md: 'row', sm: 'column', xs: 'column' } }}>
+                            <FormControlLabel
+                                control={
+                                    <Checkbox checked={gym} onChange={onFiltersChange} name="gym" />
+                                }
+                                label="Gym"
+                            />
+                            <FormControlLabel
+                                control={
+                                    <Checkbox checked={badminton} onChange={onFiltersChange} name="badminton" />
+                                }
+                                label="Badminton"
+                            />
+                            <FormControlLabel
+                                control={
+                                    <Checkbox checked={pool} onChange={onFiltersChange} name="pool" />
+                                }
+                                label="Swimming Pool"
+                            />
+                            <FormControlLabel
+                                control={
+                                    <Checkbox checked={basketBall} onChange={onFiltersChange} name="basketBall" />
+                                }
+                                label="Basket Ball"
+                            />
+                        </FormGroup>
                     </Stack>
+                    <Button
+                        sx={{ m: '10px', color: whiteThemeColor, backgroundColor: primaryColor }}
+                        variant="contained"
+                        onClick={onAddNewFacilityClick}>
+                        <AddIcon sx={{ mr: '3px' }} /> Add new Facility
+                    </Button>
                 </FormControl>
-
             </div>
+            {(isLoading) ? (<Loader />) : (
             <Grid container spacing={2}>
                 {displayList.map((facility) => {
                     return (
                         <FacilityItem key={facility.id} facility={facility}></FacilityItem>
                     );
                 })}
-            </Grid>
+            </Grid>)}
             <Snackbar
                 anchorOrigin={{ vertical, horizontal }}
                 open={open}
@@ -123,7 +150,7 @@ export default function Facilities() {
                 action={snackbarCloseAction}
             >
                 <MuiAlert onClose={onCloseSnackbar} severity="success" sx={{ width: '100%' }} elevation={6} variant="filled">
-                    Successfuly booked facility!
+                    {snackbarMsg}
                 </MuiAlert>
             </Snackbar>
         </Container>

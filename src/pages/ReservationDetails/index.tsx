@@ -1,7 +1,11 @@
-import { Box, Button, Card, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, Stack, Typography } from "@mui/material";
-import { useState } from "react";
+import { Box, Button, Card, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, IconButton, Snackbar, Stack, Typography } from "@mui/material";
+import axios from "axios";
+import { SyntheticEvent, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import userReservations from "../../data/Data";
+import Loader from "../../components/Loader";
+import MuiAlert from '@mui/material/Alert';
+import CloseIcon from '@mui/icons-material/Close';
+// import { ReservationInterface } from "../../data/ReservationInterface";
 import './ReservationDetails.css';
 
 const primaryColor = '#326DD9';
@@ -29,14 +33,47 @@ const DetailHeader = (props: any) => {
     );
 }
 
+interface ReservationInterface2 {
+    id: number,
+    reservationFrom: Date,
+    reservationTo: Date,
+    reservedDate: Date,
+    reservationDate: Date,
+    reservedBy: string,
+    reservedFor: string,
+    reservationStatus: 'Active' | 'Cancelled',
+    equipmentName: string,
+    equipmentLoc: string,
+    equipmentImg: string,
+    equipmentCategory: string
+}
+
 const ReservationDetails = () => {
     const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
-    
+    const [isLoading, setIsLoading] = useState(true);
+    const [detailNotFound, setDetailsNotFound] = useState(false);
+    const [details, setDetails] = useState<ReservationInterface2 | null>(null);
+
+    const [snackbarOpen, setSnackbarOpen] = useState<{ open: boolean, vertical: 'top' | 'bottom', horizontal: 'left' | 'right' }>({ open: false, vertical: 'top', horizontal: 'right' });
+    const [snackbarMsg, setSnackbarMsg] = useState('');
+    const { open, vertical, horizontal } = snackbarOpen;
+
     let navigate = useNavigate();
     let params = useParams();
-    let resId = (!params.reservationId) ? 1 : params.reservationId;
-    const details = userReservations.filter(res => res.id === (+resId))[0];
+    const resId = (!params.reservationId) ? 1 : params.reservationId;
 
+    useEffect(() => {
+        axios.get('http://localhost:5000/reservation/my-single-reservation/' + resId)
+            .then(res => res.data).then(content => {
+                setDetails(content.data);
+                setIsLoading(false);
+            }).catch((err) => {
+                if (err.response.status === 404) {
+                    setIsLoading(false);
+                    setDetailsNotFound(true);
+                }
+            });
+    }, [resId]);
 
 
     const closeDialog = () => {
@@ -48,101 +85,147 @@ const ReservationDetails = () => {
     }
 
     const cancelConfirmationSnackbar = () => {
-        navigate('/my-reservations', {state: {snackbar: true}});
+        axios.put('http://localhost:5000/reservation/cancel-reservation/' + resId)
+            .then(res => res.data).then(content => {
+                const msg = (!content.message) ? 'Successfuly cancelled your reservation.' : content.message;
+                navigate('/my-reservations', { state: { snackbar: true, snackbarMsg: msg } });
+            }).catch(err => {
+                closeDialog();
+                if (err.response.status === 400 || err.response.status === 404) {
+                    setSnackbarMsg(err.response.data.message);
+                    setSnackbarOpen({ ...snackbarOpen, open: true });
+                }
+            });
     }
 
+    const onCloseSnackbar = (event: SyntheticEvent | Event, reason?: any) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setSnackbarOpen({ ...snackbarOpen, open: false });
+        navigate(".", {replace: true});
+    }
+
+    const snackbarCloseAction = (<IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={onCloseSnackbar}
+    >
+        <CloseIcon fontSize="small" />
+    </IconButton>);
     return (
         <div className="App">
-            <Box sx={{ width: '100%', mt: '20px' }}>
-                <Grid container rowSpacing={2} columnSpacing={2}>
-                    {/* Image Grid */}
-                    <Grid item xs={12} md={4} sm={6}>
-                        <Card sx={{ margin: '20px', width: '90%', height: '90%', justifyContent: 'center' }} elevation={6}>
-                            <img className='Image' src={`../${details.equipmentImg}`} alt="" />
-                        </Card>
-                    </Grid>
-                    {/* Primary Reservation Grid */}
-                    <Grid item xs={12} md={4} sm={6}>
-                        <Card sx={{ margin: '20px', width: '90%', height: '90%' }} elevation={6}>
-                            <Stack sx={{ my: '30px' }} alignItems='center' spacing={2.5} divider={<Divider orientation="horizontal" variant="middle" flexItem />}>
-                                <DetailHeader heading='Reservation Details' />
-                                <DetailRow columnName='Reference ID' columnData={details.id} />
-                                <DetailRow columnName='Reservation Start' columnData={details.reservationFrom} />
-                                <DetailRow columnName='Reservation End' columnData={details.reservationTo} />
-                                <DetailRow columnName='Reservation Date' columnData={details.reservationDate} />
-                                <DetailRow columnName='Reservation By' columnData={details.reservedBy} />
-                                <DetailRow columnName='Reservation For' columnData={details.reservedFor} />
-                            </Stack>
-                        </Card>
-                    </Grid>
-                    <Grid item xs={12} md={4} sm={6}>
-                        <Card sx={{ margin: '20px', width: '90%', height: '90%' }} elevation={6}>
-                            <Stack sx={{ my: '30px' }} alignItems='center' spacing={3} divider={<Divider orientation="horizontal" variant="middle" flexItem />}>
-                                <DetailHeader heading='Property Details' />
-                                <DetailRow columnName="Property Name" columnData={details.equipmentName} />
-                                <DetailRow columnName="Property Location" columnData={details.equipmentLoc} />
-                            </Stack>
-                        </Card>
-                    </Grid>
-                    <Grid item xs={12} md={12} sm={6} sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                    }}>
-                        <Button sx={{
-                            color: '#000000',
-                            backgroundColor: '#ffffff',
-                            ':hover': {
-                                backgroundColor: '#000000',
-                                color: '#ffffff'
-                            },
-                            mr: '10px',
-                            height: '36.5px'
-                        }}
-                            variant='contained'
-                            onClick={() => {
-                                navigate("/my-reservations");
-                            }}
+            {(isLoading) ? (<Loader />) : (
+                (detailNotFound || details == null) ? (<h1>Reservation details not found!</h1>) : (
+                    <>
+                        <Box sx={{ width: '100%', mt: '20px' }}>
+                            <Grid container rowSpacing={2} columnSpacing={2}>
+                                {/* Image Grid */}
+                                <Grid item xs={12} md={4} sm={6}>
+                                    <Card sx={{ margin: '20px', width: '90%', height: '90%', justifyContent: 'center' }} elevation={6}>
+                                        <img className='Image' src={`${details.equipmentImg}`} alt="" />
+                                    </Card>
+                                </Grid>
+                                {/* Primary Reservation Grid */}
+                                <Grid item xs={12} md={4} sm={6}>
+                                    <Card sx={{ margin: '20px', width: '90%', height: '90%' }} elevation={6}>
+                                        <Stack sx={{ my: '30px' }} alignItems='center' spacing={2.5} divider={<Divider orientation="horizontal" variant="middle" flexItem />}>
+                                            <DetailHeader heading='Reservation Details' />
+                                            <DetailRow columnName='Reference ID' columnData={details.id} />
+                                            <DetailRow columnName='Reservation Start' columnData={new Date(details.reservationFrom).toLocaleString()} />
+                                            <DetailRow columnName='Reservation End' columnData={new Date(details.reservationTo).toLocaleString()} />
+                                            <DetailRow columnName='Reservation Date' columnData={new Date(details.reservationDate).toLocaleDateString()} />
+                                            <DetailRow columnName='Reservation For' columnData={details.reservedFor} />
+                                            <DetailRow columnName='Reservation Status' columnData={details.reservationStatus} />
+                                        </Stack>
+                                    </Card>
+                                </Grid>
+                                <Grid item xs={12} md={4} sm={6}>
+                                    <Card sx={{ margin: '20px', width: '90%', height: '90%' }} elevation={6}>
+                                        <Stack sx={{ my: '30px' }} alignItems='center' spacing={3} divider={<Divider orientation="horizontal" variant="middle" flexItem />}>
+                                            <DetailHeader heading='Property Details' />
+                                            <DetailRow columnName="Property Name" columnData={details.equipmentName} />
+                                            <DetailRow columnName="Property Location" columnData={details.equipmentLoc} />
+                                            <DetailRow columnName="Category" columnData={details.equipmentCategory} />
+                                        </Stack>
+                                    </Card>
+                                </Grid>
+                                <Grid item xs={12} md={12} sm={6} sx={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                }}>
+                                    <Button sx={{
+                                        color: '#000000',
+                                        backgroundColor: '#ffffff',
+                                        ':hover': {
+                                            backgroundColor: '#000000',
+                                            color: '#ffffff'
+                                        },
+                                        mr: '10px',
+                                        height: '36.5px'
+                                    }}
+                                        variant='contained'
+                                        onClick={() => {
+                                            navigate("/my-reservations");
+                                        }}
+                                    >
+                                        Back
+                                    </Button>
+                                    {(details.reservationStatus === 'Cancelled') ? (<></>) : (
+                                        <Button sx={{
+                                            ml: '10px',
+                                            backgroundColor: '#d9534f',
+                                            color: '#ffffff',
+                                            borderColor: '#d43f3a',
+                                            ':hover': {
+                                                backgroundColor: '#d43f3a'
+                                            },
+                                            height: '36.5px'
+                                        }}
+                                            onClick={onCancelReservation}
+                                            disabled={new Date(details.reservationFrom) < new Date()}
+                                        >
+                                            Cancel Reservation
+                                        </Button>)}
+                                </Grid>
+                            </Grid>
+                        </Box>
+                        <Dialog
+                            open={cancelDialogOpen}
+                            onClose={closeDialog}
+                            aria-labelledby="alert-dialog-title"
+                            aria-describedby="alert-dialog-description"
                         >
-                            Back
-                        </Button>
-                        <Button sx={{
-                            ml: '10px',
-                            backgroundColor: '#d9534f',
-                            color: '#ffffff',
-                            borderColor: '#d43f3a',
-                            ':hover': {
-                                backgroundColor: '#d43f3a'
-                            },
-                            height: '36.5px'
-                        }}
-                            onClick={onCancelReservation}
+                            <DialogTitle id="alert-dialog-title">
+                                {"Cancel Confirmation"}
+                            </DialogTitle>
+                            <DialogContent>
+                                <DialogContentText id="alert-dialog-description">
+                                    Are you sure, want to cancel the reservation?
+                                </DialogContentText>
+                            </DialogContent>
+                            <DialogActions>
+                                <Button onClick={cancelConfirmationSnackbar}>Yes</Button>
+                                <Button variant="contained" onClick={closeDialog} autoFocus>
+                                    No
+                                </Button>
+                            </DialogActions>
+                        </Dialog>
+                        {/* Snack bar for error messages */}
+                        <Snackbar
+                            anchorOrigin={{ vertical, horizontal }}
+                            open={open}
+                            autoHideDuration={3000}
+                            onClose={onCloseSnackbar}
+                            action={snackbarCloseAction}
                         >
-                            Cancel Reservation
-                        </Button>
-                    </Grid>
-                </Grid>
-            </Box>
-            <Dialog
-                open={cancelDialogOpen}
-                onClose={closeDialog}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle id="alert-dialog-title">
-                    {"Cancel Confirmation"}
-                </DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        Are you sure, want to cancel the reservation?
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={cancelConfirmationSnackbar}>Yes</Button>
-                    <Button variant="contained" onClick={closeDialog} autoFocus>
-                        No
-                    </Button>
-                </DialogActions>
-            </Dialog>
+                            <MuiAlert onClose={onCloseSnackbar} severity="error" sx={{ width: '100%' }} elevation={6} variant="filled">
+                                {snackbarMsg}
+                            </MuiAlert>
+                        </Snackbar>
+                    </>
+                ))}
         </div>
     );
 }
