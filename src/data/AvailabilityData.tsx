@@ -1,4 +1,5 @@
 import { AvailabilitySlots } from "./AvailaibilitySlots";
+import { Timeslot } from "./BookedSlot";
 
 const availabilitySlots: AvailabilitySlots[] = [
     {
@@ -99,7 +100,7 @@ const availabilitySlots: AvailabilitySlots[] = [
     },
     {
         id: 17,
-        displayValue: '3:00 - 3:30 AM',
+        displayValue: '3:00 - 3:30 PM',
         from: new Date(2022, 6, 16, 15, 0, 0),
         to: new Date(2022, 6, 16, 15, 30, 0),
     }
@@ -129,4 +130,16 @@ const getToDate = (slotId: Number, date: Date|undefined|null) => {
     return updatedDate;
 }
 
-export {availabilitySlots, getFromDate, getToDate};
+const getRemainingAvailableSlots = (bookedSlots: Timeslot[]): AvailabilitySlots[] => {
+    if (!bookedSlots?.length) {
+        return availabilitySlots;
+    }
+    return availabilitySlots.filter(availabilitySlot => {
+        return (!bookedSlots.find(bookedSlot => {
+            return (new Date(bookedSlot.from).toTimeString() === new Date(availabilitySlot.from).toTimeString()) && 
+                (new Date(bookedSlot.to).toTimeString() === new Date(availabilitySlot.to).toTimeString());
+        }))
+    });
+}
+
+export {availabilitySlots, getFromDate, getToDate, getRemainingAvailableSlots};

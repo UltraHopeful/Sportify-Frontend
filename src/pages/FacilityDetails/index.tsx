@@ -8,8 +8,9 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import './FacilityDetails.css';
 import FormControl from '@mui/material/FormControl';
 import axios from "axios";
-import { availabilitySlots, getFromDate, getToDate } from "../../data/AvailabilityData";
+import { getFromDate, getRemainingAvailableSlots, getToDate } from "../../data/AvailabilityData";
 import Loader from "../../components/Loader";
+import { AvailabilitySlots } from "../../data/AvailaibilitySlots";
 
 const DetailDescription = (props: any) => {
     return (
@@ -45,6 +46,8 @@ const FacilityDetails = () => {
     const navigate = useNavigate();
     const [facilityNotFound, setFacilityNotFound] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    const [timeslotsLoading, setTimeslotsLoading] = useState(false);
+    const [availableSlots, setAvailableSlots] = useState<AvailabilitySlots[]>([]);
     const [reservationDetails, setReservationDetails] = useState<ReservationForm>({
         date: null,
         timeRange: '',
@@ -160,13 +163,15 @@ const FacilityDetails = () => {
         });
     }, [resourceId]);
 
-    const availabilityMenuItems = (availabilitySlots.map((availabilitySlot) => {
+    const availabilityMenuItems = (availableSlots?.map((availabilitySlot) => {
         return (
             <MenuItem key={availabilitySlot.id} value={availabilitySlot.id}>{availabilitySlot.displayValue}</MenuItem>
         );
     }));
 
-    const onDateChange = (updatedDate: Date | null) => {
+    const loaderMenuItem = (<MenuItem disabled><div className="TimeslotLoader"><Loader/></div></MenuItem>);
+
+    const onDateChange = async (updatedDate: Date | null) => {
         const reservationDetailsTemp = {
             ...reservationDetails,
             date: updatedDate,
@@ -176,6 +181,16 @@ const FacilityDetails = () => {
         };
         setReservationDetails(reservationDetailsTemp);
         validateForm(reservationDetailsTemp);
+        setTimeslotsLoading(true);
+        axios({
+            method: 'get',
+            url: `http://localhost:5000/facility/booked-slots?facilityId=${resourceId}&date=${updatedDate?.getTime()}`
+        }).then (res => {
+            setTimeslotsLoading(false);
+            setAvailableSlots(getRemainingAvailableSlots(res.data.data));
+        }).catch(err => {
+            console.log(err);
+        })
     }
 
     const onTimeslotChange = (event: SelectChangeEvent) => {
@@ -296,7 +311,7 @@ const FacilityDetails = () => {
                                     label='Choose Timeslot'
                                     disabled={reservationDetails.date == null}
                                 >
-                                    {availabilityMenuItems}
+                                    {(timeslotsLoading) ? loaderMenuItem : availabilityMenuItems}
                                 </Select>
                                 {reservationFormErrors.timeRange && <p className="Error">Please choose a timeslot!</p>}
                             </FormControl>
@@ -351,11 +366,6 @@ const FacilityDetails = () => {
                         display: 'flex',
                         justifyContent: 'center',
                     }}>
-                    {/* <Card sx={{ margin: '20px', width: '90%', height: '90%' }} elevation={6}>
-                        <Stack sx={{ mt: '30px', }} alignItems='center' spacing={3}>
-                            
-                        </Stack>
-                    </Card> */}
                     <Button sx={{
                             color: '#000000',
                             backgroundColor: '#ffffff',

@@ -16,7 +16,33 @@ const AddNewFacility = () => {
         description: '',
         category: 'Gym'
     });
+    const [facilityFormErrors, setFacilityFormErrors] = useState({
+        facilityName: {
+            required: false,
+            maxLen: false,
+        },
+        location: {
+            required: false,
+            maxLen: false,
+        },
+        description: {
+            required: false,
+            maxLen: false,
+        },
+        category: {
+            required: false,
+        },
+        image: {
+            required: false,
+        },
+    });
     const [backDialogOpen, setBackDialogOpen] = useState(false);
+
+    const maxLengths = {
+        facilityName: 50,
+        location: 50,
+        description: 5000
+    }
 
     const onImageUpload = (event) => {
         const img = event.target.files[0];
@@ -25,12 +51,24 @@ const AddNewFacility = () => {
         reader.onload = () => {
             setImage(reader.result);
             setImageUrl(URL.createObjectURL(img));
+            setFacilityFormErrors({
+                ...facilityFormErrors,
+                image: {
+                    required: false
+                }
+            });
         }
     }
 
     const onDeleteImage = () => {
         setImageUrl(null);
         setImage(null);
+        setFacilityFormErrors({
+            ...facilityFormErrors,
+            image: {
+                required: true
+            }
+        });
     }
 
     const onFacilityDataChange = (event) => {
@@ -39,9 +77,62 @@ const AddNewFacility = () => {
             ...facilityData,
             [target.name]: target.value,
         });
+        validateFormChange(target.name, target.value);
+    }
+
+    const validateFormChange = (propName, propValue) => {
+        if (!propValue || propValue==='' || propValue.trim() === '') {
+            setFacilityFormErrors({
+                ...facilityFormErrors,
+                [propName]: {
+                    required: true,
+                }
+            });
+            return true;
+        }
+        else if (maxLengths[propName] && maxLengths[propName] < propValue.length) {
+            setFacilityFormErrors({
+                ...facilityFormErrors,
+                [propName]: {
+                    required: false,
+                    maxLen: true,
+                }
+            });
+            return true;
+        }
+        setFacilityFormErrors({
+            ...facilityFormErrors,
+            [propName]: {
+                required: false,
+                maxLen: false,
+            }
+        });
+        return false;
+    }
+
+    const validateFormData = () => {
+        for (let prop of ['facilityName', 'location', 'description']) {
+            if (validateFormChange(prop, facilityData[prop])) {
+                return false;
+            }
+        }
+        if (image === null) {
+            setFacilityFormErrors({
+                ...facilityFormErrors,
+                image: {
+                    required: true
+                }
+            });
+            return false;
+        }
+        return true;
     }
 
     const onPostNewFacility = (event) => {
+        event.preventDefault();
+        if (!validateFormData()) {
+            return ;
+        }
         const reqBody = {
             name: facilityData.facilityName,
             location: facilityData.location,
@@ -54,12 +145,12 @@ const AddNewFacility = () => {
             url: 'http://localhost:5000/facility',
             data: reqBody
         }).then(res => {
-            navigate('/facility', {state: {snackbar: true, snackbarMsg: 'Successfuly added the facility'}})
+            navigate('/facility', { state: { snackbar: true, snackbarMsg: 'Successfuly added the facility' } })
             console.log(res);
         }).catch(err => {
             console.log(err);
         })
-        event.preventDefault();
+        
     }
 
     const onBackClick = () => {
@@ -83,30 +174,63 @@ const AddNewFacility = () => {
                     <Grid container spacing={3} sx={{ mt: '20px' }}>
                         <Grid item xs={12}>
                             <TextField
+                                sx ={{
+                                    '.MuiFormHelperText-root': {
+                                        color: 'red'
+                                    }
+                                }}
                                 fullWidth
                                 label={"Facility Name"}
                                 name="facilityName"
                                 value={facilityData?.facilityName}
                                 onChange={onFacilityDataChange}
+                                helperText={
+                                    facilityFormErrors.facilityName.required ?
+                                        'Please enter Facility Name' :
+                                        (facilityFormErrors.facilityName.maxLen ?
+                                            "Name can't exceed 50 characters" :
+                                            '')}
                             />
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
+                                sx={{
+                                    '.MuiFormHelperText-root': {
+                                        color: 'red'
+                                    }
+                                }}
                                 fullWidth
                                 label={"Facility Location"}
                                 name="location"
                                 value={facilityData?.location}
                                 onChange={onFacilityDataChange}
+                                helperText={
+                                    facilityFormErrors.location.required ?
+                                        'Please enter Facility Location' :
+                                        (facilityFormErrors.location.maxLen ?
+                                            "Location can't exceed 50 characters" :
+                                            '')}
                             />
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
+                                sx={{
+                                    '.MuiFormHelperText-root': {
+                                        color: 'red'
+                                    }
+                                }}
                                 fullWidth
                                 label={"Description"}
                                 multiline
                                 name="description"
                                 value={facilityData.description}
                                 onChange={onFacilityDataChange}
+                                helperText={
+                                    facilityFormErrors.description.required ?
+                                        'Please enter Facility Description' :
+                                        (facilityFormErrors.description.maxLen ?
+                                            "Description can't exceed 5000 characters" :
+                                            '')}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -151,6 +275,7 @@ const AddNewFacility = () => {
                                     onChange={onImageUpload}
                                 />
                                 <PhotoCamera />
+                                {facilityFormErrors.image.required && <p className="ErrorText">Please upload a image</p>}
                             </label>
                         </Grid>
                         <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
