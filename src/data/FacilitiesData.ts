@@ -1,5 +1,3 @@
-// import Facilities from "../pages/Facilities";
-import { AvailabilitySlots } from "./AvailaibilitySlots";
 import { FacilitiesInterface } from "./FacilitiesInterfac"
 
 let clubFacilities: FacilitiesInterface[] = [
@@ -84,37 +82,4 @@ let clubFacilities: FacilitiesInterface[] = [
     },
 ]
 
-let availabilitySlots: AvailabilitySlots[] = [
-    {
-        id: 1,
-        displayValue: '6:00 - 6:30 AM',
-        from: new Date(2022, 6, 16, 6, 0, 0),
-        to: new Date(2022, 6, 16, 6, 30, 0),
-    },
-    {
-        id: 2,
-        displayValue: '6:30 - 7:00 AM',
-        from: new Date(2022, 6, 16, 6, 30, 0),
-        to: new Date(2022, 6, 16, 7, 0, 0),
-    },
-    {
-        id: 3,
-        displayValue: '7:00 - 7:30 AM',
-        from: new Date(2022, 6, 16, 7, 0, 0),
-        to: new Date(2022, 6, 16, 7, 30, 0),
-    },
-    {
-        id: 4,
-        displayValue: '7:30 - 8:00 AM',
-        from: new Date(2022, 6, 16, 7, 30, 0),
-        to: new Date(2022, 6, 16, 8, 0, 0),
-    },
-    {
-        id: 5,
-        displayValue: '8:00 - 8:30 AM',
-        from: new Date(2022, 6, 16, 8, 0, 0),
-        to: new Date(2022, 6, 16, 8, 30, 0),
-    }
-]
-
-export {clubFacilities, availabilitySlots};
+export {clubFacilities};

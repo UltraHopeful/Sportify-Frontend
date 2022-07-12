@@ -107,7 +107,7 @@ const ReservationItem = (props: any) => {
                             mt: '2px',
                             fontSize: 13
                         }} component='span'>
-                            {props.reservationDetails.reservationFrom}
+                            {new Date(props.reservationDetails.reservationFrom).toLocaleString()}
                         </Typography>
                     </Typography>
                     <Typography sx={{
@@ -127,7 +127,7 @@ const ReservationItem = (props: any) => {
                             fontSize: 13,
                             mt: '2px'
                         }} component='span'>
-                            {props.reservationDetails.reservationTo}
+                            {new Date(props.reservationDetails.reservationTo).toLocaleString()}
                         </Typography>
                     </Typography>
                 </CardContent>

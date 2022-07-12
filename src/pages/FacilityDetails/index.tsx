@@ -1,14 +1,16 @@
 import { Box, Button, Card, Checkbox, Divider, FormControlLabel, Grid, InputLabel, MenuItem, Select, SelectChangeEvent, Stack, TextField, Typography } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { availabilitySlots, clubFacilities } from "../../data/FacilitiesData";
 import { FacilitiesInterface } from "../../data/FacilitiesInterfac";
-import { DetailHeader, DetailRow, ReservationDetails } from "../ReservationDetails";
+import { DetailHeader, DetailRow } from "../ReservationDetails";
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import './FacilityDetails.css';
 import FormControl from '@mui/material/FormControl';
-// import { AvailabilitySlots } from "../../data/AvailaibilitySlots";
+import axios from "axios";
+import { getFromDate, getRemainingAvailableSlots, getToDate } from "../../data/AvailabilityData";
+import Loader from "../../components/Loader";
+import { AvailabilitySlots } from "../../data/AvailaibilitySlots";
 
 const DetailDescription = (props: any) => {
     return (
@@ -22,6 +24,8 @@ const DetailDescription = (props: any) => {
 
 interface ReservationForm {
     date?: Date | null,
+    from?: Date | null,
+    to?: Date | null,
     timeRange: string,
     selfBooking: boolean,
     fullName: string,
@@ -40,6 +44,10 @@ interface ReservationFormError {
 
 const FacilityDetails = () => {
     const navigate = useNavigate();
+    const [facilityNotFound, setFacilityNotFound] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+    const [timeslotsLoading, setTimeslotsLoading] = useState(false);
+    const [availableSlots, setAvailableSlots] = useState<AvailabilitySlots[]>([]);
     const [reservationDetails, setReservationDetails] = useState<ReservationForm>({
         date: null,
         timeRange: '',
@@ -57,6 +65,8 @@ const FacilityDetails = () => {
             rangeError: false
         }
     });
+
+    const [resource, setResource] = useState<FacilitiesInterface|null>(null);
 
     const onReservationDetailsChange = (event: any) => {
         const reservationDetailsTemp = {
@@ -137,29 +147,60 @@ const FacilityDetails = () => {
     maxDate.setDate(maxDate.getDate() + 7);
     let params = useParams();
     let resourceId: string = (!params.resourceId) ? "1" : params.resourceId;
-    const resource: FacilitiesInterface = clubFacilities.filter((facility) => facility.id === resourceId)[0];
+    useEffect( () =>{
+        axios.get("http://localhost:5000/facility/" + resourceId)
+        .then(response => response.data)
+        .then(content => {
+            setResource(content.data);
+            setIsLoading(false);
+            // setDisplayList(content.data);
+        })
+        .catch(function(err){
+            if (err.response.status === 404) {
+                setFacilityNotFound(true);
+                setIsLoading(false);
+            }
+        });
+    }, [resourceId]);
 
-    const availabilityMenuItems = (availabilitySlots.map((availabilitySlot) => {
+    const availabilityMenuItems = (availableSlots?.map((availabilitySlot) => {
         return (
             <MenuItem key={availabilitySlot.id} value={availabilitySlot.id}>{availabilitySlot.displayValue}</MenuItem>
         );
     }));
 
-    const onDateChange = (updatedDate: Date | null) => {
+    const loaderMenuItem = (<MenuItem disabled><div className="TimeslotLoader"><Loader/></div></MenuItem>);
+
+    const onDateChange = async (updatedDate: Date | null) => {
         const reservationDetailsTemp = {
             ...reservationDetails,
             date: updatedDate,
-            timeRange: ''
+            timeRange: '',
+            from: null,
+            to: null
         };
         setReservationDetails(reservationDetailsTemp);
         validateForm(reservationDetailsTemp);
+        setTimeslotsLoading(true);
+        axios({
+            method: 'get',
+            url: `http://localhost:5000/facility/booked-slots?facilityId=${resourceId}&date=${updatedDate?.getTime()}`
+        }).then (res => {
+            setTimeslotsLoading(false);
+            setAvailableSlots(getRemainingAvailableSlots(res.data.data));
+        }).catch(err => {
+            console.log(err);
+        })
     }
 
     const onTimeslotChange = (event: SelectChangeEvent) => {
         const reservationDetailsTemp = {
             ...reservationDetails,
+            from: getFromDate(+event.target.value, reservationDetails.date),
+            to: getToDate(+event.target.value, reservationDetails.date),
             timeRange: event.target.value,
         };
+        console.log('state: ', reservationDetailsTemp);
         setReservationDetails(reservationDetailsTemp);
         validateForm(reservationDetailsTemp);
     }
@@ -180,21 +221,43 @@ const FacilityDetails = () => {
         validateForm(reservationDetailsTemp);
     }
 
+    const getReservationApiReqBody = (filledDetails: ReservationForm) => {
+        const requestBody = {
+            from: filledDetails.from,
+            to: filledDetails.to,
+            facility_id: resourceId,
+            booked_date: new Date(),
+            reserved_by: "672dee56-6895-4b20-8daa-6b08461aec95",
+            reserved_for: filledDetails.fullName
+        }
+        return requestBody;
+    }
+
     const onSubmitBooking = () => {
         if(!validateForm(reservationDetails)) {
             return;
         }
         else {
-            navigate('/facility', {state: {snackbar: true}})
+            const reqBody = getReservationApiReqBody(reservationDetails);
+            axios({
+                method: 'post',
+                url: 'http://localhost:5000/reservation',
+                data: reqBody
+            }).then(() => {
+                navigate('/facility', {state: {snackbar: true, snackbarMsg: 'Successfuly booked facility!'}})
+            }).catch((err) => {
+                console.log('Exception occured', err);
+            });
         }
     }
 
     return (
+        (isLoading) ? (<Loader/>) : ((facilityNotFound || !resource) ? (<h1>Facility Not Found!</h1>): (
         <Box sx={{ width: '100%', mt: '20px' }}>
             <Grid container rowSpacing={2} columnSpacing={2}>
                 <Grid item xs={12} md={4} sm={6}>
                     <Card sx={{ margin: '20px', width: '90%', height: '90%', justifyContent: 'center' }} elevation={6}>
-                        <img className='Image' src={`../${resource.image}`} alt="" />
+                        <img className='Image' src={`${resource.image}`} alt="" />
                     </Card>
                 </Grid>
                 <Grid item xs={12} md={4} sm={6}>
@@ -248,7 +311,7 @@ const FacilityDetails = () => {
                                     label='Choose Timeslot'
                                     disabled={reservationDetails.date == null}
                                 >
-                                    {availabilityMenuItems}
+                                    {(timeslotsLoading) ? loaderMenuItem : availabilityMenuItems}
                                 </Select>
                                 {reservationFormErrors.timeRange && <p className="Error">Please choose a timeslot!</p>}
                             </FormControl>
@@ -303,11 +366,6 @@ const FacilityDetails = () => {
                         display: 'flex',
                         justifyContent: 'center',
                     }}>
-                    {/* <Card sx={{ margin: '20px', width: '90%', height: '90%' }} elevation={6}>
-                        <Stack sx={{ mt: '30px', }} alignItems='center' spacing={3}>
-                            
-                        </Stack>
-                    </Card> */}
                     <Button sx={{
                             color: '#000000',
                             backgroundColor: '#ffffff',
@@ -341,7 +399,7 @@ const FacilityDetails = () => {
                         </Button>
                 </Grid>
             </Grid>
-        </Box>
+        </Box>))
     );
 }
 

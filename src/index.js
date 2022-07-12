@@ -34,6 +34,7 @@ import { ToastContainer } from "material-react-toastify";
 import Profile from './pages/Profile/index';
 import 'material-react-toastify/dist/ReactToastify.css';
 import AppSearch from './pages/Search/search';
+import AddNewFacility from './pages/AddNewFacility';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -62,6 +63,7 @@ root.render(
           <Route path="store" element={<Products />} />
           <Route path='my-reservations' element={<ReservationList reservations={userReservations} />} />
           <Route path="facility" element={<Facilities />} />
+          <Route path="facility/add-new" element={<AddNewFacility/>}/>
           <Route path='facility/:resourceId' element={<FacilityDetails />} />
           <Route path='my-reservations/:reservationId' element={<ReservationDetails />} />
           <Route path="store" element={<Home />} />
