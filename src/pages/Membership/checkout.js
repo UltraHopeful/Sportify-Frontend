@@ -18,6 +18,9 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import axios from 'axios'
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import Stack from '@mui/material/Stack';
 
 
 const steps = ['Billing Information', 'Review your order'];
@@ -198,6 +201,66 @@ export default function Checkout() {
     }
     //end of billing
 
+    //billing dates
+    const getNumberOfDays=(start, end) => {
+      
+      const date1 = new Date(start);
+      const date2 = new Date(end);
+
+      console.log("date1");
+      console.log(date1);
+      console.log("date2");
+      console.log(date2);
+
+      const oneDay = 1000 * 60 * 60 * 24;
+      const diffInTime = date2.getTime() - date1.getTime();
+      const diffInDays = Math.round(diffInTime / oneDay)+2;
+      console.log("diffInDays");
+      console.log(diffInDays);
+      return diffInDays;
+    }
+    const calculateCost = (days) => {
+      console.log('days==');
+      console.log(days);
+      return ((product.price/30)*1.15*days).toFixed(2);
+      
+    }
+    
+    const current = new Date();
+    console.log(current);
+    const [startDate, setStartDate] = React.useState(current);
+    console.log(startDate);
+    const [endDate, setEndDate] = React.useState(new Date(current.getFullYear(), current.getMonth() + 1, 0));
+    const [days, setDays] = React.useState(getNumberOfDays(startDate, endDate));
+    const [totalCost, setTotalCost] = React.useState(calculateCost(days));
+    const handleStartDateChange = (val) =>{
+      let diff = getNumberOfDays(val, endDate);
+      if(diff>0){
+        setStartDate(val);
+        setDays(diff);
+        setTotalCost(calculateCost(diff));
+      }
+      else{
+        alert("Start date cannot be after end date.");
+        return false;
+      }
+      
+    }
+    const handleEndDateChange = (val) =>{
+      let diff = getNumberOfDays(startDate, val);
+      if(diff>0){
+        setEndDate(val);
+        setDays(diff);
+        setTotalCost(calculateCost(diff));
+      }
+      else{
+        alert("End date cannot be before start date.");
+        return false;
+      }
+    }
+    
+    //end
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -340,19 +403,39 @@ export default function Checkout() {
                     </React.Fragment>
                   : 
                   <React.Fragment>
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <Stack spacing={2}>
+                      <DesktopDatePicker
+                          label="Start Date"
+                          inputFormat="MM/dd/yyyy"
+                          value={startDate}
+                          onChange={handleStartDateChange}
+                          renderInput={(params) => <TextField {...params} />}
+                        />
+                        <DesktopDatePicker
+                          label="End Date"
+                          inputFormat="MM/dd/yyyy"
+                          value={endDate}
+                          onChange={handleEndDateChange}
+                          renderInput={(params) => <TextField {...params} />}
+                        />
+                    </Stack>
+                    
+                    </LocalizationProvider>
+                    <br/>
                     <Typography variant="h6" gutterBottom>
-                        Order summary
+                        Order Summary
                     </Typography>
                     <List disablePadding>
                         <ListItem key={product.name} maxWidth="sm" >
                             <ListItemText primary={product.name}  maxWidth="sm" secondary={product.desc} />
-                            <Typography variant="body2">${product.price}</Typography>
+                            <Typography variant="body2">${product.price}/mo</Typography>
                         </ListItem>
 
                         <ListItem >
-                        <ListItemText primary="Total" />
+                        <ListItemText primary="Total Amount" />
                         <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-                            ${(product.price*1.15).toFixed(2)}
+                            {totalCost}
                         </Typography>
                         </ListItem>
                     </List>
@@ -365,6 +448,9 @@ export default function Checkout() {
                         <Typography gutterBottom>{address} {city} {state} {country} {zip}</Typography>
                         </Grid>
                     </Grid>
+
+                    
+
                 </React.Fragment>
     }
 
