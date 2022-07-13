@@ -13,7 +13,9 @@ import Typography from '@mui/material/Typography';
 import GlobalStyles from '@mui/material/GlobalStyles';
 import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import "./membership.css";
+import axios from 'axios'
 
 const tiers = [
   {
@@ -62,11 +64,36 @@ const tiers = [
 
 
 function Pricing() {
-
   const navigate = useNavigate();
-  
+  useEffect(() => {
+    axios
+      .get('http://localhost:5000/api/membership/purchase/user/55153a8014829a865bbf700d') //userid
+      .then((res) => {
+        if(res.data.data.length >0) {
+          navigate('/purchased-membership', {state: {'memberships': res.data.data}});
+        }
+      })
+  })
+
   const moveToBilling = (tier) => {
-    navigate('/membership/checkout',{state:{'product': {'name':tier.title, 'desc': tier.description, 'price': tier.price}}});
+    axios({
+      method: 'get',
+      url: 'http://localhost:5000/api/membership/billing-info/55153a8014829a865bbf700d'
+    }).then(result => {
+      console.log(result);
+      var billing_info = {};
+      var billing_error = true;
+      var is_bill_existing = false;
+      if(result.data != "") {
+        billing_info = result.data.data;
+        billing_error = false;
+        is_bill_existing = true;
+      }
+      navigate('/membership/checkout',{state:{'is_bill_existing':is_bill_existing,'billing_error':billing_error,'billing_info' : billing_info, 'product': {'name':tier.title, 'desc': tier.description, 'price': tier.price}}});
+    }).catch(err => {
+        console.log(err);
+    })
+      
   }
 
   return (

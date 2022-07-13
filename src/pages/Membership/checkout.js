@@ -17,6 +17,7 @@ import { useState } from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
+import axios from 'axios'
 
 
 const steps = ['Billing Information', 'Review your order'];
@@ -25,23 +26,45 @@ const steps = ['Billing Information', 'Review your order'];
 const theme = createTheme();
 
 export default function Checkout() {
-    const location = useLocation();
-    const product = location.state.product;
+  const location = useLocation();
+  const product = location.state.product;
   const [activeStep, setActiveStep] = React.useState(0);
   const navigate = useNavigate();
   const handleNext = () => {
-    if (error == false){
-      setActiveStep(activeStep + 1);
-      if(activeStep===1){
-        navigate('/payment');
-      }
-    }
-    else{
+    if (error === true || isEmptyForm() === true){
       alert("Please fill the details to proceed.");
     }
+    else{
+      setActiveStep(activeStep + 1);
+      if(activeStep===1){
+        var is_bill_existing = location.state.is_bill_existing;
+        const reqBody = {
+          first_name: firstName,
+          last_name: lastName,
+          address: address,
+          city: city,
+          zip_code: zip,
+          country: country,
+          state : state
+        };
+        var url = "http://localhost:5000/api/membership/create-billing-info";
+        var method = "post"
+        if (is_bill_existing){
+          url = 'http://localhost:5000/api/membership/update-billing-info/55153a8014829a865bbf700d';
+          method = 'put'
+        }
+        axios({
+          method: method,
+          url: url,
+          data: reqBody
+        }).then(res => {
+          navigate('/payment');
+        }).catch(err => {
+            console.log(err);
+        })
+      }
+    }
   };
-
-    
 
   const handleBack = () => {
     if(activeStep===0){
@@ -52,20 +75,35 @@ export default function Checkout() {
   };
 
   // start of billing
-    const [firstName, setFirstName] = useState();
-    const [lastName, setLastName] = useState();
-    const [address, setAddress] = useState();
-    const [zip, setZip] = useState();
-    const [country, setCountry] = useState();
-    const [city, setCity] = useState();
-    const [state, setState] = useState();
-    const [error, setError] = useState(true);
+  
+    const billing_info = location.state.billing_info;
+    const [firstName, setFirstName] = useState(billing_info.first_name);
+    const [lastName, setLastName] = useState(billing_info.last_name);
+    const [address, setAddress] = useState(billing_info.address);
+    const [zip, setZip] = useState(billing_info.zip_code);
+    const [country, setCountry] = useState(billing_info.country);
+    const [city, setCity] = useState(billing_info.city);
+    const [state, setState] = useState(billing_info.state);
+
+    const [error, setError] = useState(location.state.billing_error);
+    
     const [formErrors, setFormErrors]= useState({firstName: '', lastName:'', address:'', zip:'', city:'',state:'', country:''});
     
     const handleValueChange = (event) =>{
         const name = event.target.name;
         const value = event.target.value;
         validateField(name, value);
+    }
+
+    const isEmptyForm = () => {
+      return (
+        firstName === undefined ||
+        lastName === undefined ||
+        address === undefined ||
+        zip === undefined ||
+        city === undefined ||
+        state === undefined ||
+        country === undefined)
     }
 
     const validateField = (fieldName, value) => {
@@ -94,7 +132,7 @@ export default function Checkout() {
                     updatedFormErrors.lastName = isNameValid ? '' : 'Invalid characters';
                 }
                 break;
-            case 'address1':
+            case 'address':
                 setAddress(value);
                 updatedFormErrors.address = '';
                 if (value === '' || value == null){
@@ -102,7 +140,7 @@ export default function Checkout() {
                 }
                 else{
                     let isNameValid = value.match(/^\d+\s[A-z]+\s[A-z]+/g);
-                    updatedFormErrors.address = isNameValid ? '' : 'Invalid characters';
+                    updatedFormErrors.address = isNameValid ? '' : 'Invalid address';
                 }
                 break;
             case 'zip':
@@ -155,6 +193,8 @@ export default function Checkout() {
               setError(true);
           }
         }
+        console.log(formErrors);
+        console.log(error);
     }
     //end of billing
 
@@ -224,9 +264,9 @@ export default function Checkout() {
                             <Grid item xs={12}>
                             <TextField
                                 required
-                                id="address1"
-                                name="address1"
-                                label="Address line 1"
+                                id="address"
+                                name="address"
+                                label="Address"
                                 fullWidth
                                 autoComplete="shipping address-line1"
                                 variant="standard"
@@ -319,7 +359,7 @@ export default function Checkout() {
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>
                         <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
-                            Shipping
+                            Billing Details
                         </Typography>
                         <Typography gutterBottom>{firstName} {lastName}</Typography>
                         <Typography gutterBottom>{address} {city} {state} {country} {zip}</Typography>
