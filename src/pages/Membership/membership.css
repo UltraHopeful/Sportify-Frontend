@@ -5,3 +5,11 @@
 .widthClass{
     width: 60%;
 }
+
+.divDisplay{
+    display: inline-block;
+}
+
+.rightDisplay{
+    float: right;
+}

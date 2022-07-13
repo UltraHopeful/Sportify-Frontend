@@ -14,6 +14,7 @@ import Pricing from './pages/Membership/pricing';
 import Checkout from './pages/Membership/checkout';
 import { ReservationDetails } from './pages/ReservationDetails';
 import MembershipPlan from "./pages/Payment/membershipPlan";
+import PurchasedMemberships from "./pages/Membership/purchasedMembership";
 import Products from "./pages/Merchandise/products";
 import CreateBlog from './pages/Blogging/CreateBlog/CreateBlog';
 import EditBlog from './pages/Blogging/EditBlog/EditBlog';
@@ -67,6 +68,7 @@ root.render(
           <Route path="store" element={<Home />} />
             <Route path="my-account" element={<Profile/>} />
           <Route path="membership" element={<Pricing />} />
+          <Route path="purchased-membership" element={<PurchasedMemberships />} />
           <Route path="membership/checkout" element={<Checkout />} />
           <Route path="events" element={<EventsList />} />
           <Route path="events/:eventId" element={<EventDetails />} />
