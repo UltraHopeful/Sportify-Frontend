@@ -22,7 +22,7 @@ export default function Facilities() {
     });
     const [isLoading, setIsLoading] = useState(true);
     useEffect(() => {
-        axios.get("http://localhost:5000/facility/all")
+        axios.get("https://sportify-backend-prd.herokuapp.com/facility/all")
             .then(response => response.data)
             .then(content => {
                 setIsLoading(false);

@@ -63,7 +63,7 @@ const ReservationDetails = () => {
     const resId = (!params.reservationId) ? 1 : params.reservationId;
 
     useEffect(() => {
-        axios.get('http://localhost:5000/reservation/my-single-reservation/' + resId)
+        axios.get('https://sportify-backend-prd.herokuapp.com/reservation/my-single-reservation/' + resId)
             .then(res => res.data).then(content => {
                 setDetails(content.data);
                 setIsLoading(false);
@@ -85,7 +85,7 @@ const ReservationDetails = () => {
     }
 
     const cancelConfirmationSnackbar = () => {
-        axios.put('http://localhost:5000/reservation/cancel-reservation/' + resId)
+        axios.put('https://sportify-backend-prd.herokuapp.com/reservation/cancel-reservation/' + resId)
             .then(res => res.data).then(content => {
                 const msg = (!content.message) ? 'Successfuly cancelled your reservation.' : content.message;
                 navigate('/my-reservations', { state: { snackbar: true, snackbarMsg: msg } });
