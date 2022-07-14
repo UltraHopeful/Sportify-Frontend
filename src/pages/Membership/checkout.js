@@ -17,6 +17,10 @@ import { useState } from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
+import axios from 'axios'
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import Stack from '@mui/material/Stack';
 
 
 const steps = ['Billing Information', 'Review your order'];
@@ -25,23 +29,45 @@ const steps = ['Billing Information', 'Review your order'];
 const theme = createTheme();
 
 export default function Checkout() {
-    const location = useLocation();
-    const product = location.state.product;
+  const location = useLocation();
+  const product = location.state.product;
   const [activeStep, setActiveStep] = React.useState(0);
   const navigate = useNavigate();
   const handleNext = () => {
-    if (error == false){
-      setActiveStep(activeStep + 1);
-      if(activeStep===1){
-        navigate('/payment');
-      }
-    }
-    else{
+    if (error === true || isEmptyForm() === true){
       alert("Please fill the details to proceed.");
     }
+    else{
+      setActiveStep(activeStep + 1);
+      if(activeStep===1){
+        var is_bill_existing = location.state.is_bill_existing;
+        const reqBody = {
+          first_name: firstName,
+          last_name: lastName,
+          address: address,
+          city: city,
+          zip_code: zip,
+          country: country,
+          state : state
+        };
+        var url = "http://localhost:5000/api/membership/create-billing-info";
+        var method = "post"
+        if (is_bill_existing){
+          url = 'http://localhost:5000/api/membership/update-billing-info/55153a8014829a865bbf700d';
+          method = 'put'
+        }
+        axios({
+          method: method,
+          url: url,
+          data: reqBody
+        }).then(res => {
+          navigate('/payment');
+        }).catch(err => {
+            console.log(err);
+        })
+      }
+    }
   };
-
-    
 
   const handleBack = () => {
     if(activeStep===0){
@@ -52,20 +78,35 @@ export default function Checkout() {
   };
 
   // start of billing
-    const [firstName, setFirstName] = useState();
-    const [lastName, setLastName] = useState();
-    const [address, setAddress] = useState();
-    const [zip, setZip] = useState();
-    const [country, setCountry] = useState();
-    const [city, setCity] = useState();
-    const [state, setState] = useState();
-    const [error, setError] = useState(true);
+  
+    const billing_info = location.state.billing_info;
+    const [firstName, setFirstName] = useState(billing_info.first_name);
+    const [lastName, setLastName] = useState(billing_info.last_name);
+    const [address, setAddress] = useState(billing_info.address);
+    const [zip, setZip] = useState(billing_info.zip_code);
+    const [country, setCountry] = useState(billing_info.country);
+    const [city, setCity] = useState(billing_info.city);
+    const [state, setState] = useState(billing_info.state);
+
+    const [error, setError] = useState(location.state.billing_error);
+    
     const [formErrors, setFormErrors]= useState({firstName: '', lastName:'', address:'', zip:'', city:'',state:'', country:''});
     
     const handleValueChange = (event) =>{
         const name = event.target.name;
         const value = event.target.value;
         validateField(name, value);
+    }
+
+    const isEmptyForm = () => {
+      return (
+        firstName === undefined ||
+        lastName === undefined ||
+        address === undefined ||
+        zip === undefined ||
+        city === undefined ||
+        state === undefined ||
+        country === undefined)
     }
 
     const validateField = (fieldName, value) => {
@@ -94,7 +135,7 @@ export default function Checkout() {
                     updatedFormErrors.lastName = isNameValid ? '' : 'Invalid characters';
                 }
                 break;
-            case 'address1':
+            case 'address':
                 setAddress(value);
                 updatedFormErrors.address = '';
                 if (value === '' || value == null){
@@ -102,7 +143,7 @@ export default function Checkout() {
                 }
                 else{
                     let isNameValid = value.match(/^\d+\s[A-z]+\s[A-z]+/g);
-                    updatedFormErrors.address = isNameValid ? '' : 'Invalid characters';
+                    updatedFormErrors.address = isNameValid ? '' : 'Invalid address';
                 }
                 break;
             case 'zip':
@@ -155,200 +196,295 @@ export default function Checkout() {
               setError(true);
           }
         }
+        console.log(formErrors);
+        console.log(error);
     }
     //end of billing
 
-  return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
+    //billing dates
+    const getNumberOfDays=(start, end) => {
       
-      <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
-        <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
-          <Typography component="h1" variant="h4" align="center">
-            Checkout
-          </Typography>
-          <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
-            {steps.map((label) => (
-              <Step key={label}>
-                <StepLabel>{label}</StepLabel>
-              </Step>
-            ))}
-          </Stepper>
-          <React.Fragment>
-            {activeStep === steps.length ? (
-              <React.Fragment>
-                <Typography variant="h5" gutterBottom>
-                  Thank you for your purchase.
-                </Typography>
-                <Typography variant="subtitle1">
-                  Your order number is #2001539. We have emailed your membership
-                  confirmation.
-                </Typography>
-              </React.Fragment>
-            ) : (
-              <React.Fragment>
-                 {activeStep === 0 ? 
-                    <React.Fragment>
-                        <Typography variant="h6" gutterBottom>
-                            Billing Information
-                        </Typography>
-                        <Grid container spacing={3}>
-                            <Grid item xs={12} sm={6}>
-                            <TextField
-                                required
-                                id="firstName"
-                                name="firstName"
-                                label="First name"
-                                fullWidth
-                                autoComplete="given-name"
-                                variant="standard"
-                                value={firstName}
-                                onChange={handleValueChange}
-                            />
-                            <span className='spanText' id='firstNameSpan'>{formErrors.firstName}</span>
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                            <TextField
-                                required
-                                id="lastName"
-                                name="lastName"
-                                label="Last name"
-                                fullWidth
-                                autoComplete="family-name"
-                                variant="standard"
-                                value={lastName}
-                                onChange={handleValueChange}
-                            />
-                            <span className='spanText' id='lastNameSpan'>{formErrors.lastName}</span>
-                            </Grid>
-                            <Grid item xs={12}>
-                            <TextField
-                                required
-                                id="address1"
-                                name="address1"
-                                label="Address line 1"
-                                fullWidth
-                                autoComplete="shipping address-line1"
-                                variant="standard"
-                                value={address}
-                                onChange={handleValueChange}
-                            />
-                            <span className='spanText' id='addressSpan'>{formErrors.address}</span>
-                            </Grid>
-                            
-                            <Grid item xs={12} sm={6}>
-                            <TextField
-                                required
-                                id="city"
-                                name="city"
-                                label="City"
-                                fullWidth
-                                autoComplete="shipping address-level2"
-                                variant="standard"
-                                value={city}
-                                onChange={handleValueChange}
-                            />
-                            <span className='spanText' id='citySpan'>{formErrors.city}</span>
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                            <TextField
-                                id="state"
-                                name="state"
-                                label="State/Province/Region"
-                                fullWidth
-                                variant="standard"
-                                value={state}
-                                onChange={handleValueChange}
-                            />
-                            <span className='spanText' id='stateSpan'>{formErrors.state}</span>
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                            <TextField
-                                required
-                                id="zip"
-                                name="zip"
-                                label="Zip / Postal code"
-                                fullWidth
-                                autoComplete="shipping postal-code"
-                                variant="standard"
-                                value={zip}
-                                onChange={handleValueChange}
-                            />
-                            <span className='spanText' id='zipSpan'>{formErrors.zip}</span>
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                            <TextField
-                                required
-                                id="country"
-                                name="country"
-                                label="Country"
-                                fullWidth
-                                autoComplete="shipping country"
-                                variant="standard"
-                                value={country}
-                                onChange={handleValueChange}
-                            />
-                            <span className='spanText' id='countrySpan'>{formErrors.country}</span>
-                            </Grid>
-                            {/* <Grid item xs={12}>
-                            <FormControlLabel
-                                control={<Checkbox color="secondary" name="saveAddress" value="yes" />}
-                                label="Use this address for payment details"
-                            />
-                            </Grid> */}
-                        </Grid>
-                    </React.Fragment>
-                  : 
-                  <React.Fragment>
-                    <Typography variant="h6" gutterBottom>
-                        Order summary
-                    </Typography>
-                    <List disablePadding>
-                        <ListItem key={product.name} maxWidth="sm" >
-                            <ListItemText primary={product.name}  maxWidth="sm" secondary={product.desc} />
-                            <Typography variant="body2">${product.price}</Typography>
-                        </ListItem>
+      const date1 = new Date(start);
+      const date2 = new Date(end);
 
-                        <ListItem >
-                        <ListItemText primary="Total" />
-                        <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-                            ${(product.price*1.15).toFixed(2)}
-                        </Typography>
-                        </ListItem>
-                    </List>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12} sm={6}>
-                        <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
-                            Shipping
-                        </Typography>
-                        <Typography gutterBottom>{firstName} {lastName}</Typography>
-                        <Typography gutterBottom>{address} {city} {state} {country} {zip}</Typography>
-                        </Grid>
-                    </Grid>
-                </React.Fragment>
+      console.log("date1");
+      console.log(date1);
+      console.log("date2");
+      console.log(date2);
+
+      const oneDay = 1000 * 60 * 60 * 24;
+      const diffInTime = date2.getTime() - date1.getTime();
+      const diffInDays = Math.round(diffInTime / oneDay)+2;
+      console.log("diffInDays");
+      console.log(diffInDays);
+      return diffInDays;
     }
+    const calculateCost = (days) => {
+      console.log('days==');
+      console.log(days);
+      return ((product.price/30)*1.15*days).toFixed(2);
+      
+    }
+    
+    const current = new Date();
+    console.log(current);
+    const [startDate, setStartDate] = React.useState(current);
+    console.log(startDate);
+    const [endDate, setEndDate] = React.useState(new Date(current.getFullYear(), current.getMonth() + 1, 0));
+    const [days, setDays] = React.useState(getNumberOfDays(startDate, endDate));
+    const [totalCost, setTotalCost] = React.useState(calculateCost(days));
+    const handleStartDateChange = (val) =>{
+      let diff = getNumberOfDays(val, endDate);
+      if(diff>0){
+        setStartDate(val);
+        setDays(diff);
+        setTotalCost(calculateCost(diff));
+      }
+      else{
+        alert("Start date cannot be after end date.");
+        return false;
+      }
+      
+    }
+    const handleEndDateChange = (val) =>{
+      let diff = getNumberOfDays(startDate, val);
+      if(diff>0){
+        setEndDate(val);
+        setDays(diff);
+        setTotalCost(calculateCost(diff));
+      }
+      else{
+        alert("End date cannot be before start date.");
+        return false;
+      }
+    }
+    
+    //end
 
-                
-                <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                  {activeStep >= 0 && (
-                    <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
-                      Back
+  return (
+    <div className="backgroundClassPricing">
+        <ThemeProvider  theme={theme}>
+        <CssBaseline />
+        
+        <Container  component="main" maxWidth="sm" sx={{ mb: 4 }}>
+          <Paper variant="outlined" sx={{ p: { xs: 2, md: 3 } }}>
+            <Typography component="h1" variant="h4" align="center">
+              Checkout
+            </Typography>
+            <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
+              {steps.map((label) => (
+                <Step key={label}>
+                  <StepLabel>{label}</StepLabel>
+                </Step>
+              ))}
+            </Stepper>
+            <React.Fragment>
+              {activeStep === steps.length ? (
+                <React.Fragment>
+                  <Typography variant="h5" gutterBottom>
+                    Thank you for your purchase.
+                  </Typography>
+                  <Typography variant="subtitle1">
+                    Your order number is #2001539. We have emailed your membership
+                    confirmation.
+                  </Typography>
+                </React.Fragment>
+              ) : (
+                <React.Fragment>
+                  {activeStep === 0 ? 
+                      <React.Fragment>
+                          <Typography variant="h6" gutterBottom>
+                              Billing Information
+                          </Typography>
+                          <Grid container spacing={3}>
+                              <Grid item xs={12} sm={6}>
+                              <TextField
+                                  required
+                                  id="firstName"
+                                  name="firstName"
+                                  label="First name"
+                                  fullWidth
+                                  autoComplete="given-name"
+                                  variant="standard"
+                                  value={firstName}
+                                  onChange={handleValueChange}
+                              />
+                              <span className='spanText' id='firstNameSpan'>{formErrors.firstName}</span>
+                              </Grid>
+                              <Grid item xs={12} sm={6}>
+                              <TextField
+                                  required
+                                  id="lastName"
+                                  name="lastName"
+                                  label="Last name"
+                                  fullWidth
+                                  autoComplete="family-name"
+                                  variant="standard"
+                                  value={lastName}
+                                  onChange={handleValueChange}
+                              />
+                              <span className='spanText' id='lastNameSpan'>{formErrors.lastName}</span>
+                              </Grid>
+                              <Grid item xs={12}>
+                              <TextField
+                                  required
+                                  id="address"
+                                  name="address"
+                                  label="Address"
+                                  fullWidth
+                                  autoComplete="shipping address-line1"
+                                  variant="standard"
+                                  value={address}
+                                  onChange={handleValueChange}
+                              />
+                              <span className='spanText' id='addressSpan'>{formErrors.address}</span>
+                              </Grid>
+                              
+                              <Grid item xs={12} sm={6}>
+                              <TextField
+                                  required
+                                  id="city"
+                                  name="city"
+                                  label="City"
+                                  fullWidth
+                                  autoComplete="shipping address-level2"
+                                  variant="standard"
+                                  value={city}
+                                  onChange={handleValueChange}
+                              />
+                              <span className='spanText' id='citySpan'>{formErrors.city}</span>
+                              </Grid>
+                              <Grid item xs={12} sm={6}>
+                              <TextField
+                                  id="state"
+                                  name="state"
+                                  label="State/Province/Region"
+                                  fullWidth
+                                  variant="standard"
+                                  value={state}
+                                  onChange={handleValueChange}
+                              />
+                              <span className='spanText' id='stateSpan'>{formErrors.state}</span>
+                              </Grid>
+                              <Grid item xs={12} sm={6}>
+                              <TextField
+                                  required
+                                  id="zip"
+                                  name="zip"
+                                  label="Zip / Postal code"
+                                  fullWidth
+                                  autoComplete="shipping postal-code"
+                                  variant="standard"
+                                  value={zip}
+                                  onChange={handleValueChange}
+                              />
+                              <span className='spanText' id='zipSpan'>{formErrors.zip}</span>
+                              </Grid>
+                              <Grid item xs={12} sm={6}>
+                              <TextField
+                                  required
+                                  id="country"
+                                  name="country"
+                                  label="Country"
+                                  fullWidth
+                                  autoComplete="shipping country"
+                                  variant="standard"
+                                  value={country}
+                                  onChange={handleValueChange}
+                              />
+                              <span className='spanText' id='countrySpan'>{formErrors.country}</span>
+                              </Grid>
+                              {/* <Grid item xs={12}>
+                              <FormControlLabel
+                                  control={<Checkbox color="secondary" name="saveAddress" value="yes" />}
+                                  label="Use this address for payment details"
+                              />
+                              </Grid> */}
+                          </Grid>
+                      </React.Fragment>
+                    : 
+                    <React.Fragment>
+                      <LocalizationProvider dateAdapter={AdapterDateFns}>
+                      <Stack spacing={2}>
+                        <DesktopDatePicker
+                            label="Start Date"
+                            inputFormat="MM/dd/yyyy"
+                            value={startDate}
+                            onChange={handleStartDateChange}
+                            renderInput={(params) => <TextField {...params} />}
+                          />
+                          <DesktopDatePicker
+                            label="End Date"
+                            inputFormat="MM/dd/yyyy"
+                            value={endDate}
+                            onChange={handleEndDateChange}
+                            renderInput={(params) => <TextField {...params} />}
+                          />
+                      </Stack>
+                      
+                      </LocalizationProvider>
+                      <br/>
+                      <Typography variant="h6" gutterBottom>
+                          Order Summary
+                      </Typography>
+                      <List disablePadding>
+                          <ListItem key={product.name} maxWidth="sm" >
+                              <ListItemText primary={product.name}  maxWidth="xs" secondary={product.desc} />
+                              <Typography variant="body2">${product.price}/mo</Typography>
+                          </ListItem>
+
+                          <ListItem >
+                          <ListItemText primary="Total Amount" />
+                          <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
+                              {totalCost}
+                          </Typography>
+                          </ListItem>
+                      </List>
+                      <br/>
+                      <Typography variant="h6" >
+                              Billing Details
+                          </Typography>
+                        <List disablePadding>
+                        <ListItem key={firstName +" "+ lastName} maxWidth="sm" >
+                            <ListItemText primary={firstName+" "+lastName}  maxWidth="sm" secondary={address+", "+city+", "+state+", "+country+", "+zip} />
+                        </ListItem>
+                      </List>
+                      {/* // <Grid container spacing={2}>
+                      //     <Grid item xs={12} sm={6}>
+                          
+                      //     <Typography gutterBottom>{firstName} {lastName}</Typography>
+                      //     <Typography gutterBottom>{address} {city} {state} {country} {zip}</Typography>
+                      //     </Grid>
+                      // </Grid> */}
+
+                      
+
+                  </React.Fragment>
+      }
+
+                  
+                  <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    {activeStep >= 0 && (
+                      <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
+                        Back
+                      </Button>
+                    )}
+
+                    <Button
+                      variant="contained"
+                      onClick={handleNext}
+                      sx={{ mt: 3, ml: 1 }}
+                    >
+                      {activeStep === steps.length - 1 ? 'Proceed to pay' : 'Proceed to review'}
                     </Button>
-                  )}
-
-                  <Button
-                    variant="contained"
-                    onClick={handleNext}
-                    sx={{ mt: 3, ml: 1 }}
-                  >
-                    {activeStep === steps.length - 1 ? 'Proceed to pay' : 'Proceed to review'}
-                  </Button>
-                </Box>
-              </React.Fragment>
-            )}
-          </React.Fragment>
-        </Paper>
-      </Container>
-    </ThemeProvider>
+                  </Box>
+                </React.Fragment>
+              )}
+            </React.Fragment>
+          </Paper>
+        </Container>
+      </ThemeProvider>
+    </div>
+    
   );
 }
