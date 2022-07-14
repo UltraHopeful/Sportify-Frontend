@@ -1,4 +1,4 @@
-import { Box, Button, Card, Checkbox, Divider, FormControlLabel, Grid, InputLabel, MenuItem, Select, SelectChangeEvent, Stack, TextField, Typography } from "@mui/material";
+import { Box, Button, Card, Checkbox, Divider, FormControlLabel, Grid, IconButton, InputLabel, MenuItem, Select, SelectChangeEvent, Snackbar, Stack, TextField, Typography } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -11,6 +11,8 @@ import axios from "axios";
 import { getFromDate, getRemainingAvailableSlots, getToDate } from "../../data/AvailabilityData";
 import Loader from "../../components/Loader";
 import { AvailabilitySlots } from "../../data/AvailaibilitySlots";
+import CloseIcon from '@mui/icons-material/Close';
+import MuiAlert from '@mui/material/Alert';
 
 const DetailDescription = (props: any) => {
     return (
@@ -68,6 +70,9 @@ const FacilityDetails = () => {
 
     const [resource, setResource] = useState<FacilitiesInterface|null>(null);
 
+    const [snackbar, setSnackbar] = useState<{ open: boolean, vertical: 'top' | 'bottom', horizontal: 'left' | 'right' }>({ open: false, vertical: 'top', horizontal: 'right' });
+    const { open, vertical, horizontal } = snackbar;
+    const [snackbarMsg, setSnackbarMsg] = useState('');
     const onReservationDetailsChange = (event: any) => {
         const reservationDetailsTemp = {
             ...reservationDetails,
@@ -246,10 +251,31 @@ const FacilityDetails = () => {
             }).then(() => {
                 navigate('/facility', {state: {snackbar: true, snackbarMsg: 'Successfuly booked facility!'}})
             }).catch((err) => {
+                if (err.response.status === 400 || err.response.status === 409 || err.response.status === 500) {
+                    setSnackbar({...snackbar, open: true});
+                    setSnackbarMsg(err.response.data.message);
+                }
                 console.log('Exception occured', err);
             });
         }
     }
+
+    const onCloseSnackbar = (event?: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setSnackbar({ ...snackbar, open: false });
+        setSnackbarMsg('');
+    }
+
+    const snackbarCloseAction = (<IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={onCloseSnackbar}
+    >
+        <CloseIcon fontSize="small" />
+    </IconButton>);
 
     return (
         (isLoading) ? (<Loader/>) : ((facilityNotFound || !resource) ? (<h1>Facility Not Found!</h1>): (
@@ -399,6 +425,17 @@ const FacilityDetails = () => {
                         </Button>
                 </Grid>
             </Grid>
+            <Snackbar
+                anchorOrigin={{ vertical, horizontal }}
+                open={open}
+                autoHideDuration={3000}
+                onClose={onCloseSnackbar}
+                action={snackbarCloseAction}
+            >
+                <MuiAlert onClose={onCloseSnackbar} severity="error" sx={{ width: '100%' }} elevation={6} variant="filled">
+                    {snackbarMsg}
+                </MuiAlert>
+            </Snackbar>
         </Box>))
     );
 }
