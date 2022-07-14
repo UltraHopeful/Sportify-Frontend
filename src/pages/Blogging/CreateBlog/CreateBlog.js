@@ -18,11 +18,6 @@ const CreateBlog = (props) => {
     const [blogTitle,setBlogTitle] = useState([]);
     const [image,setImage]= useState([]);
     const [selectedFile,setSelectedFile] = useState([]);
-    
-    // var string = "This is some long text and we need to show it on only two lines.".split(" ");
-    // var first_line = string.slice(0,5).join(" ");
-    // var second_line = string.slice(6,10).join(" ");
-
     const shortContent = data2.toString().split(" ");
     var first_line = shortContent.slice(0,5).join(" ");
 
@@ -35,15 +30,10 @@ const CreateBlog = (props) => {
         setSelectedFile(e.target.files[0]);
     }
 
-    // const fileUploadHandler= (e) => {
-    //     setImage
-    // }
+    
 
     const myFunction = () =>{
-       // e.preventDefault();
-     //   console.log("on submit");
-    // console.log(data2);
-    //console.log(JSON.stringify(data2));
+     e.preventDefault();
      const jsonData = {
         blogId: uuidv4(),
         blogContent: data2,
@@ -106,9 +96,9 @@ const CreateBlog = (props) => {
                                         setData2(editor.getData());
                                         console.log(data2);
                                     }}
-                                    // onBlur={(event, editor) => {
-                                    //     console.log('Blur.', editor);
-                                    // }}
+                                    onBlur={(event, editor) => {
+                                        console.log('Blur.', editor);
+                                    }}
                                     onFocus={(event, editor) => {
                                         console.log('Focus.', editor);
                                     }}
