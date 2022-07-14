@@ -153,7 +153,7 @@ const FacilityDetails = () => {
     let params = useParams();
     let resourceId: string = (!params.resourceId) ? "1" : params.resourceId;
     useEffect( () =>{
-        axios.get("http://localhost:5000/facility/" + resourceId)
+        axios.get("https://sportify-backend-prd.herokuapp.com/facility/" + resourceId)
         .then(response => response.data)
         .then(content => {
             setResource(content.data);
@@ -189,7 +189,7 @@ const FacilityDetails = () => {
         setTimeslotsLoading(true);
         axios({
             method: 'get',
-            url: `http://localhost:5000/facility/booked-slots?facilityId=${resourceId}&date=${updatedDate?.getTime()}`
+            url: `https://sportify-backend-prd.herokuapp.com/facility/booked-slots?facilityId=${resourceId}&date=${updatedDate?.getTime()}`
         }).then (res => {
             setTimeslotsLoading(false);
             setAvailableSlots(getRemainingAvailableSlots(res.data.data));
@@ -246,7 +246,7 @@ const FacilityDetails = () => {
             const reqBody = getReservationApiReqBody(reservationDetails);
             axios({
                 method: 'post',
-                url: 'http://localhost:5000/reservation',
+                url: 'https://sportify-backend-prd.herokuapp.com/reservation',
                 data: reqBody
             }).then(() => {
                 navigate('/facility', {state: {snackbar: true, snackbarMsg: 'Successfuly booked facility!'}})
