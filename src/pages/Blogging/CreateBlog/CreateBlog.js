@@ -5,6 +5,8 @@ import parse from 'html-react-parser';
 import { Box, Button, Grid, TextField, Typography } from '@mui/material';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
+const { v4: uuidv4 } = require('uuid');
 /**
 * @author
 * @function CreateBlog
@@ -12,6 +14,46 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const CreateBlog = (props) => {
     const notify = () => toast("Under Construction as it involves database!");
+    const [data2, setData2] = useState([]);
+    const [blogTitle,setBlogTitle] = useState([]);
+    const [image,setImage]= useState([]);
+    const [selectedFile,setSelectedFile] = useState([]);
+    
+    // var string = "This is some long text and we need to show it on only two lines.".split(" ");
+    // var first_line = string.slice(0,5).join(" ");
+    // var second_line = string.slice(6,10).join(" ");
+
+    const shortContent = data2.toString().split(" ");
+    var first_line = shortContent.slice(0,5).join(" ");
+
+    const handleChange = (e) => {
+        console.log(`Typed => ${e.target.value}`)
+        setBlogTitle(e.target.value);
+    }
+    const fileSelectHandler = (e) =>{
+        console.log(e.target.files[0]);
+        setSelectedFile(e.target.files[0]);
+    }
+
+    // const fileUploadHandler= (e) => {
+    //     setImage
+    // }
+
+    const myFunction = () =>{
+       // e.preventDefault();
+     //   console.log("on submit");
+    // console.log(data2);
+    //console.log(JSON.stringify(data2));
+     const jsonData = {
+        blogId: uuidv4(),
+        blogContent: data2,
+        blogTitle: blogTitle,
+        blogImage:  selectedFile,
+        shortContent : first_line,
+        userId : uuidv4()
+     }
+     console.log(jsonData);
+     }
     return (
         <div>
             <div>
@@ -47,23 +89,26 @@ const CreateBlog = (props) => {
                                             opacity: [0.9, 0.8, 0.7],
                                         },
                                     }}
+                                    value = {blogTitle}
+                                    onChange = {handleChange}
                                 />
                             </div>
                             <div className="gridmargins">
                                 <CKEditor
                                     editor={ClassicEditor}
-                                    data="<p>Hello from CKEditor 5!</p>"
+                                    data="Hello from CKEditor 5!"
                                     onReady={editor => {
                                         // You can store the "editor" and use when it is needed.
                                         console.log('Editor is ready to use!', editor);
                                     }}
                                     onChange={(event, editor) => {
-                                        const data = editor.getData();
-                                        console.log({ event, editor, data });
+                                        console.log('On change called'+editor.getData())
+                                        setData2(editor.getData());
+                                        console.log(data2);
                                     }}
-                                    onBlur={(event, editor) => {
-                                        console.log('Blur.', editor);
-                                    }}
+                                    // onBlur={(event, editor) => {
+                                    //     console.log('Blur.', editor);
+                                    // }}
                                     onFocus={(event, editor) => {
                                         console.log('Focus.', editor);
                                     }}
@@ -81,7 +126,7 @@ const CreateBlog = (props) => {
                                 paddingY:"25%"
                             }}
                         >
-                         <Button sx={{width:"50%"}} variant="contained" onClick={notify}><ToastContainer />Upload Blog image</Button>
+                         {/* <Button sx={{width:"50%"}} variant="contained" type="file" ><ToastContainer />Upload Blog image</Button>
                         </Box>
                             
                             </Grid>
@@ -92,8 +137,13 @@ const CreateBlog = (props) => {
                                 marginY: "5%",
                                 paddingY:"25%"
                             }}
-                        >
-                         <Button sx={{width:"50%"}} variant="contained"onClick={notify}><ToastContainer />Create Blog</Button>
+                        > */}
+
+                        <div>
+                            <input type="file" onChange={fileSelectHandler}></input>
+                            <button onClick={fileSelectHandler}/>
+                        </div>
+                         <Button sx={{width:"50%"}} variant="contained" onClick={myFunction}><ToastContainer />Create Blog</Button>
                         </Box>
                             </Grid>
                         </Grid>
