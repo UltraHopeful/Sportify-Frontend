@@ -105,10 +105,10 @@ export default function PurchasedMemberships() {
             <TableHead>
             <TableRow>
                 <StyledTableCell>Booking ID</StyledTableCell>
-                <StyledTableCell align="right">Membership Plan</StyledTableCell>
-                <StyledTableCell align="right">Start Date</StyledTableCell>
-                <StyledTableCell align="right">End Date</StyledTableCell>
-                <StyledTableCell align="right">Status</StyledTableCell>
+                <StyledTableCell align="center">Membership Plan</StyledTableCell>
+                <StyledTableCell align="center">Start Date</StyledTableCell>
+                <StyledTableCell align="center">End Date</StyledTableCell>
+                <StyledTableCell align="center">Status</StyledTableCell>
             </TableRow>
             </TableHead>
             <TableBody>
@@ -117,10 +117,10 @@ export default function PurchasedMemberships() {
                 <StyledTableCell component="th" scope="row">
                     {row.id}
                 </StyledTableCell>
-                <StyledTableCell align="right">{row.plan_name}</StyledTableCell>
-                <StyledTableCell align="right">{row.start_date}</StyledTableCell>
-                <StyledTableCell align="right">{row.end_date}</StyledTableCell>
-                <StyledTableCell align="right">{row.status}</StyledTableCell>
+                <StyledTableCell align="center">{row.plan_name}</StyledTableCell>
+                <StyledTableCell align="center">{row.start_date}</StyledTableCell>
+                <StyledTableCell align="center">{row.end_date}</StyledTableCell>
+                <StyledTableCell align="center">{row.status}</StyledTableCell>
                 </StyledTableRow>
             ))}
             </TableBody>

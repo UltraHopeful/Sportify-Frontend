@@ -67,13 +67,30 @@ function Pricing() {
   const navigate = useNavigate();
   useEffect(() => {
     axios
-      .get('http://localhost:5000/api/membership/purchase/user/55153a8014829a865bbf700d') //userid
+      .get('http://localhost:5000/api/membership/purchase/user/55153a8014829a865bbf700d')
       .then((res) => {
         if(res.data.data.length >0) {
-          navigate('/purchased-membership', {state: {'memberships': res.data.data}});
+          let current = new Date();
+          let endDate = res.data.data.end_date;
+          if(endDate>=current){
+            navigate('/purchased-membership', {state: {'memberships': res.data.data}});
+          }
+          else{
+            //cancel membership automatically
+            cancelMembership();
+          }
         }
       })
   })
+
+  const cancelMembership = () => {
+    axios({
+        method: 'put',
+        url: "http://localhost:5000/api/membership/cancel-purchase"
+      }).catch(err => {
+          console.log(err);
+      })
+}
 
   const moveToBilling = (tier) => {
     axios({
