@@ -67,13 +67,30 @@ function Pricing() {
   const navigate = useNavigate();
   useEffect(() => {
     axios
-      .get('http://localhost:5000/api/membership/purchase/user/55153a8014829a865bbf700d') //userid
+      .get('http://localhost:5000/api/membership/purchase/user/55153a8014829a865bbf700d')
       .then((res) => {
         if(res.data.data.length >0) {
-          navigate('/purchased-membership', {state: {'memberships': res.data.data}});
+          let current = new Date();
+          let endDate = res.data.data.end_date;
+          if(endDate>=current){
+            navigate('/purchased-membership', {state: {'memberships': res.data.data}});
+          }
+          else{
+            //cancel membership automatically
+            cancelMembership();
+          }
         }
       })
   })
+
+  const cancelMembership = () => {
+    axios({
+        method: 'put',
+        url: "http://localhost:5000/api/membership/cancel-purchase"
+      }).catch(err => {
+          console.log(err);
+      })
+}
 
   const moveToBilling = (tier) => {
     axios({
@@ -97,94 +114,98 @@ function Pricing() {
   }
 
   return (
-    <React.Fragment>
-      <GlobalStyles styles={{ ul: { margin: 0, padding: 0, listStyle: 'none' } }} />
-      <CssBaseline />
-      <Container disableGutters maxWidth="sm" component="main" sx={{ pt: 8, pb: 6 }}>
-        <Typography
-          component="h1"
-          variant="h2"
-          align="center"
-          color="text.primary"
-          gutterBottom
-        >
-          Pricing
-        </Typography>
-        <Typography variant="h5" align="center" color="text.secondary" component="p">
-          Join Us!<br/>
-          Choose one of our exciting plans that suits you well!
-        </Typography>
-      </Container>
-      {/* End hero unit */}
-      <Container maxWidth="md" component="main">
-        <Grid container spacing={5} alignItems="flex-end">
-          {tiers.map((tier) => (
-            // Enterprise card is full width at sm breakpoint
-            <Grid
-              item
-              key={tier.title}
-              xs={12}
-              sm={6}
-            //   {tier.title === 'Enterprise' ? 12 : 6}
-              md={4}
-            >
-              <Card>
-                <CardHeader
-                  title={tier.title}
-                  subheader={tier.subheader}
-                  titleTypographyProps={{ align: 'center' }}
-                  action={tier.title === 'Premium' ? <StarIcon /> : null}
-                  subheaderTypographyProps={{
-                    align: 'center',
-                  }}
-                  sx={{
-                    backgroundColor: (theme) =>
-                      theme.palette.mode === 'light'
-                        ? theme.palette.grey[200]
-                        : theme.palette.grey[700],
-                  }}
-                />
-                <CardContent>
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'baseline',
-                      mb: 2,
+    <div className="backgroundClassPricing">
+        <React.Fragment>
+        <GlobalStyles styles={{ ul: { margin: 0, padding: 0, listStyle: 'none' } }} />
+        <CssBaseline />
+        <Container disableGutters maxWidth="sm" component="main" sx={{ pt: 8, pb: 6 }}>
+          <Typography
+            component="h1"
+            variant="h2"
+            align="center"
+            color="text.primary"
+            gutterBottom
+          >
+            Pricing
+          </Typography>
+          <Typography variant="h5" align="center" color="text.secondary" component="p">
+            Join Us!<br/>
+            Choose one of our exciting plans that suits you well!
+          </Typography>
+        </Container>
+        {/* End hero unit */}
+        <Container maxWidth="md" component="main">
+          <Grid container spacing={5} alignItems="flex-end">
+            {tiers.map((tier) => (
+              // Enterprise card is full width at sm breakpoint
+              <Grid
+                item
+                key={tier.title}
+                xs={12}
+                sm={6}
+              //   {tier.title === 'Enterprise' ? 12 : 6}
+                md={4}
+              >
+                <Card>
+                  <CardHeader
+                    title={tier.title}
+                    subheader={tier.subheader}
+                    titleTypographyProps={{ align: 'center' }}
+                    action={tier.title === 'Premium' ? <StarIcon /> : null}
+                    subheaderTypographyProps={{
+                      align: 'center',
                     }}
-                  >
-                    <Typography component="h2" variant="h3" color="text.primary">
-                      ${tier.price}
-                    </Typography>
-                    <Typography variant="h6" color="text.secondary">
-                      /mo
-                    </Typography>
-                  </Box>
-                  <ul>
-                    {tier.description.map((line) => (
-                      <Typography 
-                        
-                        component="li"
-                        variant="subtitle1"
-                        align="center"
-                        key={line}
-                      >
-                        {line}
+                    sx={{
+                      backgroundColor: (theme) =>
+                        theme.palette.mode === 'light'
+                          ? theme.palette.grey[200]
+                          : theme.palette.grey[700],
+                    }}
+                  />
+                  <CardContent>
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'baseline',
+                        mb: 2,
+                      }}
+                    >
+                      <Typography component="h2" variant="h3" color="text.primary">
+                        ${tier.price}
                       </Typography>
-                    ))}
-                  </ul>
-                </CardContent>
-                <CardActions>
-                  <Button fullWidth variant={tier.buttonVariant} onClick={() =>moveToBilling(tier)}>
-                    {tier.buttonText} 
-                  </Button>
-                </CardActions>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      </Container>
-    </React.Fragment>
+                      <Typography variant="h6" color="text.secondary">
+                        /mo
+                      </Typography>
+                    </Box>
+                    <ul>
+                      {tier.description.map((line) => (
+                        <Typography 
+                          
+                          component="li"
+                          variant="subtitle1"
+                          align="center"
+                          key={line}
+                        >
+                          {line}
+                        </Typography>
+                      ))}
+                    </ul>
+                  </CardContent>
+                  <CardActions>
+                    <Button fullWidth variant={tier.buttonVariant} onClick={() =>moveToBilling(tier)}>
+                      {tier.buttonText} 
+                    </Button>
+                  </CardActions>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        </Container>
+      </React.Fragment>
+    </div>
+    
+
   );
 }
 

@@ -13,3 +13,10 @@
 .rightDisplay{
     float: right;
 }
+
+.backgroundClassPricing{
+    background-image: url("../../assets/images/mem2.webp");
+    height: 100vh;
+    background-size: cover;
+}
+
