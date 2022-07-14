@@ -5,44 +5,62 @@ import parse from 'html-react-parser';
 import { Box, Button, Grid, TextField, Typography } from '@mui/material';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 const { v4: uuidv4 } = require('uuid');
+
 /**
 * @author
 * @function CreateBlog
 **/
 
+const baseURL = "http://localhost:5000/blogs/api/blogs/postBlog"
 const CreateBlog = (props) => {
+    const navigate = useNavigate();
     const notify = () => toast("Under Construction as it involves database!");
     const [data2, setData2] = useState([]);
     const [blogTitle,setBlogTitle] = useState([]);
-    const [image,setImage]= useState([]);
+    const [image, setImage] = useState(null);
     const [selectedFile,setSelectedFile] = useState([]);
     const shortContent = data2.toString().split(" ");
     var first_line = shortContent.slice(0,5).join(" ");
 
     const handleChange = (e) => {
-        console.log(`Typed => ${e.target.value}`)
+     //   console.log(`Typed => ${e.target.value}`)
         setBlogTitle(e.target.value);
     }
+
     const fileSelectHandler = (e) =>{
-        console.log(e.target.files[0]);
-        setSelectedFile(e.target.files[0]);
+        const img = e.target.files[0];
+        const reader = new FileReader(img);
+        reader.readAsDataURL(img);
+        reader.onload = () => {
+            setImage(reader.result);
+        }
     }
 
-    
-
-    const myFunction = () =>{
+    const myFunction = (e) =>{
      e.preventDefault();
      const jsonData = {
         blogId: uuidv4(),
         blogContent: data2,
         blogTitle: blogTitle,
-        blogImage:  selectedFile,
+        blogImage:  image,
         shortContent : first_line,
-        userId : uuidv4()
+        userId : uuidv4(),
+        timeStamp: Date.now().toString()
      }
-     console.log(jsonData);
+     console.log({jsonData});
+      
+     axios.post(baseURL,{jsonData})
+      .then((response) => {
+        navigate("/yourblogs")
+        console.log(response);
+      }, (error) => {
+        console.log(error);
+      });
+
+
      }
     return (
         <div>
