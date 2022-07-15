@@ -64,20 +64,21 @@ const tiers = [
 
 
 function Pricing() {
+
+  localStorage.setItem("user", '{"_id":"62d125c24709b75db510f79c","firstName":"Soham","lastName":"Patel","email":"sohupatel8828@gmail.com","contactNo":"+1 902-354-4536","address":"","profile":"user"}')
+  const rawUser = localStorage.getItem("user")
+  const user = JSON.parse(rawUser)
+  const userId = user._id;
+
   const navigate = useNavigate();
-  const domain = 'http://localhost:5000';
+  const domain = 'https://sportify-backend-prd.herokuapp.com';
   useEffect(() => {
     axios
-      .get(domain+'/api/membership/purchase/user/55153a8014829a865bbf700d')
+      .get(domain+'/api/membership/purchase/user/'+userId)
       .then((res) => {
-        console.log(res.data.data);
         if(res.data.data.length >0) {
           let current = new Date();
           let endDate = new Date(res.data.data[0].end_date);
-          console.log("endDate")
-          console.log(endDate)
-          console.log("current")
-          console.log(current)
           if(endDate>=current){
             navigate('/purchased-membership', {state: {'memberships': res.data.data}});
           }
@@ -92,7 +93,7 @@ function Pricing() {
   const cancelMembership = () => {
     axios({
         method: 'put',
-        url: "http://localhost:5000/api/membership/cancel-purchase"
+        url: domain+"/api/membership/cancel-purchase"
       }).catch(err => {
           console.log(err);
       })
@@ -101,13 +102,12 @@ function Pricing() {
   const moveToBilling = (tier) => {
     axios({
       method: 'get',
-      url: domain+'/api/membership/billing-info/55153a8014829a865bbf700d'
+      url: domain+'/api/membership/billing-info/'+userId
     }).then(result => {
-      console.log(result);
-      var billing_info = {};
-      var billing_error = true;
-      var is_bill_existing = false;
-      if(result.data != "") {
+      let billing_info = {};
+      let billing_error = true;
+      let is_bill_existing = false;
+      if(result.data.data !== "") {
         billing_info = result.data.data;
         billing_error = false;
         is_bill_existing = true;
