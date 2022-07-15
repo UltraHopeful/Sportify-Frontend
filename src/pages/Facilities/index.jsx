@@ -1,3 +1,5 @@
+//Author: Aravind Jayanthi (B00868943)
+//Email: ar687531@dal.ca
 import { Checkbox, Container, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, Snackbar, Stack, Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -22,7 +24,7 @@ export default function Facilities() {
     });
     const [isLoading, setIsLoading] = useState(true);
     useEffect(() => {
-        axios.get("http://localhost:5000/facility/all")
+        axios.get("https://sportify-backend-prd.herokuapp.com/facility/all")
             .then(response => response.data)
             .then(content => {
                 setIsLoading(false);

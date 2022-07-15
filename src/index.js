@@ -7,6 +7,7 @@ import reportWebVitals from "./reportWebVitals";
 // import ProtectedRoute from "./components/ProtectedRoute";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import 'material-react-toastify/dist/ReactToastify.css';
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import userReservations from "./data/Data";
@@ -30,8 +31,8 @@ import PurchasedMemberships from "./pages/Membership/purchasedMembership";
 import Products from "./pages/Merchandise/products";
 import MyEventDetails from "./pages/MyEventDetails";
 import MyEvents from "./pages/MyEvents/MyEvents";
-import AfterPayment from "./pages/Payment/afterPayment";
 import MembershipPlan from "./pages/Payment/membershipPlan";
+import PaymentSuccess from './pages/Payment/paymentSuccess';
 import Profile from "./pages/Profile/index";
 import { ReservationDetails } from "./pages/ReservationDetails";
 import ReservationList from "./pages/Reservations";
@@ -136,7 +137,7 @@ root.render(
           <Route path="my-events/:bookingId" element={<MyEventDetails />} />
           <Route path="rewards" element={<Home />} />
           <Route path="payment" element={<MembershipPlan />} />
-          <Route path="afterpayment" element={<AfterPayment />} />
+          <Route path="payment-success" element={<PaymentSuccess />} />
           <Route path="blogs" element={<Blogs />} />
           <Route path="createblog" element={<CreateBlog />} />
           <Route path="editblogs/:id" element={<EditBlog />} />

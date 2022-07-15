@@ -1,3 +1,5 @@
+//Author: Aravind Jayanthi (B00868943)
+//Email: ar687531@dal.ca
 import { Box, Button, Card, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, IconButton, Snackbar, Stack, Typography } from "@mui/material";
 import axios from "axios";
 import { SyntheticEvent, useEffect, useState } from "react";
@@ -5,7 +7,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import Loader from "../../components/Loader";
 import MuiAlert from '@mui/material/Alert';
 import CloseIcon from '@mui/icons-material/Close';
-// import { ReservationInterface } from "../../data/ReservationInterface";
 import './ReservationDetails.css';
 
 const primaryColor = '#326DD9';
@@ -63,7 +64,7 @@ const ReservationDetails = () => {
     const resId = (!params.reservationId) ? 1 : params.reservationId;
 
     useEffect(() => {
-        axios.get('http://localhost:5000/reservation/my-single-reservation/' + resId)
+        axios.get('https://sportify-backend-prd.herokuapp.com/reservation/my-single-reservation/' + resId)
             .then(res => res.data).then(content => {
                 setDetails(content.data);
                 setIsLoading(false);
@@ -85,7 +86,7 @@ const ReservationDetails = () => {
     }
 
     const cancelConfirmationSnackbar = () => {
-        axios.put('http://localhost:5000/reservation/cancel-reservation/' + resId)
+        axios.put('https://sportify-backend-prd.herokuapp.com/reservation/cancel-reservation/' + resId)
             .then(res => res.data).then(content => {
                 const msg = (!content.message) ? 'Successfuly cancelled your reservation.' : content.message;
                 navigate('/my-reservations', { state: { snackbar: true, snackbarMsg: msg } });

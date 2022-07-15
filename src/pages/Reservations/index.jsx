@@ -1,3 +1,5 @@
+//Author: Aravind Jayanthi (B00868943)
+//Email: ar687531@dal.ca
 import { Box, FormControl, MenuItem, Pagination, Select, Snackbar } from "@mui/material";
 import { useEffect, useState } from "react";
 import ReservationItem from "./ReservationItem";
@@ -9,6 +11,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import MuiAlert from '@mui/material/Alert';
 import Loader from "../../components/Loader";
 import axios from "axios";
+import NoReservations from "../../components/NoReservations";
 
 
 const ReservationList = (props) => {
@@ -33,7 +36,7 @@ const ReservationList = (props) => {
     const maxPagesXs = -1;
 
     useEffect(() => {
-        axios.get('http://localhost:5000/reservation/my-reservations/' + '672dee56-6895-4b20-8daa-6b08461aec95')
+        axios.get('https://sportify-backend-prd.herokuapp.com/reservation/my-reservations/' + '672dee56-6895-4b20-8daa-6b08461aec95')
             .then(res => res.data).then(content => {
                 setIsLoading(false);
                 setCompleteList(content.data);
@@ -92,7 +95,7 @@ const ReservationList = (props) => {
         <div>
             {
                 (isLoading) ? (<Loader />) : (
-                    (!completeList || completeList.length === 0) ? (<h1>No reservations are made</h1>) :
+                    (!completeList || completeList.length === 0) ? (<NoReservations/>) :
                         (<>
                             <Box sx={{ margin: '10px 15%', display: { md: 'flex', xs: 'none', sm: 'none' }, flexDirection: 'column' }}>
                                 {reservationList}

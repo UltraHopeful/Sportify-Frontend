@@ -1,8 +1,9 @@
+//Author: Aravind Jayanthi (B00868943)
+//Email: ar687531@dal.ca
 import { Box, FormControl, MenuItem, Pagination, Select, Snackbar } from "@mui/material";
 import { useState } from "react";
 import '../../App.css';
 import '../Reservations/Reservations.css';
-import ReservationItem from "../Reservations/ReservationItem";
 import { useLocation } from "react-router-dom";
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
