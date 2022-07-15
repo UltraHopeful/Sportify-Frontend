@@ -56,12 +56,21 @@ export default function Checkout() {
           url = 'http://localhost:5000/api/membership/update-billing-info/55153a8014829a865bbf700d';
           method = 'put'
         }
+        let backendReqBody= {
+          'total_cost': totalCost, 
+          'plan_name': product.name, 
+          'start_date': startDate, 
+          'end_date' : endDate,
+          'status' : 'Ongoing'
+        }
+        console.log(backendReqBody);
+
         axios({
           method: method,
           url: url,
           data: reqBody
         }).then(res => {
-          navigate('/payment');
+          navigate('/payment', {state: backendReqBody});
         }).catch(err => {
             console.log(err);
         })
