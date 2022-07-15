@@ -21,6 +21,7 @@ import axios from 'axios'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import Stack from '@mui/material/Stack';
+// import {useSelector} from 'react_redux';
 
 
 
@@ -34,7 +35,7 @@ export default function Checkout() {
   const location = useLocation();
   const product = location.state.product;
   const [activeStep, setActiveStep] = React.useState(0);
- // const user = useSelector((state)=>state.auth)
+//  const user = useSelector((state)=>state.auth)
   const navigate = useNavigate();
   const handleNext = () => {
     if (error === true || isEmptyForm() === true){
@@ -75,8 +76,9 @@ export default function Checkout() {
           url: url,
           data: reqBody
         }).then(res => {
-          axios.post('http://localhost:5000/api/stripe/create-checkout-session',{
-            backendReqBody
+          axios.post(domain+'/api/stripe/create-checkout-session',{
+            backendReqBody,
+            // userId: user._id
           }).then((response)=>{
             if(response.data.url){
               window.location.href = response.data.url
