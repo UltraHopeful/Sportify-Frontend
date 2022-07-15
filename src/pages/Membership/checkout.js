@@ -21,7 +21,6 @@ import axios from 'axios'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import Stack from '@mui/material/Stack';
-import {useSelector} from 'react-redux';
 
 
 
@@ -59,13 +58,13 @@ export default function Checkout() {
           url = 'http://localhost:5000/api/membership/update-billing-info/55153a8014829a865bbf700d';
           method = 'put'
         }
-        let backendReqBody= {
-          'total_cost': totalCost, 
+        let backendReqBody= [{
+          'total_cost': +totalCost, 
           'plan_name': product.name, 
           'start_date': startDate, 
           'end_date' : endDate,
           'status' : 'Ongoing'
-        }
+        }]
         console.log(backendReqBody);
 
         axios({
@@ -74,7 +73,7 @@ export default function Checkout() {
           data: reqBody
         }).then(res => {
           axios.post('http://localhost:5000/api/stripe/create-checkout-session',{
-            state: {'membershipDetails': backendReqBody}
+            backendReqBody
           }).then((response)=>{
             if(response.data.url){
               window.location.href = response.data.url
