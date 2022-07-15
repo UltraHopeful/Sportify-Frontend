@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import * as Yup from "yup";
 import Logo from "../../assets/images/Sportify.png";
+import { getBackendUrl } from '../../components/getUrl';
 import { LoginForm } from "./loginForm";
 
 // cite : https://dev.to/finallynero/react-form-using-formik-material-ui-and-yup-2e8h
@@ -47,7 +48,7 @@ export default function InputForm(props) {
     
     const signin = (values) => {
         console.log(values);
-        const signinUrl = "http://localhost:5000/api/signin";
+        const signinUrl = getBackendUrl()+"/api/signin";
         const requestOptions = {
           method: "POST",
           headers: { "Content-Type": "application/json" },

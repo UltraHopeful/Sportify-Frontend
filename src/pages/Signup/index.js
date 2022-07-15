@@ -2,11 +2,12 @@ import { Card, Grid, Link } from "@mui/material";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Formik } from "formik";
-import { toast } from "react-toastify";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import * as Yup from "yup";
 import Logo from "../../assets/images/Sportify.png";
+import { getBackendUrl } from "../../components/getUrl";
 import { SignupForm } from "./signupForm";
 
 // cite : https://dev.to/finallynero/react-form-using-formik-material-ui-and-yup-2e8h
@@ -66,7 +67,7 @@ export default function InputForm(props) {
       values
     );
     console.log(requiredValues);
-    const signupUrl = "http://localhost:5000/api/signup";
+    const signupUrl = getBackendUrl()+"/api/signup";
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },

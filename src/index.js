@@ -7,9 +7,8 @@ import reportWebVitals from "./reportWebVitals";
 // import ProtectedRoute from "./components/ProtectedRoute";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import 'material-react-toastify/dist/ReactToastify.css';
 import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import 'react-toastify/dist/ReactToastify.css';
 import userReservations from "./data/Data";
 import AddNewFacility from "./pages/AddNewFacility";
 import BlogPost from "./pages/Blogging/BlogPost/BlogPost";

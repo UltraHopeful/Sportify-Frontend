@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { getBackendUrl } from "../../components/getUrl";
 // import verifiedImage from "./public/MailConfirmed.svg";
 const Main = () => {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ const Main = () => {
   const token = queryParams.get("token");
 
 
-  const verifyUrl = "http://localhost:5000/api/verify-account?token="+token;
+  const verifyUrl = getBackendUrl()+"/api/verify-account?token="+token;
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const requestOptions = {
     method: "GET"

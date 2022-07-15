@@ -22,6 +22,7 @@ import * as Yup from "yup";
 import { EditTextField, ReadOnlyTextField } from '../../components/TextfieldCustom';
 
 import { getUser } from '../../components/getLocalStorage';
+import { getBackendUrl } from '../../components/getUrl';
 
 export default function Main() {
   const [userDetails, setUserDetails] = useState([]);
@@ -95,7 +96,7 @@ export default function Main() {
 
   const editProfileRequest = (values) => {
     console.log(values);
-    const editProfileUrl = "http://localhost:5000/api/edit-profile";
+    const editProfileUrl = getBackendUrl()+"/api/edit-profile";
     let body = {}
     body['_id'] = getUser()._id;
     body['user'] = values;
