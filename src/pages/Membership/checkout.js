@@ -70,7 +70,7 @@ export default function Checkout() {
           url: url,
           data: reqBody
         }).then(res => {
-          navigate('/payment', {state: backendReqBody});
+          navigate('/payment', {state: {'membershipDetails': backendReqBody}});
         }).catch(err => {
             console.log(err);
         })
