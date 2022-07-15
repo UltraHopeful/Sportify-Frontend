@@ -1,5 +1,4 @@
-import React from 'react';
-import AppBar from '@mui/material/AppBar';
+import React, { useLayoutEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -13,7 +12,6 @@ import Typography from '@mui/material/Typography';
 import GlobalStyles from '@mui/material/GlobalStyles';
 import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
 import "./membership.css";
 import axios from 'axios'
 
@@ -72,7 +70,8 @@ function Pricing() {
 
   const navigate = useNavigate();
   const domain = 'https://sportify-backend-prd.herokuapp.com';
-  useEffect(() => {
+  const [render, setRender] = useState(false);
+  useLayoutEffect(() => {
     axios
       .get(domain+'/api/membership/purchase/user/'+userId)
       .then((res) => {
@@ -87,8 +86,16 @@ function Pricing() {
             cancelMembership();
           }
         }
+        else{
+          setRender(true);
+        }
       })
-  })
+
+}, []);
+
+  // useEffect(() => {
+    
+  // })
 
   const cancelMembership = () => {
     axios({
@@ -120,98 +127,99 @@ function Pricing() {
   }
 
   return (
-    <div className="backgroundClassPricing">
-        <React.Fragment>
-        <GlobalStyles styles={{ ul: { margin: 0, padding: 0, listStyle: 'none' } }} />
-        <CssBaseline />
-        <Container disableGutters maxWidth="sm" component="main" sx={{ pt: 8, pb: 6 }}>
-          <Typography
-            component="h1"
-            variant="h2"
-            align="center"
-            color="text.primary"
-            gutterBottom
-          >
-            Pricing
-          </Typography>
-          <Typography variant="h5" align="center" color="text.secondary" component="p">
-            Join Us!<br/>
-            Choose one of our exciting plans that suits you well!
-          </Typography>
-        </Container>
-        {/* End hero unit */}
-        <Container maxWidth="md" component="main">
-          <Grid container spacing={5} alignItems="flex-end">
-            {tiers.map((tier) => (
-              // Enterprise card is full width at sm breakpoint
-              <Grid
-                item
-                key={tier.title}
-                xs={12}
-                sm={6}
-              //   {tier.title === 'Enterprise' ? 12 : 6}
-                md={4}
-              >
-                <Card>
-                  <CardHeader
-                    title={tier.title}
-                    subheader={tier.subheader}
-                    titleTypographyProps={{ align: 'center' }}
-                    action={tier.title === 'Premium' ? <StarIcon /> : null}
-                    subheaderTypographyProps={{
-                      align: 'center',
-                    }}
-                    sx={{
-                      backgroundColor: (theme) =>
-                        theme.palette.mode === 'light'
-                          ? theme.palette.grey[200]
-                          : theme.palette.grey[700],
-                    }}
-                  />
-                  <CardContent>
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'baseline',
-                        mb: 2,
+    <React.Fragment>
+      {render === true ? (<div className="backgroundClassPricing">
+          <React.Fragment>
+          <GlobalStyles styles={{ ul: { margin: 0, padding: 0, listStyle: 'none' } }} />
+          <CssBaseline />
+          <Container disableGutters maxWidth="sm" component="main" sx={{ pt: 8, pb: 6 }}>
+            <Typography
+              component="h1"
+              variant="h2"
+              align="center"
+              color="text.primary"
+              gutterBottom
+            >
+              Pricing
+            </Typography>
+            <Typography variant="h5" align="center" color="text.secondary" component="p">
+              Join Us!<br/>
+              Choose one of our exciting plans that suits you well!
+            </Typography>
+          </Container>
+          <Container maxWidth="md" component="main">
+            <Grid container spacing={5} alignItems="flex-end">
+              {tiers.map((tier) => (
+                // Enterprise card is full width at sm breakpoint
+                <Grid
+                  item
+                  key={tier.title}
+                  xs={12}
+                  sm={6}
+                //   {tier.title === 'Enterprise' ? 12 : 6}
+                  md={4}
+                >
+                  <Card>
+                    <CardHeader
+                      title={tier.title}
+                      subheader={tier.subheader}
+                      titleTypographyProps={{ align: 'center' }}
+                      action={tier.title === 'Premium' ? <StarIcon /> : null}
+                      subheaderTypographyProps={{
+                        align: 'center',
                       }}
-                    >
-                      <Typography component="h2" variant="h3" color="text.primary">
-                        ${tier.price}
-                      </Typography>
-                      <Typography variant="h6" color="text.secondary">
-                        /mo
-                      </Typography>
-                    </Box>
-                    <ul>
-                      {tier.description.map((line) => (
-                        <Typography 
-                          
-                          component="li"
-                          variant="subtitle1"
-                          align="center"
-                          key={line}
-                        >
-                          {line}
+                      sx={{
+                        backgroundColor: (theme) =>
+                          theme.palette.mode === 'light'
+                            ? theme.palette.grey[200]
+                            : theme.palette.grey[700],
+                      }}
+                    />
+                    <CardContent>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'baseline',
+                          mb: 2,
+                        }}
+                      >
+                        <Typography component="h2" variant="h3" color="text.primary">
+                          ${tier.price}
                         </Typography>
-                      ))}
-                    </ul>
-                  </CardContent>
-                  <CardActions>
-                    <Button fullWidth variant={tier.buttonVariant} onClick={() =>moveToBilling(tier)}>
-                      {tier.buttonText} 
-                    </Button>
-                  </CardActions>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-        </Container>
-      </React.Fragment>
-    </div>
-    
-
+                        <Typography variant="h6" color="text.secondary">
+                          /mo
+                        </Typography>
+                      </Box>
+                      <ul>
+                        {tier.description.map((line) => (
+                          <Typography 
+                            
+                            component="li"
+                            variant="subtitle1"
+                            align="center"
+                            key={line}
+                          >
+                            {line}
+                          </Typography>
+                        ))}
+                      </ul>
+                    </CardContent>
+                    <CardActions>
+                      <Button fullWidth variant={tier.buttonVariant} onClick={() =>moveToBilling(tier)}>
+                        {tier.buttonText} 
+                      </Button>
+                    </CardActions>
+                  </Card>
+                </Grid>
+              ))}
+            </Grid>
+          </Container>
+        </React.Fragment>
+      </div> ) :
+        (<></>)
+      }
+    </React.Fragment>
   );
 }
 
