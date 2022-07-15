@@ -33,7 +33,6 @@ const CreateBlog = (props) => {
     const fileSelectHandler = (e) =>{
         const img = e.target.files[0];
         const reader = new FileReader(img);
-        reader.readAsDataURL(img);
         reader.onload = () => {
             setImage(reader.result);
         }
