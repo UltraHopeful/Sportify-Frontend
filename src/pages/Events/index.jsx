@@ -35,7 +35,7 @@ const EventsList = () => {
     </IconButton>);
 
     return (
-        <Container maxwidth='xl'>
+        <Container maxWidth='xl'>
             <Grid sx={{ my: '10px' }} container spacing={2}>
                 {displayList.map((event) => {
                     return (
