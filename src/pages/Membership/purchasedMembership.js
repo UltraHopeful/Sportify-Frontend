@@ -35,8 +35,17 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 
 export default function PurchasedMemberships() {
+    const domain = 'http://localhost:5000';
+    const queryParams = new URLSearchParams(window.location.search);
+    const [payment, setPayment] = React.useState(queryParams.get('payment'));
+    let initialTitle = payment=="success" ? "Payment Completed" : "Membership Cancelled";
+    let initialDesc = payment=="success" ? "Hurray! So excited to have you onboard with us. We have updated your membership status in Sportify." : "We are processing your cancellation request. You will receive refund in your bank account within next 5 business days.";
+    let initialSetOpen = payment=="success" ? true : false
+    const [open, setOpen] = React.useState(initialSetOpen);
+    const [dTitle, setDTitle] = React.useState(initialTitle);
+    const [dDesc, setDDesc] = React.useState(initialDesc);
 
-    const [open, setOpen] = React.useState(false);
+
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -44,17 +53,24 @@ export default function PurchasedMemberships() {
 
     const handleClose = () => {
         setOpen(false);
-        navigate('/membership');
+        if (payment != "success"){
+          navigate('/membership');
+        }
+        else{
+          setPayment("");
+        }
+          
     };
     const location = useLocation();
     const navigate = useNavigate();
-    // let rows = location.state.memberships;
-    let rows = [];
+    const [rows, setRows] = React.useState([]);
     const cancelMembership = () => {
         axios({
             method: 'put',
-            url: "http://localhost:5000/api/membership/cancel-purchase"
+            url: domain+"/api/membership/cancel-purchase"
           }).then(res => {
+            setDTitle("Membership Cancelled");
+            setDDesc("We are processing your cancellation request. You will receive refund in your bank account within next 5 business days.")
             setOpen(true);
             
           }).catch(err => {
@@ -64,31 +80,25 @@ export default function PurchasedMemberships() {
     
     
     React.useEffect(() => {
+      console.log(location.state);
       if(location.state != null){
-        rows = location.state.memberships;
+        setRows(location.state.memberships);
       }
       else{
         axios
-        .get('http://localhost:5000/api/membership/purchase/user/55153a8014829a865bbf700d')
+        .get(domain+'/api/membership/purchase/user/55153a8014829a865bbf700d')
         .then((res) => {
-          if(res.data.data.length >0) {
-            let current = new Date();
-            let endDate = res.data.data.end_date;
-            if(endDate>=current){
-              navigate('/purchased-membership', {state: {'memberships': res.data.data}});
-            }
-            else{
-              //cancel membership automatically
-              cancelMembership();
-            }
-          }
+          setRows(res.data.data);
         })
       }
+      console.log(rows);
         
     })
     
+    
   return (
     <div>
+                
         <Dialog
         open={open}
         onClose={handleClose}
@@ -96,11 +106,11 @@ export default function PurchasedMemberships() {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"Membership Cancelled"}
+          {dTitle}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            We are processing your cancellation request. You will receive refund in your bank account within next 5 business days.
+            {dDesc}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -144,8 +154,8 @@ export default function PurchasedMemberships() {
                     {row.id}
                 </StyledTableCell>
                 <StyledTableCell align="center">{row.plan_name}</StyledTableCell>
-                <StyledTableCell align="center">{row.start_date}</StyledTableCell>
-                <StyledTableCell align="center">{row.end_date}</StyledTableCell>
+                <StyledTableCell align="center">{Date(row.start_date)}</StyledTableCell>
+                <StyledTableCell align="center">{Date(row.end_date)}</StyledTableCell>
                 <StyledTableCell align="center">{row.status}</StyledTableCell>
                 </StyledTableRow>
             ))}
