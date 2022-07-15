@@ -61,6 +61,12 @@ export default function PurchasedMemberships() {
       axios.post(domain + '/api/membership/create-purchase', {
         backendReqBody,
         userId
+      }).then(createres =>{
+        axios
+        .get(domain + '/api/membership/purchase/user/'+userId)
+        .then((getres) => {
+          setRows(getres.data.data);
+        })
       })
       setPayment("");
     }
@@ -68,7 +74,8 @@ export default function PurchasedMemberships() {
   };
   const location = useLocation();
   const navigate = useNavigate();
-  const [rows, setRows] = React.useState([]);
+  const initRows = location.state!=null ? location.state.memberships : [];
+  const [rows, setRows] = React.useState(initRows);
   const cancelMembership = () => {
     axios({
       method: 'put',
@@ -82,21 +89,6 @@ export default function PurchasedMemberships() {
       console.log(err);
     })
   }
-
-
-  React.useEffect(() => {
-    if (location.state != null) {
-      setRows(location.state.memberships);
-    }
-    else {
-      axios
-        .get(domain + '/api/membership/purchase/user/'+userId)
-        .then((res) => {
-          setRows(res.data.data);
-        })
-    }
-
-  }, [location.state, userId])
 
 
   return (
