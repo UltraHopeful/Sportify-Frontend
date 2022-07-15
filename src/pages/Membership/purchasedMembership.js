@@ -48,7 +48,8 @@ export default function PurchasedMemberships() {
     };
     const location = useLocation();
     const navigate = useNavigate();
-    const rows = location.state.memberships;
+    // let rows = location.state.memberships;
+    let rows = [];
     const cancelMembership = () => {
         axios({
             method: 'put',
@@ -60,6 +61,31 @@ export default function PurchasedMemberships() {
               console.log(err);
           })
     }
+    
+    
+    React.useEffect(() => {
+      if(location.state != null){
+        rows = location.state.memberships;
+      }
+      else{
+        axios
+        .get('http://localhost:5000/api/membership/purchase/user/55153a8014829a865bbf700d')
+        .then((res) => {
+          if(res.data.data.length >0) {
+            let current = new Date();
+            let endDate = res.data.data.end_date;
+            if(endDate>=current){
+              navigate('/purchased-membership', {state: {'memberships': res.data.data}});
+            }
+            else{
+              //cancel membership automatically
+              cancelMembership();
+            }
+          }
+        })
+      }
+        
+    })
     
   return (
     <div>
