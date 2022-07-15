@@ -1,4 +1,6 @@
-import { Box, Button, ButtonBase, Card, CardActions, CardContent, CardMedia, Grid, Paper, Typography } from "@mui/material";
+//Author: Aravind Jayanthi (B00868943)
+//Email: ar687531@dal.ca
+import { Box, Button, Grid, Paper, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import './MyEvents.css'
 

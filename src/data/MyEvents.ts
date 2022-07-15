@@ -1,3 +1,5 @@
+/* Author: Aravind Jayanthi (B00868943)
+   Email: ar687531@dal.ca */
 import { MyEventInterface } from "./MyEventInterface";
 
 let eventsRegistered: MyEventInterface[] = [

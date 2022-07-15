@@ -1,3 +1,5 @@
+//Author: Aravind Jayanthi (B00868943)
+//Email: ar687531@dal.ca
 import { useNavigate, useParams } from "react-router-dom";
 import eventsRegistered from "../../data/MyEvents";
 import { Box, Button, Card, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, Stack, Typography } from "@mui/material";

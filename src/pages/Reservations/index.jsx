@@ -1,3 +1,5 @@
+//Author: Aravind Jayanthi (B00868943)
+//Email: ar687531@dal.ca
 import { Box, FormControl, MenuItem, Pagination, Select, Snackbar } from "@mui/material";
 import { useEffect, useState } from "react";
 import ReservationItem from "./ReservationItem";

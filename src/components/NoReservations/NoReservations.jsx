@@ -1,3 +1,5 @@
+/* Author: Aravind Jayanthi (B00868943)
+   Email: ar687531@dal.ca */
 import { Container, Paper, Typography } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import './NoReservations.css';

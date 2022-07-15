@@ -1,3 +1,5 @@
+//Author: Aravind Jayanthi (B00868943)
+//Email: ar687531@dal.ca
 import { Checkbox, Container, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, Snackbar, Stack, Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
