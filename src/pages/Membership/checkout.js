@@ -40,9 +40,11 @@ export default function Checkout() {
       alert("Please fill the details to proceed.");
     }
     else{
-      setActiveStep(activeStep + 1);
+      if (activeStep == 0) {
+        setActiveStep(activeStep + 1);
+      }
       if(activeStep===1){
-        var is_bill_existing = location.state.is_bill_existing;
+        let is_bill_existing = location.state.is_bill_existing;
         const reqBody = {
           first_name: firstName,
           last_name: lastName,
@@ -52,8 +54,8 @@ export default function Checkout() {
           country: country,
           state : state
         };
-        var url = "http://localhost:5000/api/membership/create-billing-info";
-        var method = "post"
+        let url = "http://localhost:5000/api/membership/create-billing-info";
+        let method = "post"
         if (is_bill_existing){
           url = 'http://localhost:5000/api/membership/update-billing-info/55153a8014829a865bbf700d';
           method = 'put'
@@ -84,7 +86,7 @@ export default function Checkout() {
         })
       }
     }
-  };
+  }
 
   const handleBack = () => {
     if(activeStep===0){
