@@ -65,13 +65,19 @@ const tiers = [
 
 function Pricing() {
   const navigate = useNavigate();
+  const domain = 'http://localhost:5000';
   useEffect(() => {
     axios
-      .get('http://localhost:5000/api/membership/purchase/user/55153a8014829a865bbf700d')
+      .get(domain+'/api/membership/purchase/user/55153a8014829a865bbf700d')
       .then((res) => {
+        console.log(res.data.data);
         if(res.data.data.length >0) {
           let current = new Date();
-          let endDate = res.data.data.end_date;
+          let endDate = new Date(res.data.data[0].end_date);
+          console.log("endDate")
+          console.log(endDate)
+          console.log("current")
+          console.log(current)
           if(endDate>=current){
             navigate('/purchased-membership', {state: {'memberships': res.data.data}});
           }
@@ -95,7 +101,7 @@ function Pricing() {
   const moveToBilling = (tier) => {
     axios({
       method: 'get',
-      url: 'http://localhost:5000/api/membership/billing-info/55153a8014829a865bbf700d'
+      url: domain+'/api/membership/billing-info/55153a8014829a865bbf700d'
     }).then(result => {
       console.log(result);
       var billing_info = {};

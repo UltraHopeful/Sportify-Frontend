@@ -31,6 +31,7 @@ const steps = ['Billing Information', 'Review your order'];
 const theme = createTheme();
 
 export default function Checkout() {
+  const domain = 'http://localhost:5000';
   const location = useLocation();
   const product = location.state.product;
   const [activeStep, setActiveStep] = React.useState(0);
@@ -55,10 +56,10 @@ export default function Checkout() {
           country: country,
           state : state
         };
-        let url = "http://localhost:5000/api/membership/create-billing-info";
+        let url = domain+"/api/membership/create-billing-info";
         let method = "post"
         if (is_bill_existing){
-          url = 'http://localhost:5000/api/membership/update-billing-info/55153a8014829a865bbf700d';
+          url = domain+'/api/membership/update-billing-info/55153a8014829a865bbf700d';
           method = 'put'
         }
         let backendReqBody= {
@@ -75,7 +76,7 @@ export default function Checkout() {
           url: url,
           data: reqBody
         }).then(res => {
-          axios.post('http://localhost:5000/api/stripe/create-checkout-session',{
+          axios.post(domain+'/api/stripe/create-checkout-session',{
             state: {'membershipDetails': backendReqBody}
           }).then((response)=>{
             if(response.data.url){
