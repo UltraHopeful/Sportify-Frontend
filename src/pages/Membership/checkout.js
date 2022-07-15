@@ -65,15 +65,15 @@ export default function Checkout() {
         }
         console.log(backendReqBody);
 
-        // axios({
-        //   method: method,
-        //   url: url,
-        //   data: reqBody
-        // }).then(res => {
-        //   navigate('/payment', {state: backendReqBody});
-        // }).catch(err => {
-        //     console.log(err);
-        // })
+        axios({
+          method: method,
+          url: url,
+          data: reqBody
+        }).then(res => {
+          navigate('/payment', {state: backendReqBody});
+        }).catch(err => {
+            console.log(err);
+        })
       }
     }
   };
