@@ -61,15 +61,15 @@ export default function InputForm(props) {
             return response.json();
           })
           .then((result) => {
-            if (statusCode === 500 || statusCode === 401) {
-              notify("error", result.message);
-            } else {
+            if (statusCode === 200) {
               console.log(result);
               localStorage.setItem('user',JSON.stringify(result.user));
               localStorage.setItem('access-token',result.accessToken);
               localStorage.setItem('isLogin',true);
               notify("success", result.message);
               navigate("/");
+            } else {
+              notify("error", result.message);
             }
           })
           .catch((error) => console.log("error", error));
