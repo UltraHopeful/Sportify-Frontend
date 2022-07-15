@@ -36,10 +36,13 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 export default function PurchasedMemberships() {
     const domain = 'http://localhost:5000';
+    const backendReqBody = localStorage.getItem("backendReqBody");
+    // console.log('PurchasedMemberships')
+    // console.log(backendReqBody)
     const queryParams = new URLSearchParams(window.location.search);
     const [payment, setPayment] = React.useState(queryParams.get('payment'));
     let initialTitle = payment=="success" ? "Payment Completed" : "Membership Cancelled";
-    let initialDesc = payment=="success" ? "Hurray! So excited to have you onboard with us. We have updated your membership status in Sportify." : "We are processing your cancellation request. You will receive refund in your bank account within next 5 business days.";
+    let initialDesc = payment=="success" ? "Hurray! So excited to have you onboard with us. We have updated your membership status in Sportify.": "We are processing your cancellation request. You will receive refund in your bank account within next 5 business days.";
     let initialSetOpen = payment=="success" ? true : false
     const [open, setOpen] = React.useState(initialSetOpen);
     const [dTitle, setDTitle] = React.useState(initialTitle);
@@ -53,6 +56,9 @@ export default function PurchasedMemberships() {
 
     const handleClose = () => {
         setOpen(false);
+        axios.post(domain+'/api/membership/create-purchase',{
+          backendReqBody
+        })
         if (payment != "success"){
           navigate('/membership');
         }
