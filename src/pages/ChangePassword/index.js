@@ -1,14 +1,13 @@
-import React from 'react';
-import {Formik} from "formik";
-import {ChangePasswordForm} from "./changePasswordForm";
-import * as Yup from "yup";
-import {Card, Divider, Grid, Hidden, Link} from "@mui/material";
-import Typography from "@mui/material/Typography";
+import { Card, Grid, Link } from "@mui/material";
 import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import { Formik } from "formik";
+import React from 'react';
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import * as Yup from "yup";
 import Logo from "../../assets/images/Sportify.png";
-import {toast} from "material-react-toastify";
-import 'material-react-toastify/dist/ReactToastify.css';
-import {useNavigate} from "react-router-dom";
+import { ChangePasswordForm } from "./changePasswordForm";
 
 // cite : https://dev.to/finallynero/react-form-using-formik-material-ui-and-yup-2e8h
 // I used some of the code from article, but I change as per my preferences

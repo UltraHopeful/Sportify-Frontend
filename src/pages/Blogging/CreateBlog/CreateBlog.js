@@ -35,6 +35,7 @@ const CreateBlog = (props) => {
         const reader = new FileReader(img);
         reader.onload = () => {
             setImage(reader.result);
+            console.log(reader.result);
         }
     }
 

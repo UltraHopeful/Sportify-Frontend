@@ -1,3 +1,5 @@
+//Author: Aravind Jayanthi (B00868943)
+//Email: ar687531@dal.ca
 import { Box, Button, Card, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, IconButton, Snackbar, Stack, Typography } from "@mui/material";
 import axios from "axios";
 import { SyntheticEvent, useEffect, useState } from "react";
@@ -5,7 +7,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import Loader from "../../components/Loader";
 import MuiAlert from '@mui/material/Alert';
 import CloseIcon from '@mui/icons-material/Close';
-// import { ReservationInterface } from "../../data/ReservationInterface";
 import './ReservationDetails.css';
 
 const primaryColor = '#326DD9';

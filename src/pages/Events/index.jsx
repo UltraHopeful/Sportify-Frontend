@@ -1,3 +1,5 @@
+//Author: Aravind Jayanthi (B00868943)
+//Email: ar687531@dal.ca
 import { Container, Grid, Snackbar } from "@mui/material";
 import EventItem from "../../components/EventItem";
 import availableEvents from "../../data/Events";
@@ -33,7 +35,7 @@ const EventsList = () => {
     </IconButton>);
 
     return (
-        <Container maxwidth='xl'>
+        <Container maxWidth='xl'>
             <Grid sx={{ my: '10px' }} container spacing={2}>
                 {displayList.map((event) => {
                     return (

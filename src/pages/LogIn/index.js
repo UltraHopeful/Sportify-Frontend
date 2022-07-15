@@ -1,15 +1,14 @@
-import React from 'react';
-import {Formik} from "formik";
-import {LoginForm} from "./loginForm";
-import * as Yup from "yup";
-import {Card, Grid, Link} from "@mui/material";
-import Typography from "@mui/material/Typography";
+import { Card, Grid, Link } from "@mui/material";
 import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import { Formik } from "formik";
+import React from 'react';
+import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
+import * as Yup from "yup";
 import Logo from "../../assets/images/Sportify.png";
-import {ToastContainer,toast} from 'material-react-toastify';
-import 'material-react-toastify/dist/ReactToastify.css';
-import {useNavigate} from "react-router-dom";
-
+import { getBackendUrl } from '../../components/getUrl';
+import { LoginForm } from "./loginForm";
 
 // cite : https://dev.to/finallynero/react-form-using-formik-material-ui-and-yup-2e8h
 // I used some of the code from article, but I change as per my preferences
@@ -27,14 +26,55 @@ const validations = Yup.object({
         .max(25, "Maximum 25 characters allowed for password")
         .required("Password is required")
 });
-
-
+  
 export default function InputForm(props) {
     const navigate = useNavigate();
+    
+    const notify = (type, msg) => {
+        if(type === 'success'){
+            toast.success(
+              msg,
+              { position: toast.POSITION.TOP_RIGHT }
+            );
+            
+        }else if(type === 'error'){
+            toast.error(
+              msg,
+              { position: toast.POSITION.TOP_RIGHT }
+            );
+    
+        }
+      };
+    
+    const signin = (values) => {
+        console.log(values);
+        const signinUrl = getBackendUrl()+"/api/signin";
+        const requestOptions = {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(values),
+        };
+        let statusCode;
+        fetch(signinUrl, requestOptions)
+          .then((response) => {
+            statusCode = response.status;
+            return response.json();
+          })
+          .then((result) => {
+            if (statusCode === 200) {
+              console.log(result);
+              localStorage.setItem('user',JSON.stringify(result.user));
+              localStorage.setItem('access-token',result.accessToken);
+              localStorage.setItem('isLogin',true);
+              notify("success", result.message);
+              navigate("/");
+            } else {
+              notify("error", result.message);
+            }
+          })
+          .catch((error) => console.log("error", error));
+      };
 
-    const notify = () => {
-        toast.success("Login Successfully",{position: toast.POSITION.TOP_RIGHT});
-    }
     const values = {email: "", password: ""};
 
     return (
@@ -72,9 +112,8 @@ export default function InputForm(props) {
                                 validationSchema={validations}
                                 onSubmit={(values) => {
                                     // alert("Login Successfully");
+                                    signin(values);
                                     console.log(values);
-                                    navigate('/');
-                                    notify();
                                 }}>
                             {(props) => (<LoginForm {...props} />)}
                         </Formik>
@@ -94,7 +133,6 @@ export default function InputForm(props) {
                         </Box>
                     </Card>
                 </Grid>
-                <ToastContainer />
             </Grid>
         </React.Fragment>
     );

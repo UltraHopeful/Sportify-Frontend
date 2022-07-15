@@ -7,7 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
-import renderHTML from 'react-render-html';
+const parse = require('html-react-parser');
 
 /**
 * @author
@@ -31,7 +31,6 @@ const Blogs = (props) => {
             setData(response.data.data);
             console.log(response.data.data[0].shortContent);
           });
-       // setData(require('../../../blogs'));
     }, [])
     return (
         <Grid>
@@ -77,7 +76,7 @@ const Blogs = (props) => {
                                     {display.blogTitle}
                                 </Typography>
                                 <Typography variant="body2" color="text.secondary">
-                                 {renderHTML(display.shortContent)}
+                                 {parse(display.shortContent)}
                                 </Typography>
                             </CardContent>
                             

@@ -1,3 +1,5 @@
+/* Author: Aravind Jayanthi (B00868943)
+   Email: ar687531@dal.ca */
 import { Button, Card, CardActions, CardHeader, CardMedia, Grid } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { EventInterface } from "../data/EventInterface";

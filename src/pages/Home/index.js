@@ -1,7 +1,6 @@
 import React from "react";
 import {Accordion, AccordionDetails, AccordionSummary, Box, Grid, Typography} from "@mui/material";
-import {ToastContainer} from "material-react-toastify";
-import 'material-react-toastify/dist/ReactToastify.css';
+import {ToastContainer} from "react-toastify";
 
 function ExpandMoreIcon() {
     return null;
