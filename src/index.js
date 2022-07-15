@@ -15,7 +15,7 @@ import Checkout from './pages/Membership/checkout';
 import { ReservationDetails } from './pages/ReservationDetails';
 import MembershipPlan from "./pages/Payment/membershipPlan";
 import PurchasedMemberships from "./pages/Membership/purchasedMembership";
-import Products from "./pages/Merchandise/products";
+import Products from "./pages/Merchandise/displayProducts";
 import CreateBlog from './pages/Blogging/CreateBlog/CreateBlog';
 import EditBlog from './pages/Blogging/EditBlog/EditBlog';
 import BlogPost from './pages/Blogging/BlogPost/BlogPost';
