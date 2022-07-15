@@ -1,81 +1,139 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import { BrowserRouter, Route, Routes, } from 'react-router-dom';
+import ReactDOM from "react-dom/client";
+import { Outlet } from "react-router";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import "./index.css";
+import reportWebVitals from "./reportWebVitals";
 
-import Home from "./pages/Home/index"
-import ReservationList from "./pages/Reservations";
+// import ProtectedRoute from "./components/ProtectedRoute";
+
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import userReservations from "./data/Data";
-import LogIn from "./pages/LogIn/index"
-import Signup from "./pages/Signup/index"
-import Pricing from './pages/Membership/pricing';
-import Checkout from './pages/Membership/checkout';
-import { ReservationDetails } from './pages/ReservationDetails';
-import MembershipPlan from "./pages/Payment/membershipPlan";
+import AddNewFacility from "./pages/AddNewFacility";
+import BlogPost from "./pages/Blogging/BlogPost/BlogPost";
+import Blogs from "./pages/Blogging/Blogs/Blogs";
+import CreateBlog from "./pages/Blogging/CreateBlog/CreateBlog";
+import EditBlog from "./pages/Blogging/EditBlog/EditBlog";
+import YourBlogs from "./pages/Blogging/YourBlogs/YourBlogs";
+import ChangePassword from "./pages/ChangePassword/index";
+import { EventDetails } from "./pages/EventDetails";
+import EventsList from "./pages/Events/index";
+import Facilities from "./pages/Facilities";
+import FacilityDetails from "./pages/FacilityDetails";
+import ForgotPassword from "./pages/ForgotPassword/index";
+import Home from "./pages/Home/index";
+import LogIn from "./pages/LogIn/index";
+import Checkout from "./pages/Membership/checkout";
+import Pricing from "./pages/Membership/pricing";
 import PurchasedMemberships from "./pages/Membership/purchasedMembership";
 import Products from "./pages/Merchandise/products";
-import CreateBlog from './pages/Blogging/CreateBlog/CreateBlog';
-import EditBlog from './pages/Blogging/EditBlog/EditBlog';
-import BlogPost from './pages/Blogging/BlogPost/BlogPost';
-import YourBlogs from './pages/Blogging/YourBlogs/YourBlogs';
-import Facilities from './pages/Facilities';
-import FacilityDetails from './pages/FacilityDetails';
-import Blogs from './pages/Blogging/Blogs/Blogs';
-import AfterPayment from './pages/Payment/afterPayment';
-import EventsList from './pages/Events/index';
-import { EventDetails } from './pages/EventDetails';
-import MyEvents from './pages/MyEvents/MyEvents';
-import MyEventDetails from './pages/MyEventDetails';
-import ChangePassword from "./pages/ChangePassword/index";
-import ForgotPassword from "./pages/ForgotPassword/index";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { ToastContainer } from "material-react-toastify";
-import Profile from './pages/Profile/index';
-import 'material-react-toastify/dist/ReactToastify.css';
-import AppSearch from './pages/Search/search';
-import AddNewFacility from './pages/AddNewFacility';
+import MyEventDetails from "./pages/MyEventDetails";
+import MyEvents from "./pages/MyEvents/MyEvents";
+import AfterPayment from "./pages/Payment/afterPayment";
+import MembershipPlan from "./pages/Payment/membershipPlan";
+import Profile from "./pages/Profile/index";
+import { ReservationDetails } from "./pages/ReservationDetails";
+import ReservationList from "./pages/Reservations";
+import AppSearch from "./pages/Search/search";
+import Signup from "./pages/Signup/index";
+import VerifyAccount from "./pages/VerifyAccount/index";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+import NoHeader from "./components/NoHeader";
+import WithHeader from "./components/WithHeader";
+
+import { getUser } from "./components/getLocalStorage";
+const root = ReactDOM.createRoot(document.getElementById("root"));
 
 const theme = createTheme({
   typography: {
-    fontFamily: [
-      'Montserrat',
-      'sans-serif',
-    ].join(','),
+    fontFamily: ["Montserrat", "sans-serif"].join(","),
   },
   palette: {
-    primary: { main: '#326dd9' },
+    primary: { main: "#326dd9" },
   },
 });
+
+const ProtectedRoute = ({ isAllow, redirectPath = "/login", children }) => {
+  if (!isAllow()) {
+    toast.error(
+      "You have to login first to see the page.",
+      { position: toast.POSITION.TOP_RIGHT }
+    );
+    return <Navigate to={redirectPath} replace />;
+  }
+  console.log(children);
+  return children ? children : <Outlet />;
+};
+
+function checkUser() {
+  const isLogin = localStorage.getItem("isLogin");
+  if (getUser() != undefined && getUser() != null) {
+    const profile = getUser().profile;
+    console.log(profile);
+    // console.log("check user");
+    if (isLogin === "true" && profile === "user") {
+      // console.log("user true");
+      return true;
+    }
+  } else {
+    console.log("user false");
+    return false;
+  }
+
+}
+
+function checkAdmin() {
+  const isLogin = localStorage.getItem("isLogin");
+  if (getUser() != undefined && getUser() != null) {
+    const profile = getUser().profile;
+    console.log(profile);
+    // console.log("check user");
+    if (isLogin === "true" && profile === "admin") {
+      // console.log("user true");
+      return true;
+    }
+  } else {
+    console.log("user false");
+    return false;
+  }
+}
 
 // cite : https://reactrouter.com/docs/en/v6/components/routes
 // I used some of the code for routing
 root.render(
-    <React.StrictMode>
-        <ThemeProvider theme={theme}>
-            <BrowserRouter>
-            <Routes>
+  <ThemeProvider theme={theme}>
+    <BrowserRouter>
+      <Routes>
         {/* todo add path only which needs header */}
-        <Route path="/" element={<App />}>
-          <Route index element={<Home />} />
+        <Route element={<WithHeader />}>
+          <Route path="/" element={<Home />} />
           <Route path="store" element={<Products />} />
-          <Route path='my-reservations' element={<ReservationList reservations={userReservations} />} />
+          <Route element={<ProtectedRoute isAllow={checkUser} />}>
+            <Route
+              path="my-reservations"
+              element={<ReservationList reservations={userReservations} />}
+            />
+            <Route path="facility/:resourceId" element={<FacilityDetails />} />
+          </Route>
           <Route path="facility" element={<Facilities />} />
-          <Route path="facility/add-new" element={<AddNewFacility/>}/>
-          <Route path='facility/:resourceId' element={<FacilityDetails />} />
-          <Route path='my-reservations/:reservationId' element={<ReservationDetails />} />
+          <Route path="facility/add-new" element={<AddNewFacility />} />
+          <Route
+            path="my-reservations/:reservationId"
+            element={<ReservationDetails />}
+          />
           <Route path="store" element={<Home />} />
-            <Route path="my-account" element={<Profile/>} />
+          <Route path="my-account" element={<Profile />} />
           <Route path="membership" element={<Pricing />} />
-          <Route path="purchased-membership" element={<PurchasedMemberships />} />
+          <Route
+            path="purchased-membership"
+            element={<PurchasedMemberships />}
+          />
           <Route path="membership/checkout" element={<Checkout />} />
           <Route path="events" element={<EventsList />} />
           <Route path="events/:eventId" element={<EventDetails />} />
-          <Route path='my-events' element={<MyEvents />} />
-          <Route path='my-events/:bookingId' element={<MyEventDetails />} />
+          <Route path="my-events" element={<MyEvents />} />
+          <Route path="my-events/:bookingId" element={<MyEventDetails />} />
           <Route path="rewards" element={<Home />} />
           <Route path="payment" element={<MembershipPlan />} />
           <Route path="afterpayment" element={<AfterPayment />} />
@@ -87,15 +145,17 @@ root.render(
           <Route path="search" element={<AppSearch />} />
         </Route>
         {/* todo add path only which doesn't need header */}
-        <Route path="/login" element={<LogIn />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="forgot-password" element={<ForgotPassword />} />
-        <Route path="change-password" element={<ChangePassword />} />
+        <Route element={<NoHeader />}>
+          <Route path="/login" element={<LogIn />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/change-password" element={<ChangePassword />} />
+          <Route path="/verify-account" element={<VerifyAccount />} />
+        </Route>
       </Routes>
-                <ToastContainer/>
-            </BrowserRouter>
-        </ThemeProvider>
-    </React.StrictMode>
+      <ToastContainer />
+    </BrowserRouter>
+  </ThemeProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function
