@@ -36,7 +36,16 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 export default function PurchasedMemberships() {
     const domain = 'http://localhost:5000';
-    const [open, setOpen] = React.useState(false);
+    const queryParams = new URLSearchParams(window.location.search);
+    const [payment, setPayment] = React.useState(queryParams.get('payment'));
+    let initialTitle = payment=="success" ? "Payment Completed" : "Membership Cancelled";
+    let initialDesc = payment=="success" ? "Hurray! So excited to have you onboard with us. We have updated your membership status in Sportify." : "We are processing your cancellation request. You will receive refund in your bank account within next 5 business days.";
+    let initialSetOpen = payment=="success" ? true : false
+    const [open, setOpen] = React.useState(initialSetOpen);
+    const [dTitle, setDTitle] = React.useState(initialTitle);
+    const [dDesc, setDDesc] = React.useState(initialDesc);
+
+
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -44,17 +53,24 @@ export default function PurchasedMemberships() {
 
     const handleClose = () => {
         setOpen(false);
-        navigate('/membership');
+        if (payment != "success"){
+          navigate('/membership');
+        }
+        else{
+          setPayment("");
+        }
+          
     };
     const location = useLocation();
     const navigate = useNavigate();
-    // let rows = location.state.memberships;
     const [rows, setRows] = React.useState([]);
     const cancelMembership = () => {
         axios({
             method: 'put',
             url: domain+"/api/membership/cancel-purchase"
           }).then(res => {
+            setDTitle("Membership Cancelled");
+            setDDesc("We are processing your cancellation request. You will receive refund in your bank account within next 5 business days.")
             setOpen(true);
             
           }).catch(err => {
@@ -82,6 +98,7 @@ export default function PurchasedMemberships() {
     
   return (
     <div>
+                
         <Dialog
         open={open}
         onClose={handleClose}
@@ -89,11 +106,11 @@ export default function PurchasedMemberships() {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"Membership Cancelled"}
+          {dTitle}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            We are processing your cancellation request. You will receive refund in your bank account within next 5 business days.
+            {dDesc}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
