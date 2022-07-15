@@ -53,14 +53,15 @@ export default function PurchasedMemberships() {
 
   const handleClose = () => {
     setOpen(false);
-    axios.post(domain + '/api/membership/create-purchase', {
-      backendReqBody,
-      userId
-    })
+    
     if (payment !== "success") {
       navigate('/membership');
     }
     else {
+      axios.post(domain + '/api/membership/create-purchase', {
+        backendReqBody,
+        userId
+      })
       setPayment("");
     }
 
