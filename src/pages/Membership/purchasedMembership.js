@@ -35,7 +35,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 
 export default function PurchasedMemberships() {
-    const domain = 'http://localhost:5000';
+    const domain = 'https://sportify-backend-prd.herokuapp.com';
     const queryParams = new URLSearchParams(window.location.search);
     const [payment, setPayment] = React.useState(queryParams.get('payment'));
     let initialTitle = payment=="success" ? "Payment Completed" : "Membership Cancelled";
