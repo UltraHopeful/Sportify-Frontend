@@ -19,6 +19,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 import Logo from "../assets/images/Sportify.png";
+import { getUser } from "./getLocalStorage";
 
 const pages = ["Membership", "Facility", "Events", "Blogs", "Store"];
 // const settings = ['My Account', 'Logout'];
@@ -26,23 +27,32 @@ const pages = ["Membership", "Facility", "Events", "Blogs", "Store"];
 const primaryColor = "#326DD9";
 const secondaryColor = "#234C99";
 
-const profileDropdownList = [
-  {
-    displayName: "My Account",
-    redirectTo: "my-account",
-  },
-  {
-    displayName: "My Events",
-    redirectTo: "my-events",
-  },
-  {
-    displayName: "My Reservations",
-    redirectTo: "my-reservations",
-  },
-];
+const profileDropdownList = {
+  'admin': [
+    {
+      displayName: "My Account",
+      redirectTo: "my-account",
+    },
+  ],
+  'user': [
+    {
+      displayName: "My Account",
+      redirectTo: "my-account",
+    },
+    {
+      displayName: "My Events",
+      redirectTo: "my-events",
+    },
+    {
+      displayName: "My Reservations",
+      redirectTo: "my-reservations",
+    },
+  ]
+};
 
 const Header = () => {
   const [isLogin, setIsLogin] = useState(false);
+  const [loggedInUserRole] = useState(getUser()?.profile);
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -248,7 +258,7 @@ const Header = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {profileDropdownList.map((setting) => (
+              {profileDropdownList[loggedInUserRole].map((setting) => (
                 <MenuItem
                   key={setting.displayName}
                   onClick={handleCloseUserMenu}
