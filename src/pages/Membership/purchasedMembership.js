@@ -35,7 +35,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 
 export default function PurchasedMemberships() {
-
+    const domain = 'http://localhost:5000';
     const [open, setOpen] = React.useState(false);
 
     const handleClickOpen = () => {
@@ -49,11 +49,11 @@ export default function PurchasedMemberships() {
     const location = useLocation();
     const navigate = useNavigate();
     // let rows = location.state.memberships;
-    let rows = [];
+    const [rows, setRows] = React.useState([]);
     const cancelMembership = () => {
         axios({
             method: 'put',
-            url: "http://localhost:5000/api/membership/cancel-purchase"
+            url: domain+"/api/membership/cancel-purchase"
           }).then(res => {
             setOpen(true);
             
@@ -64,28 +64,21 @@ export default function PurchasedMemberships() {
     
     
     React.useEffect(() => {
+      console.log(location.state);
       if(location.state != null){
-        rows = location.state.memberships;
+        setRows(location.state.memberships);
       }
       else{
         axios
-        .get('http://localhost:5000/api/membership/purchase/user/55153a8014829a865bbf700d')
+        .get(domain+'/api/membership/purchase/user/55153a8014829a865bbf700d')
         .then((res) => {
-          if(res.data.data.length >0) {
-            let current = new Date();
-            let endDate = res.data.data.end_date;
-            if(endDate>=current){
-              navigate('/purchased-membership', {state: {'memberships': res.data.data}});
-            }
-            else{
-              //cancel membership automatically
-              cancelMembership();
-            }
-          }
+          setRows(res.data.data);
         })
       }
+      console.log(rows);
         
     })
+    
     
   return (
     <div>
@@ -144,8 +137,8 @@ export default function PurchasedMemberships() {
                     {row.id}
                 </StyledTableCell>
                 <StyledTableCell align="center">{row.plan_name}</StyledTableCell>
-                <StyledTableCell align="center">{row.start_date}</StyledTableCell>
-                <StyledTableCell align="center">{row.end_date}</StyledTableCell>
+                <StyledTableCell align="center">{Date(row.start_date)}</StyledTableCell>
+                <StyledTableCell align="center">{Date(row.end_date)}</StyledTableCell>
                 <StyledTableCell align="center">{row.status}</StyledTableCell>
                 </StyledTableRow>
             ))}
