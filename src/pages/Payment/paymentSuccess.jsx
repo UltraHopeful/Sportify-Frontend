@@ -3,7 +3,7 @@ import {Grid,Card,CardContent,Typography,CardActions,Button} from '@mui/material
 
 import { useNavigate } from 'react-router-dom';
 
-function AfterPayment() {
+function PaymentSuccess() {
 
 const navigate = useNavigate();
 
@@ -43,4 +43,4 @@ const handleClick =() => {
   )
 }
 
-export default AfterPayment;
+export default PaymentSuccess;

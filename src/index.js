@@ -23,7 +23,7 @@ import YourBlogs from './pages/Blogging/YourBlogs/YourBlogs';
 import Facilities from './pages/Facilities';
 import FacilityDetails from './pages/FacilityDetails';
 import Blogs from './pages/Blogging/Blogs/Blogs';
-import AfterPayment from './pages/Payment/afterPayment';
+import PaymentSuccess from './pages/Payment/paymentSuccess';
 import EventsList from './pages/Events/index';
 import { EventDetails } from './pages/EventDetails';
 import MyEvents from './pages/MyEvents/MyEvents';
@@ -78,7 +78,7 @@ root.render(
           <Route path='my-events/:bookingId' element={<MyEventDetails />} />
           <Route path="rewards" element={<Home />} />
           <Route path="payment" element={<MembershipPlan />} />
-          <Route path="afterpayment" element={<AfterPayment />} />
+          <Route path="payment-success" element={<PaymentSuccess />} />
           <Route path="blogs" element={<Blogs />} />
           <Route path="createblog" element={<CreateBlog />} />
           <Route path="editblogs/:id" element={<EditBlog />} />
