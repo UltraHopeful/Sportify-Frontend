@@ -77,29 +77,22 @@ export default function PurchasedMemberships() {
               console.log(err);
           })
     }
-    
-    
-    React.useEffect(() => {
-      console.log(location.state);
-      if(location.state != null){
-        setRows(location.state.memberships);
-      }
-      else{
-        axios
-        .get(domain+'/api/membership/purchase/user/55153a8014829a865bbf700d')
+    else {
+      axios
+        .get(domain + '/api/membership/purchase/user/55153a8014829a865bbf700d')
         .then((res) => {
           setRows(res.data.data);
         })
-      }
-      console.log(rows);
-        
-    })
-    
-    
+    }
+    console.log(rows);
+
+  })
+
+
   return (
     <div>
-                
-        <Dialog
+
+      <Dialog
         open={open}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
@@ -115,56 +108,56 @@ export default function PurchasedMemberships() {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Close</Button>
-          
+
         </DialogActions>
       </Dialog>
 
-        <div>
-            <br/>
-            <div className='divDisplay'>
-                <Typography sx={{ m: 2 }} variant="h5" component="h2">
-                    Active Membership
-                </Typography>
-            </div>
-            <div className='divDisplay rightDisplay'>
-                <Button sx={{ m: 2 }} variant="outlined" color="error" onClick={cancelMembership}>
-                    Cancel Membership
-                </Button>
-            </div>
-            
-            <br/>
+      <div>
+        <br />
+        <div className='divDisplay'>
+          <Typography sx={{ m: 2 }} variant="h5" component="h2">
+            Active Membership
+          </Typography>
         </div>
-        
+        <div className='divDisplay rightDisplay'>
+          <Button sx={{ m: 2 }} variant="outlined" color="error" onClick={cancelMembership}>
+            Cancel Membership
+          </Button>
+        </div>
 
-        <TableContainer component={Paper}>
+        <br />
+      </div>
+
+
+      <TableContainer component={Paper}>
         <Table aria-label="customized table">
-            <TableHead>
+          <TableHead>
             <TableRow>
-                <StyledTableCell>Booking ID</StyledTableCell>
-                <StyledTableCell align="center">Membership Plan</StyledTableCell>
-                <StyledTableCell align="center">Start Date</StyledTableCell>
-                <StyledTableCell align="center">End Date</StyledTableCell>
-                <StyledTableCell align="center">Status</StyledTableCell>
+              <StyledTableCell>Booking ID</StyledTableCell>
+              <StyledTableCell align="center">Membership Plan</StyledTableCell>
+              <StyledTableCell align="center">Start Date</StyledTableCell>
+              <StyledTableCell align="center">End Date</StyledTableCell>
+              <StyledTableCell align="center">Status</StyledTableCell>
             </TableRow>
-            </TableHead>
-            <TableBody>
+          </TableHead>
+          <TableBody>
             {rows.map((row) => (
-                <StyledTableRow key={row.id}>
+              <StyledTableRow key={row.id}>
                 <StyledTableCell component="th" scope="row">
-                    {row.id}
+                  {row.id}
                 </StyledTableCell>
                 <StyledTableCell align="center">{row.plan_name}</StyledTableCell>
                 <StyledTableCell align="center">{Date(row.start_date)}</StyledTableCell>
                 <StyledTableCell align="center">{Date(row.end_date)}</StyledTableCell>
                 <StyledTableCell align="center">{row.status}</StyledTableCell>
-                </StyledTableRow>
+              </StyledTableRow>
             ))}
-            </TableBody>
+          </TableBody>
         </Table>
-        </TableContainer>
+      </TableContainer>
 
     </div>
 
-    
+
   );
 }
