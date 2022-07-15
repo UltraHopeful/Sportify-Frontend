@@ -69,11 +69,12 @@ export default function Checkout() {
           'end_date': endDate,
           'status': 'Ongoing'
         }]
+        localStorage.setItem("user", '{"_id":"62d125c24709b75db510f79c","firstName":"Soham","lastName":"Patel","email":"sohupatel8828@gmail.com","contactNo":"+1 902-354-4536","address":"","profile":"user"}')
         const rawUser = localStorage.getItem("user")
         const user = JSON.parse(rawUser)
         const userId = user._id;
         //console.log(backendReqBody);
-        localStorage.setItem('backendReqBody', backendReqBody)
+        localStorage.setItem('backendReqBody', JSON.stringify(backendReqBody))
         axios({
           method: method,
           url: url,
