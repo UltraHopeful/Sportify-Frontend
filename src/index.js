@@ -109,7 +109,7 @@ root.render(
         <Route element={<WithHeader />}>
           <Route path="/" element={<Home />} />
           <Route path="store" element={<Products />} />
-          <Route element={<ProtectedRoute isAllow={checkUser} />}>
+          <Route element={<ProtectedRoute isAllow={() => checkUser() || checkAdmin()} />}>
             <Route
               path="my-reservations"
               element={<ReservationList reservations={userReservations} />}
