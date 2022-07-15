@@ -65,7 +65,7 @@ const tiers = [
 
 function Pricing() {
   const navigate = useNavigate();
-  const domain = 'https://sportify-backend-prd.herokuapp.com';
+  const domain = 'http://localhost:5000';
   useEffect(() => {
     axios
       .get(domain+'/api/membership/purchase/user/55153a8014829a865bbf700d')
@@ -92,7 +92,7 @@ function Pricing() {
   const cancelMembership = () => {
     axios({
         method: 'put',
-        url: domain+"/api/membership/cancel-purchase"
+        url: "http://localhost:5000/api/membership/cancel-purchase"
       }).catch(err => {
           console.log(err);
       })

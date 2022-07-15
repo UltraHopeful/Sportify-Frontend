@@ -31,7 +31,7 @@ const steps = ['Billing Information', 'Review your order'];
 const theme = createTheme();
 
 export default function Checkout() {
-  const domain = 'https://sportify-backend-prd.herokuapp.com';
+  const domain = 'http://localhost:5000';
   const location = useLocation();
   const product = location.state.product;
   const [activeStep, setActiveStep] = React.useState(0);
