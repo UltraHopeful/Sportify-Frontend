@@ -142,7 +142,7 @@ const AddNewFacility = () => {
         };
         axios({
             method: 'post',
-            url: 'http://localhost:5000/facility',
+            url: 'https://sportify-backend-prd.herokuapp.com/facility',
             data: reqBody
         }).then(res => {
             navigate('/facility', { state: { snackbar: true, snackbarMsg: 'Successfuly added the facility' } })
