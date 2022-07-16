@@ -1,3 +1,5 @@
+//Author: Aravind Jayanthi (B00868943)
+//Email: ar687531@dal.ca
 import { Box, Button, Card, Checkbox, Divider, FormControlLabel, Grid, IconButton, InputLabel, MenuItem, Select, SelectChangeEvent, Snackbar, Stack, TextField, Typography } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { useEffect, useState } from "react";
@@ -13,6 +15,7 @@ import Loader from "../../components/Loader";
 import { AvailabilitySlots } from "../../data/AvailaibilitySlots";
 import CloseIcon from '@mui/icons-material/Close';
 import MuiAlert from '@mui/material/Alert';
+import { getUser } from "../../components/getLocalStorage";
 
 const DetailDescription = (props: any) => {
     return (
@@ -49,12 +52,13 @@ const FacilityDetails = () => {
     const [facilityNotFound, setFacilityNotFound] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [timeslotsLoading, setTimeslotsLoading] = useState(false);
+    const [loggedInUserRole] = useState(getUser()?.profile);
     const [availableSlots, setAvailableSlots] = useState<AvailabilitySlots[]>([]);
     const [reservationDetails, setReservationDetails] = useState<ReservationForm>({
         date: null,
         timeRange: '',
         selfBooking: true,
-        fullName: 'John Doe',
+        fullName: getUser()?.firstName + " " + getUser()?.lastName,
         age: 25
     });
 
@@ -68,7 +72,7 @@ const FacilityDetails = () => {
         }
     });
 
-    const [resource, setResource] = useState<FacilitiesInterface|null>(null);
+    const [resource, setResource] = useState<FacilitiesInterface | null>(null);
 
     const [snackbar, setSnackbar] = useState<{ open: boolean, vertical: 'top' | 'bottom', horizontal: 'left' | 'right' }>({ open: false, vertical: 'top', horizontal: 'right' });
     const { open, vertical, horizontal } = snackbar;
@@ -152,20 +156,20 @@ const FacilityDetails = () => {
     maxDate.setDate(maxDate.getDate() + 7);
     let params = useParams();
     let resourceId: string = (!params.resourceId) ? "1" : params.resourceId;
-    useEffect( () =>{
+    useEffect(() => {
         axios.get("https://sportify-backend-prd.herokuapp.com/facility/" + resourceId)
-        .then(response => response.data)
-        .then(content => {
-            setResource(content.data);
-            setIsLoading(false);
-            // setDisplayList(content.data);
-        })
-        .catch(function(err){
-            if (err.response.status === 404) {
-                setFacilityNotFound(true);
+            .then(response => response.data)
+            .then(content => {
+                setResource(content.data);
                 setIsLoading(false);
-            }
-        });
+                // setDisplayList(content.data);
+            })
+            .catch(function (err) {
+                if (err.response.status === 404) {
+                    setFacilityNotFound(true);
+                    setIsLoading(false);
+                }
+            });
     }, [resourceId]);
 
     const availabilityMenuItems = (availableSlots?.map((availabilitySlot) => {
@@ -174,7 +178,7 @@ const FacilityDetails = () => {
         );
     }));
 
-    const loaderMenuItem = (<MenuItem disabled><div className="TimeslotLoader"><Loader/></div></MenuItem>);
+    const loaderMenuItem = (<MenuItem disabled><div className="TimeslotLoader"><Loader /></div></MenuItem>);
 
     const onDateChange = async (updatedDate: Date | null) => {
         const reservationDetailsTemp = {
@@ -190,7 +194,7 @@ const FacilityDetails = () => {
         axios({
             method: 'get',
             url: `https://sportify-backend-prd.herokuapp.com/facility/booked-slots?facilityId=${resourceId}&date=${updatedDate?.getTime()}`
-        }).then (res => {
+        }).then(res => {
             setTimeslotsLoading(false);
             setAvailableSlots(getRemainingAvailableSlots(res.data.data));
         }).catch(err => {
@@ -216,9 +220,11 @@ const FacilityDetails = () => {
             selfBooking: event.target.checked,
         };
         if (event.target.checked) {
+            const loggedInUser = getUser();
+            const fullName = loggedInUser.firstName + " " + loggedInUser.lastName;
             reservationDetailsTemp = {
                 ...reservationDetailsTemp,
-                fullName: 'John Doe',
+                fullName: fullName,
                 age: 25,
             }
         }
@@ -232,14 +238,14 @@ const FacilityDetails = () => {
             to: filledDetails.to,
             facility_id: resourceId,
             booked_date: new Date(),
-            reserved_by: "672dee56-6895-4b20-8daa-6b08461aec95",
+            reserved_by: getUser()._id,
             reserved_for: filledDetails.fullName
         }
         return requestBody;
     }
 
     const onSubmitBooking = () => {
-        if(!validateForm(reservationDetails)) {
+        if (!validateForm(reservationDetails)) {
             return;
         }
         else {
@@ -249,10 +255,10 @@ const FacilityDetails = () => {
                 url: 'https://sportify-backend-prd.herokuapp.com/reservation',
                 data: reqBody
             }).then(() => {
-                navigate('/facility', {state: {snackbar: true, snackbarMsg: 'Successfuly booked facility!'}})
+                navigate('/facility', { state: { snackbar: true, snackbarMsg: 'Successfuly booked facility!' } })
             }).catch((err) => {
                 if (err.response.status === 400 || err.response.status === 409 || err.response.status === 500) {
-                    setSnackbar({...snackbar, open: true});
+                    setSnackbar({ ...snackbar, open: true });
                     setSnackbarMsg(err.response.data.message);
                 }
                 console.log('Exception occured', err);
@@ -278,98 +284,101 @@ const FacilityDetails = () => {
     </IconButton>);
 
     return (
-        (isLoading) ? (<Loader/>) : ((facilityNotFound || !resource) ? (<h1>Facility Not Found!</h1>): (
-        <Box sx={{ width: '100%', mt: '20px' }}>
-            <Grid container rowSpacing={2} columnSpacing={2}>
-                <Grid item xs={12} md={4} sm={6}>
-                    <Card sx={{ margin: '20px', width: '90%', height: '90%', justifyContent: 'center' }} elevation={6}>
-                        <img className='Image' src={`${resource.image}`} alt="" />
-                    </Card>
-                </Grid>
-                <Grid item xs={12} md={4} sm={6}>
-                    <Card sx={{ margin: '20px', width: '90%', height: '90%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }} elevation={6}>
-                        <Stack sx={{ my: '30px' }} alignItems='center' spacing={3} divider={<Divider orientation="horizontal" variant="middle" flexItem />}>
-                            <DetailHeader heading='Facility Details' />
-                            <DetailRow columnName='Facility Name' columnData={resource.name} />
-                            <DetailRow columnName='Facility Category' columnData={resource.category} />
-                            <DetailRow columnName='Facility Location' columnData={resource.location} />
-                            <DetailRow columnName='Facility Status' columnData={'Active'} />
-                            <br />
-                        </Stack>
-                    </Card>
-                </Grid>
-                <Grid item xs={12} md={4} sm={6}>
-                    <Card sx={{ margin: '20px', width: '90%', height: '90%' }} elevation={6}>
-                        <Stack sx={{ my: '30px' }} alignItems='center' spacing={3}>
-                            <DetailHeader heading='Facility Description' />
-                            <DetailDescription content={resource.description} />
-                        </Stack>
-                    </Card>
-                </Grid>
-                {/* Date and timeslot grid */}
-                <Grid item xs={12} md={4} sm={6}>
-                    <Card sx={{ margin: '20px', width: '90%', height: '90%' }} elevation={6}>
-                        <Stack sx={{ mt: '30px', }} alignItems='center' spacing={3}>
-                            <DetailHeader heading='For Booking' />
-                            {/* Date Picker */}
-                            <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                <DatePicker
-                                    label="Choose Date"
-                                    value={reservationDetails.date}
-                                    minDate={minDate}
-                                    maxDate={maxDate}
-                                    onChange={(newValue) => {
-                                        onDateChange(newValue);
-                                    }}
-                                    renderInput={(params) => <TextField {...params} />}
-                                />
-                                {reservationFormErrors.date && <p className="Error">Please pick a date!</p>}
-                            </LocalizationProvider>
-                            {/* Time Picker */}
-                            <FormControl sx={{ width: 227 }}>
-                                <InputLabel id="timeslot-label">Choose Timeslot</InputLabel>
-                                <Select
-                                    labelId="timeslot-label"
-                                    id="timeslot-label"
-                                    sx={{ justifyContent: 'center' }}
-                                    value={reservationDetails.timeRange}
-                                    onChange={onTimeslotChange}
-                                    label='Choose Timeslot'
-                                    disabled={reservationDetails.date == null}
-                                >
-                                    {(timeslotsLoading) ? loaderMenuItem : availabilityMenuItems}
-                                </Select>
-                                {reservationFormErrors.timeRange && <p className="Error">Please choose a timeslot!</p>}
-                            </FormControl>
-                            {/* Self Booking */}
-                            <FormControlLabel
-                                control={
-                                    <Checkbox checked={reservationDetails.selfBooking} onChange={onSelfBookingCheckboxChange} name='selfBooking' />
-                                }
-                                label="Self Booking" />
-                        </Stack>
-                    </Card>
-                </Grid>
-                <Grid item xs={12} md={4} sm={6}>
-                    <Card sx={{ margin: '20px', width: '90%', height: '90%' }} elevation={6}>
-                        <Stack sx={{ mt: '30px', }} alignItems='center' spacing={3}>
-                            <DetailHeader heading='Booking Details' />
-                            {/* Full Name */}
-                            <TextField
-                                required
-                                name='fullName'
-                                label="Full Name"
-                                value={reservationDetails.fullName}
-                                onChange={onReservationDetailsChange}
-                                disabled={reservationDetails.selfBooking}
-                                helperText={reservationFormErrors.fullName ? 'Please enter full name' : ''}
-                                sx={{
-                                    '.MuiFormHelperText-root': {
-                                        color: 'red'
+        (isLoading) ? (<Loader />) : ((facilityNotFound || !resource) ? (<h1>Facility Not Found!</h1>) : (
+            <Box sx={{ width: '100%', mt: '20px' }}>
+                <Grid container rowSpacing={2} columnSpacing={2}>
+                    <Grid item xs={12} md={4} sm={6}>
+                        <Card sx={{ margin: '20px', width: '90%', height: '90%', justifyContent: 'center', objectFit: 'contain' }} elevation={6}>
+                            <Box sx={{ padding: '20px'}}>
+                                <img className='img-responsive' src={`${resource.image}`} alt="" />
+                            </Box>
+                        </Card>
+                    </Grid>
+                    <Grid item xs={12} md={4} sm={6}>
+                        <Card sx={{ margin: '20px', width: '90%', height: '90%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }} elevation={6}>
+                            <Stack sx={{ my: '30px' }} alignItems='center' spacing={3} divider={<Divider orientation="horizontal" variant="middle" flexItem />}>
+                                <DetailHeader heading='Facility Details' />
+                                <DetailRow columnName='Facility Name' columnData={resource.name} />
+                                <DetailRow columnName='Facility Category' columnData={resource.category} />
+                                <DetailRow columnName='Facility Location' columnData={resource.location} />
+                                <DetailRow columnName='Facility Status' columnData={'Active'} />
+                                <br />
+                            </Stack>
+                        </Card>
+                    </Grid>
+                    <Grid item xs={12} md={4} sm={6}>
+                        <Card sx={{ margin: '20px', width: '90%', height: '90%' }} elevation={6}>
+                            <Stack sx={{ my: '30px' }} alignItems='center' spacing={3}>
+                                <DetailHeader heading='Facility Description' />
+                                <DetailDescription content={resource.description} />
+                            </Stack>
+                        </Card>
+                    </Grid>
+                    {/* Date and timeslot grid */}
+                    <Grid item xs={12} md={4} sm={6}>
+                        <Card sx={{ margin: '20px', width: '90%', height: '90%' }} elevation={6}>
+                            <Stack sx={{ mt: '30px', }} alignItems='center' spacing={3}>
+                                <DetailHeader heading='For Booking' />
+                                {/* Date Picker */}
+                                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                    <DatePicker
+                                        label="Choose Date"
+                                        value={reservationDetails.date}
+                                        minDate={minDate}
+                                        maxDate={maxDate}
+                                        onChange={(newValue) => {
+                                            onDateChange(newValue);
+                                        }}
+                                        renderInput={(params) => <TextField {...params} />}
+                                        disabled={loggedInUserRole === 'admin'}
+                                    />
+                                    {reservationFormErrors.date && <p className="Error">Please pick a date!</p>}
+                                </LocalizationProvider>
+                                {/* Time Picker */}
+                                <FormControl sx={{ width: 227 }}>
+                                    <InputLabel id="timeslot-label">Choose Timeslot</InputLabel>
+                                    <Select
+                                        labelId="timeslot-label"
+                                        id="timeslot-label"
+                                        sx={{ justifyContent: 'center' }}
+                                        value={reservationDetails.timeRange}
+                                        onChange={onTimeslotChange}
+                                        label='Choose Timeslot'
+                                        disabled={loggedInUserRole === 'admin' || reservationDetails.date == null}
+                                    >
+                                        {(timeslotsLoading) ? loaderMenuItem : availabilityMenuItems}
+                                    </Select>
+                                    {reservationFormErrors.timeRange && <p className="Error">Please choose a timeslot!</p>}
+                                </FormControl>
+                                {/* Self Booking */}
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox checked={reservationDetails.selfBooking} onChange={onSelfBookingCheckboxChange} name='selfBooking' disabled={loggedInUserRole === 'admin'} />
                                     }
-                                }}
-                            />
-                            <TextField
+                                    label="Self Booking" />
+                            </Stack>
+                        </Card>
+                    </Grid>
+                    <Grid item xs={12} md={4} sm={6}>
+                        <Card sx={{ margin: '20px', width: '90%', height: '90%', display: 'flex', justifyContent: 'center', alignItems: 'center' }} elevation={6}>
+                            <Stack alignItems='center' spacing={3}>
+                                <DetailHeader heading='Booking Details' />
+                                {/* Full Name */}
+                                <TextField
+                                    required
+                                    name='fullName'
+                                    label="Full Name"
+                                    value={reservationDetails.fullName}
+                                    onChange={onReservationDetailsChange}
+                                    disabled={loggedInUserRole === 'admin' || reservationDetails.selfBooking}
+                                    helperText={reservationFormErrors.fullName ? 'Please enter full name' : ''}
+                                    sx={{
+                                        '.MuiFormHelperText-root': {
+                                            color: 'red'
+                                        }
+                                    }}
+                                />
+                                {/* <TextField
                                 required
                                 name='age'
                                 label="Age"
@@ -384,15 +393,15 @@ const FacilityDetails = () => {
                                         color: 'red'
                                     }
                                 }}
-                            />
-                        </Stack>
-                    </Card>
-                </Grid>
-                <Grid item xs={12} md={4} sm={6} sx={{
+                            /> */}
+                            </Stack>
+                        </Card>
+                    </Grid>
+                    <Grid item xs={12} md={4} sm={6} sx={{
                         display: 'flex',
                         justifyContent: 'center',
                     }}>
-                    <Button sx={{
+                        <Button sx={{
                             color: '#000000',
                             backgroundColor: '#ffffff',
                             ':hover': {
@@ -404,7 +413,7 @@ const FacilityDetails = () => {
                             mt: '20px'
                         }}
                             variant='contained'
-                            onClick={() => {navigate('/facility')}}
+                            onClick={() => { navigate('/facility') }}
                         >
                             Back
                         </Button>
@@ -420,23 +429,24 @@ const FacilityDetails = () => {
                             mt: '20px'
                         }}
                             onClick={onSubmitBooking}
+                            disabled={loggedInUserRole === 'admin'}
                         >
                             Book Facility
                         </Button>
+                    </Grid>
                 </Grid>
-            </Grid>
-            <Snackbar
-                anchorOrigin={{ vertical, horizontal }}
-                open={open}
-                autoHideDuration={3000}
-                onClose={onCloseSnackbar}
-                action={snackbarCloseAction}
-            >
-                <MuiAlert onClose={onCloseSnackbar} severity="error" sx={{ width: '100%' }} elevation={6} variant="filled">
-                    {snackbarMsg}
-                </MuiAlert>
-            </Snackbar>
-        </Box>))
+                <Snackbar
+                    anchorOrigin={{ vertical, horizontal }}
+                    open={open}
+                    autoHideDuration={3000}
+                    onClose={onCloseSnackbar}
+                    action={snackbarCloseAction}
+                >
+                    <MuiAlert onClose={onCloseSnackbar} severity="error" sx={{ width: '100%' }} elevation={6} variant="filled">
+                        {snackbarMsg}
+                    </MuiAlert>
+                </Snackbar>
+            </Box>))
     );
 }
 

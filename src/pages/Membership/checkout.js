@@ -21,7 +21,6 @@ import axios from 'axios'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import Stack from '@mui/material/Stack';
-// import {useSelector} from 'react_redux';
 
 
 
@@ -31,11 +30,16 @@ const steps = ['Billing Information', 'Review your order'];
 const theme = createTheme();
 
 export default function Checkout() {
-  const domain = 'http://localhost:5000';
+  
+  localStorage.setItem("user", '{"_id":"62d125c24709b75db510f79c","firstName":"Soham","lastName":"Patel","email":"sohupatel8828@gmail.com","contactNo":"+1 902-354-4536","address":"","profile":"user"}')
+  const rawUser = localStorage.getItem("user")
+  const user = JSON.parse(rawUser)
+  const userId = user._id;
+
+  const domain = 'https://sportify-backend-prd.herokuapp.com';
   const location = useLocation();
   const product = location.state.product;
   const [activeStep, setActiveStep] = React.useState(0);
-  //  const user = useSelector((state)=>state.auth)
   const navigate = useNavigate();
   const handleNext = () => {
     if (error === true || isEmptyForm() === true) {
@@ -48,6 +52,7 @@ export default function Checkout() {
       if (activeStep === 1) {
         let is_bill_existing = location.state.is_bill_existing;
         const reqBody = {
+          id:userId,
           first_name: firstName,
           last_name: lastName,
           address: address,
@@ -59,7 +64,7 @@ export default function Checkout() {
         let url = domain + "/api/membership/create-billing-info";
         let method = "post"
         if (is_bill_existing) {
-          url = domain + '/api/membership/update-billing-info/55153a8014829a865bbf700d';
+          url = domain + '/api/membership/update-billing-info/'+userId;
           method = 'put'
         }
         let backendReqBody = [{
@@ -69,11 +74,7 @@ export default function Checkout() {
           'end_date': endDate,
           'status': 'Ongoing'
         }]
-        localStorage.setItem("user", '{"_id":"62d125c24709b75db510f79c","firstName":"Soham","lastName":"Patel","email":"sohupatel8828@gmail.com","contactNo":"+1 902-354-4536","address":"","profile":"user"}')
-        const rawUser = localStorage.getItem("user")
-        const user = JSON.parse(rawUser)
-        const userId = user._id;
-        //console.log(backendReqBody);
+        
         localStorage.setItem('backendReqBody', JSON.stringify(backendReqBody))
         axios({
           method: method,
@@ -222,8 +223,6 @@ export default function Checkout() {
         setError(true);
       }
     }
-    console.log(formErrors);
-    console.log(error);
   }
   //end of billing
 
@@ -233,29 +232,18 @@ export default function Checkout() {
     const date1 = new Date(start);
     const date2 = new Date(end);
 
-    console.log("date1");
-    console.log(date1);
-    console.log("date2");
-    console.log(date2);
-
     const oneDay = 1000 * 60 * 60 * 24;
     const diffInTime = date2.getTime() - date1.getTime();
     const diffInDays = Math.round(diffInTime / oneDay) + 2;
-    console.log("diffInDays");
-    console.log(diffInDays);
     return diffInDays;
   }
   const calculateCost = (days) => {
-    console.log('days==');
-    console.log(days);
     return ((product.price / 30) * 1.15 * days).toFixed(2);
 
   }
 
   const current = new Date();
-  console.log(current);
   const [startDate, setStartDate] = React.useState(current);
-  console.log(startDate);
   const [endDate, setEndDate] = React.useState(new Date(current.getFullYear(), current.getMonth() + 1, 0));
   const [days, setDays] = React.useState(getNumberOfDays(startDate, endDate));
   const [totalCost, setTotalCost] = React.useState(calculateCost(days));

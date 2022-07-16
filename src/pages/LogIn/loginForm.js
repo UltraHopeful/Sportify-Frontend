@@ -1,9 +1,9 @@
-import React,{useState} from "react";
-import {Button, TextField, styled, FormControlLabel, Checkbox, InputAdornment} from "@mui/material";
 import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined';
-import IconButton from "@mui/material/IconButton";
-import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
+import { Button, InputAdornment, styled, TextField } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import { useState } from "react";
 
 const ValidationTextField = styled((props) => (<TextField
     InputProps={{disableUnderline: true}}
@@ -96,7 +96,7 @@ export const LoginForm = props => {
                 }}
                 onChange={handleChange}
             />
-            <FormControlLabel control={<Checkbox defaultChecked />} label="Remember me" sx={{marginBottom:"10px"}} />
+            {/* <FormControlLabel control={<Checkbox defaultChecked />} label="Remember me" sx={{marginBottom:"10px"}} /> */}
             <Button
                 type="submit"
                 variant="contained"

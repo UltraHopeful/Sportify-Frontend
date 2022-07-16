@@ -1,22 +1,25 @@
 import { useNavigate } from "react-router-dom";
 
-import * as React from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
 import CompanyLogo from "@mui/icons-material/FitnessCenter";
+import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
+import AppBar from "@mui/material/AppBar";
+import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Toolbar from "@mui/material/Toolbar";
+import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
+import * as React from "react";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 import Logo from "../assets/images/Sportify.png";
+import { getUser } from "./getLocalStorage";
 
 const pages = ["Membership", "Facility", "Events", "Blogs", "Store"];
 // const settings = ['My Account', 'Logout'];
@@ -24,33 +27,45 @@ const pages = ["Membership", "Facility", "Events", "Blogs", "Store"];
 const primaryColor = "#326DD9";
 const secondaryColor = "#234C99";
 
-const profileDropdownList = [
-  {
-    displayName: "My Account",
-    redirectTo: "my-account",
-  },
-  {
-    displayName: "My Events",
-    redirectTo: "my-events",
-  },
-  {
-    displayName: "My Reservations",
-    redirectTo: "my-reservations",
-  },
-  {
-    displayName: "login",
-    redirectTo: "login",
-  },
-  {
-    displayName: "Logout",
-    redirectTo: "",
-  },
-];
+const profileDropdownList = {
+  admin: [
+    {
+      displayName: "My Account",
+      redirectTo: "my-account",
+    },
+  ],
+  user: [
+    {
+      displayName: "My Account",
+      redirectTo: "my-account",
+    },
+    {
+      displayName: "My Events",
+      redirectTo: "my-events",
+    },
+    {
+      displayName: "My Reservations",
+      redirectTo: "my-reservations",
+    },
+  ],
+};
 
 const Header = () => {
+  const [isLogin, setIsLogin] = useState(false);
+  const [loggedInUserRole] = useState(getUser()?.profile);
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+  useEffect(() => {
+    // console.log("isLogin "+localStorage.getItem("isLogin"));
+    if (localStorage.getItem("isLogin") === "true") {
+      setIsLogin(true);
+    } else {
+      setIsLogin(false);
+    }
+    return () => {};
+  }, []);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -71,6 +86,14 @@ const Header = () => {
     navigate(path);
   };
 
+  const logout = () => {
+    localStorage.clear();
+    localStorage.setItem("isLogin", false);
+    toast.success("Your successfully logged out", {
+      position: toast.POSITION.TOP_RIGHT,
+    });
+    window.location.replace("/");
+  };
   return (
     <AppBar position="static" sx={{ bgcolor: "white" }}>
       <Container maxWidth="xl">
@@ -214,44 +237,71 @@ const Header = () => {
             >
               <SearchIcon />
             </IconButton>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="S" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {profileDropdownList.map((setting) => (
-                <MenuItem
-                  key={setting.displayName}
-                  onClick={handleCloseUserMenu}
+            {isLogin ? (
+              <>
+                <Tooltip title="Open settings">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <Avatar alt="S" src="/static/images/avatar/2.jpg" />
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  sx={{ mt: "45px" }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
                 >
-                  <Button
-                    sx={{ color: secondaryColor }}
-                    onClick={() => navigateTo(setting.redirectTo)}
-                    textalign="center"
-                    underline="none"
-                  >
-                    {setting.displayName}
-                  </Button>
-                  {/* <Typography textalign="center">{setting}</Typography> */}
-                </MenuItem>
-              ))}
-            </Menu>
+                  {profileDropdownList[loggedInUserRole].map((setting) => (
+                    <MenuItem
+                      key={setting.displayName}
+                      onClick={handleCloseUserMenu}
+                    >
+                      <Button
+                        sx={{ color: secondaryColor }}
+                        onClick={() => navigateTo(setting.redirectTo)}
+                        textalign="center"
+                        underline="none"
+                      >
+                        {setting.displayName}
+                      </Button>
+                      {/* <Typography textalign="center">{setting}</Typography> */}
+                    </MenuItem>
+                  ))}
+                  <MenuItem>
+                    <Button
+                      sx={{ color: secondaryColor }}
+                      onClick={logout}
+                      textalign="center"
+                      underline="none"
+                    >
+                      Logout
+                    </Button>
+                  </MenuItem>
+                </Menu>
+              </>
+            ) : (
+              <>
+                <Button
+                  sx={{ color: secondaryColor }}
+                  onClick={() => {
+                    navigate("/login");
+                  }}
+                  textalign="center"
+                  underline="none"
+                >
+                  Login
+                </Button>
+              </>
+            )}
           </Box>
         </Toolbar>
       </Container>

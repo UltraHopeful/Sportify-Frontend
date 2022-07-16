@@ -1,3 +1,5 @@
+//Author: Aravind Jayanthi (B00868943)
+//Email: ar687531@dal.ca
 import { Delete, PhotoCamera } from "@mui/icons-material";
 import FormControl from '@mui/material/FormControl';
 import { Button, Container, Grid, IconButton, Input, InputLabel, MenuItem, Paper, Select, TextField, Typography, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
