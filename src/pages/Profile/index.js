@@ -1,13 +1,13 @@
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import DriveFileRenameOutlineOutlinedIcon from '@mui/icons-material/DriveFileRenameOutlineOutlined';
 import {
-    Button,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-    Stack
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Stack
 } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
@@ -81,17 +81,26 @@ export default function Main() {
       .required("Address is required"),
   });
 
-  const notify = () => {
-    toast.success("Your details updated successfully", {
-      position: toast.POSITION.TOP_RIGHT,
-    });
-  };
+  // const notify = () => {
+  //   toast.success("Your details updated successfully", {
+  //     position: toast.POSITION.TOP_RIGHT,
+  //   });
+  // };
 
-  const notify2 = () => {
-    console.log("Delete profile");
-    toast.success("Your account deleted successfully", {
-      position: toast.POSITION.TOP_RIGHT,
-    });
+  const notify = (type, msg) => {
+    if(type === 'success'){
+        toast.success(
+          msg,
+          { position: toast.POSITION.TOP_RIGHT }
+        );
+        
+    }else if(type === 'error'){
+        toast.error(
+          msg,
+          { position: toast.POSITION.TOP_RIGHT }
+        );
+
+    }
   };
 
   const editProfileRequest = (values) => {
@@ -121,6 +130,38 @@ export default function Main() {
           notify("success", result.message);
           window.location.replace("/my-account");
           handleClose();
+        }
+      })
+      .catch((error) => console.log("error", error));
+  };
+
+  const deleteProfileRequest = (values) => {
+    console.log(values);
+    const deleteProfileUrl = getBackendUrl()+"/api/delete-profile";
+    let body = {}
+    body['id'] = getUser()._id;
+    console.log(body);
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json","access-token":localStorage.getItem("access-token") },
+      body: JSON.stringify(body),
+    };
+    let statusCode;
+    fetch(deleteProfileUrl, requestOptions)
+      .then((response) => {
+        statusCode = response.status;
+        return response.json();
+      })
+      .then((result) => {
+        if (statusCode === 500) {
+          notify("error", result.message);
+        } else {
+          console.log(result);
+          localStorage.setItem('user',JSON.stringify(result.user));
+          notify("success", result.message);
+          localStorage.clear()
+          localStorage.setItem("isLogin",false);
+          window.location.replace("/");
         }
       })
       .catch((error) => console.log("error", error));
@@ -302,7 +343,10 @@ export default function Main() {
                   value={formik.values.email}
                   variant="filled"
                   placeholder="Enter your email"
-                  onChange={formik.handleChange}
+                  InputProps={{
+                    disableUnderline: true,
+                    readonly: true,
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -374,8 +418,7 @@ export default function Main() {
         <DialogActions>
           <Button
             onClick={() => {
-              navigate("/signup");
-              notify2();
+              deleteProfileRequest();
             }}
             variant="contained"
             color="error"

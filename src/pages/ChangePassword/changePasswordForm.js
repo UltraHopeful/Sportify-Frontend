@@ -1,9 +1,9 @@
-import React,{useState} from "react";
-import {Button, TextField, styled, FormControlLabel, Checkbox, InputAdornment} from "@mui/material";
-import IconButton from "@mui/material/IconButton";
-import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 import LockResetOutlinedIcon from '@mui/icons-material/LockResetOutlined';
+import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
+import { Button, InputAdornment, styled, TextField } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import { useState } from "react";
 
 const ValidationTextField = styled((props) => (<TextField
     InputProps={{disableUnderline: true}}
@@ -52,12 +52,15 @@ export const ChangePasswordForm = props => {
     const hiddenCPassword = () => setVisibleCPassword(!visibleCPassword);
 
     const {
-        values: {password,confirmPassword},
+        values: {email,password,confirmPassword},
         errors,
         handleSubmit,
         handleChange,
-        isValid
+        isValid,
+        isVerified
     } = props;
+
+    console.log(props.isVerified);
 
     return (
         <form onSubmit={handleSubmit}>
@@ -67,7 +70,7 @@ export const ChangePasswordForm = props => {
                 error={Boolean(errors.email)}
                 label="Email*"
                 type="email"
-                value="john@gmail.com"
+                value={email}
                 variant="filled"
                 placeholder="Enter your email"
                 onChange={handleChange}
