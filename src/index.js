@@ -8,7 +8,7 @@ import reportWebVitals from "./reportWebVitals";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { toast, ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import userReservations from "./data/Data";
 import AddNewFacility from "./pages/AddNewFacility";
 import ChangePassword from "./pages/ChangePassword/index";
@@ -21,21 +21,25 @@ import Checkout from "./pages/Membership/checkout";
 import Pricing from "./pages/Membership/pricing";
 import PurchasedMemberships from "./pages/Membership/purchasedMembership";
 import Products from "./pages/Merchandise/displayProducts";
-import CreateBlog from './pages/Blogging/CreateBlog/CreateBlog';
-import EditBlog from './pages/Blogging/EditBlog/EditBlog';
-import BlogPost from './pages/Blogging/BlogPost/BlogPost';
-import YourBlogs from './pages/Blogging/YourBlogs/YourBlogs';
-import Facilities from './pages/Facilities';
-import FacilityDetails from './pages/FacilityDetails';
-import Blogs from './pages/Blogging/Blogs/Blogs';
+import CreateBlog from "./pages/Blogging/CreateBlog/CreateBlog";
+import EditBlog from "./pages/Blogging/EditBlog/EditBlog";
+import BlogPost from "./pages/Blogging/BlogPost/BlogPost";
+import YourBlogs from "./pages/Blogging/YourBlogs/YourBlogs";
+import Facilities from "./pages/Facilities";
+import FacilityDetails from "./pages/FacilityDetails";
+import Blogs from "./pages/Blogging/Blogs/Blogs";
 import MyEventDetails from "./pages/MyEventDetails";
 import MyEvents from "./pages/MyEvents/MyEvents";
 import MembershipPlan from "./pages/Payment/membershipPlan";
-import PaymentSuccess from './pages/Payment/paymentSuccess';
+import PaymentSuccess from "./pages/Payment/paymentSuccess";
 import Profile from "./pages/Profile/index";
 import { ReservationDetails } from "./pages/ReservationDetails";
 import ReservationList from "./pages/Reservations";
-import AppSearch from "./pages/Search/search";
+import MainSearch from "./pages/Search/mainSearch";
+import AppSearch from "./pages/Search/facilitySearch";
+import EventSearch from "./pages/Search/eventSearch";
+import BlogSearch from "./pages/Search/blogSearch";
+import MerchandiseSearch from "./pages/Search/merchandiseSearch";
 import Signup from "./pages/Signup/index";
 import VerifyAccount from "./pages/VerifyAccount/index";
 
@@ -56,10 +60,9 @@ const theme = createTheme({
 
 const ProtectedRoute = ({ isAllow, redirectPath = "/login", children }) => {
   if (!isAllow()) {
-    toast.error(
-      "You have to login first to see the page.",
-      { position: toast.POSITION.TOP_RIGHT }
-    );
+    toast.error("You have to login first to see the page.", {
+      position: toast.POSITION.TOP_RIGHT,
+    });
     return <Navigate to={redirectPath} replace />;
   }
   console.log(children);
@@ -80,7 +83,6 @@ function checkUser() {
     console.log("user false");
     return false;
   }
-
 }
 
 function checkAdmin() {
@@ -109,7 +111,11 @@ root.render(
         <Route element={<WithHeader />}>
           <Route path="/" element={<Home />} />
           <Route path="store" element={<Products />} />
-          <Route element={<ProtectedRoute isAllow={() => checkUser() || checkAdmin()} />}>
+          <Route
+            element={
+              <ProtectedRoute isAllow={() => checkUser() || checkAdmin()} />
+            }
+          >
             <Route
               path="my-reservations"
               element={<ReservationList reservations={userReservations} />}
@@ -142,7 +148,11 @@ root.render(
           <Route path="editblogs/:id" element={<EditBlog />} />
           <Route exact path="blogpost/:id" element={<BlogPost />} />
           <Route path="yourblogs" element={<YourBlogs />} />
-          <Route path="search" element={<AppSearch />} />
+          <Route path="mainSearch" element={<MainSearch />} />
+          <Route path="facilitySearch" element={<AppSearch />} />
+          <Route path="eventSearch" element={<EventSearch />} />
+          <Route path="blogSearch" element={<BlogSearch />} />
+          <Route path="merchandiseSearch" element={<MerchandiseSearch />} />
         </Route>
         {/* todo add path only which doesn't need header */}
         <Route element={<NoHeader />}>
