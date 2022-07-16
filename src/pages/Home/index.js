@@ -11,10 +11,12 @@ const main = () => {
         <>
             <Box className="homeback">
                 <Typography variant="h2" gutterBottom color="white" component="div" style={{paddingTop: '30vh'}}>
-                    Keep in good shape <br/> Be Fitness Person
+                 Become Fitter, Stronger &
+                 <br/> More Confident!
                 </Typography>
                 <Typography variant="h4" gutterBottom color="white" component="div">
-                    Lorem Ipsum is simply dummy text <br/>of the printing and typesetting industry.
+                    Push harder today if You Want a 
+                    <br/> Different Tomorrow
                 </Typography>
 
             </Box>
@@ -25,9 +27,11 @@ const main = () => {
                     </Typography>
                     <hr className="hr-fancy1"/>
                     <Typography variant="h6" gutterBottom color="white" align="center">
-                        Lorem Ipsum is simply dummy text <br/>of the printing and typesetting industry.
-                        Lorem Ipsum is simply dummy text <br/>of the printing and typesetting industry.
-                        Lorem Ipsum is simply dummy text <br/>of the printing and typesetting industry.
+                        <br/>
+                    Our mission is to infuse society with soul. The exercise experience that our riders through 
+                    <br/>one-of-a-kind, rockstar instructors lead 
+                    <br/>is uplifting and contemplative and is 
+                    <br/>intended to improve body, mind, and soul.
                     </Typography>
                 </Grid>
                 <Grid item xl={6} lg={6} md={6} sm={12} xs={12} className="bg-lighter img-box">

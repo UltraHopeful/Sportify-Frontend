@@ -52,6 +52,7 @@ npm start
 
 - [CkEditor - React](https://ckeditor.com/docs/ckeditor5/latest/installation/getting-started/frameworks/react.html)
 - [ToastContainer - react-toastify](https://fkhadra.github.io/react-toastify/api/toast-container/)
+- [AXIOS API](https://axios-http.com/docs/api_intro)
 - [Formik](https://formik.org/)
 - [Yup](https://www.npmjs.com/package/yup)
 - [MUI Grid](https://mui.com/material-ui/react-grid/)
