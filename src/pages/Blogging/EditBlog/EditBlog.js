@@ -31,8 +31,9 @@ const EditBlog = (props) => {
         axios.get(baseURL+ "/" + resId).then((response) => {
             console.log(response.data);
             response.data.data.blogContent = parse(response.data.data.blogContent);
+            console.log(response.data.data.blogTitle)
             setData(response.data.data);
-            console.log(data.blogContent)
+       //     console.log(data)
           });
     }, [])
 
@@ -52,7 +53,7 @@ const EditBlog = (props) => {
     const myFunction = (e) =>{
      e.preventDefault();
      const jsonData = {
-        blogId: resId,
+        id: resId,
         blogContent: data2,
         blogTitle: blogTitle,
         blogImage:  image,
@@ -64,7 +65,7 @@ const EditBlog = (props) => {
       
      axios.put(baseURL2,{jsonData})
       .then((response) => {
-        navigate("/allblogs")
+        navigate("/blogs")
         console.log(response);
       }, (error) => {
         console.log(error);
@@ -98,7 +99,7 @@ const EditBlog = (props) => {
                          Edit Blog
                         </Typography>
                             <div>
-                                <TextField fullWidth label="Title" id="fullWidth" defaultValue= {data.title}
+                                <TextField fullWidth label="Title" id="fullWidth" defaultValue= {data.blogTitle}
                                     sx={{
                                         marginX: "5%",
                                         marginY: "5%",
@@ -109,7 +110,7 @@ const EditBlog = (props) => {
                                             opacity: [0.9, 0.8, 0.7],
                                         },
                                     }}
-                                    value = {blogTitle}
+                                   // value = {blogTitle}
                                     onChange = {handleChange}
                                 />
                             </div>
@@ -122,9 +123,9 @@ const EditBlog = (props) => {
                                         console.log('Editor is ready to use!', editor);
                                     }}
                                     onChange={(event, editor) => {
-                                        console.log({ event, editor, data });
+                                     //   console.log({ event, editor, data });
                                         setData2(editor.getData());
-                                        console.log(data2);
+                                   //     console.log(data2);
                                     }}
                                     onBlur={(event, editor) => {
                                         console.log('Blur.', editor);

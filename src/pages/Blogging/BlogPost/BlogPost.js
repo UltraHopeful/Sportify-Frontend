@@ -44,7 +44,7 @@ const BlogPost = (props) => {
                     <img src={data.blogImage} alt="Post Image" />
                 </div>
 
-                <div>
+                <div className="postContents">
                    <Typography variant="body2" color="text.secondary">
                               {data.blogContent}
                 </Typography>
