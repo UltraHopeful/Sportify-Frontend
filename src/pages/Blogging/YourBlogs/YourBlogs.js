@@ -9,7 +9,7 @@ import axios from 'axios';
 * @author
 * @function YourBlogs
 **/
-const baseURL = "http://localhost:5000/blogs/api/blogs/yourblog"
+const baseURL = "https://sportify-backend-prd.herokuapp.com/blogs/api/blogs/yourblog"
 const YourBlogs = (props) => {
     const [data, setData] = useState([]);
     const navigate = useNavigate();

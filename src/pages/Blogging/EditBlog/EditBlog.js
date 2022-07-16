@@ -14,8 +14,8 @@ const { v4: uuidv4 } = require('uuid');
 * @function EditBlog
 **/
 
-const baseURL = "http://localhost:5000/blogs/api/blogs/blog"
-const baseURL2= "http://localhost:5000/blogs/api/blogs/updateBlog"
+const baseURL = "https://sportify-backend-prd.herokuapp.com/blogs/api/blogs/blog"
+const baseURL2= "https://sportify-backend-prd.herokuapp.com/blogs/api/blogs/updateBlog"
 const EditBlog = (props) => {
     
     const [data2, setData2] = useState([]);
@@ -33,7 +33,6 @@ const EditBlog = (props) => {
             response.data.data.blogContent = parse(response.data.data.blogContent);
             console.log(response.data.data.blogTitle)
             setData(response.data.data);
-       //     console.log(data)
           });
     }, [])
 
