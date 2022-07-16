@@ -15,7 +15,7 @@ const { v4: uuidv4 } = require('uuid');
 * @function CreateBlog
 **/
 
-const baseURL = "http://localhost:5000/blogs/api/blogs/postBlog"
+const baseURL = "https://sportify-backend-prd.herokuapp.com/blogs/api/blogs/postBlog"
 const CreateBlog = (props) => {
     const navigate = useNavigate();
     const notify = () => toast("Under Construction as it involves database!");

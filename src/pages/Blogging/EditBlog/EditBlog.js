@@ -30,9 +30,10 @@ const EditBlog = (props) => {
     useEffect(() => {
         axios.get(baseURL+ "/" + resId).then((response) => {
             console.log(response.data);
-            response.data.data.blogContent = parse(response.data.data.blogContent);
+           // response.data.data.blogContent = parse(response.data.data.blogContent);
             console.log(response.data.data.blogTitle)
             setData(response.data.data);
+            console.log(data.blogContent)
           });
     }, [])
 
@@ -43,6 +44,7 @@ const EditBlog = (props) => {
     const fileSelectHandler = (e) =>{
         const img = e.target.files[0];
         const reader = new FileReader(img);
+        reader.readAsDataURL(img);
         reader.onload = () => {
             setImage(reader.result);
             console.log(reader.result);
@@ -73,8 +75,6 @@ const EditBlog = (props) => {
 
      }
 
-    // const details = blogsData.filter(res => res.id === (+resId));
-    // const answer = details[0];
     return (
         <div>
             <div>
@@ -109,7 +109,7 @@ const EditBlog = (props) => {
                                             opacity: [0.9, 0.8, 0.7],
                                         },
                                     }}
-                                   // value = {blogTitle}
+                                    value = {blogTitle}
                                     onChange = {handleChange}
                                 />
                             </div>
@@ -122,9 +122,9 @@ const EditBlog = (props) => {
                                         console.log('Editor is ready to use!', editor);
                                     }}
                                     onChange={(event, editor) => {
-                                     //   console.log({ event, editor, data });
+                                        console.log({ event, editor, data });
                                         setData2(editor.getData());
-                                   //     console.log(data2);
+                                        console.log(data2);
                                     }}
                                     onBlur={(event, editor) => {
                                         console.log('Blur.', editor);
