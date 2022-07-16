@@ -46,14 +46,14 @@ const main = () => {
                     </Typography>
                     <hr className="hr-fancy1"/>
                     <Typography variant="h6" gutterBottom color="white" align="center">
-                        Lorem Ipsum is simply dummy text <br/>of the printing and typesetting industry.
-                        Lorem Ipsum is simply dummy text <br/>of the printing and typesetting industry.
-                        Lorem Ipsum is simply dummy text <br/>of the printing and typesetting industry.
+                        BE HAPPY. BE FIT.<br/> 
+                        Our vision is to provide affordable <br/>healthy lifestyle because <br/>fitness is a way of life.
+                        One stop for <br/>everyone's mental and physical well-being. <br/> Picture yourself here. <br/>There is a lot waiting for you.
                     </Typography>
                 </Grid>
 
                 <Grid container justifyContent="center" mt={4} mb={4}>
-                    <Grid item xl={10}>
+                    <Grid item xl={6}>
                         <Typography variant="h4" color="black" align="center">
                             FAQs
                         </Typography>
@@ -65,12 +65,11 @@ const main = () => {
                                     aria-controls="panel1a-content"
                                     id="panel1a-header"
                                 >
-                                    <Typography>Question 1</Typography>
+                                    <Typography>What kind of workout formats are available at sportify?</Typography>
                                 </AccordionSummary>
                                 <AccordionDetails>
                                     <Typography>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-                                        malesuada lacus ex, sit amet blandit leo lobortis eget.
+                                        Sportify provides a plethora of workout formats - Yoga, Step dance, Swimming, Boxing, Kick Boxing, HIIT and many more.
                                     </Typography>
                                 </AccordionDetails>
                             </Accordion>
@@ -80,12 +79,11 @@ const main = () => {
                                     aria-controls="panel2a-content"
                                     id="panel2a-header"
                                 >
-                                    <Typography>Question 2</Typography>
+                                    <Typography>How many free gym trials do I get?</Typography>
                                 </AccordionSummary>
                                 <AccordionDetails>
                                     <Typography>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-                                        malesuada lacus ex, sit amet blandit leo lobortis eget.
+                                     Sportify offers 2 free gym trial sessions before you decide to buy a membership to access the facilities.
                                     </Typography>
                                 </AccordionDetails>
                             </Accordion>
@@ -95,8 +93,14 @@ const main = () => {
                                     aria-controls="panel3a-content"
                                     id="panel3a-header"
                                 >
-                                    <Typography>Question 3</Typography>
+                                    <Typography>How do I take a free trial session at a gym?</Typography>
                                 </AccordionSummary>
+                                <AccordionDetails>
+                                    <Typography>
+                                    You are required to visit the gym and get yourself registered for the trials. It is as simple as that.
+                                    </Typography>
+                                </AccordionDetails>
+                                
                             </Accordion>
                         </div>
                     </Grid>
