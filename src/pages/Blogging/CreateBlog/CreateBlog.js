@@ -7,6 +7,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { getUser } from '../../../components/getLocalStorage';
 const { v4: uuidv4 } = require('uuid');
 
 /**
@@ -14,7 +15,7 @@ const { v4: uuidv4 } = require('uuid');
 * @function CreateBlog
 **/
 
-const baseURL = "https://sportify-backend-prd.herokuapp.com/blogs/api/blogs/postBlog"
+const baseURL = "http://localhost:5000/blogs/api/blogs/postBlog"
 const CreateBlog = (props) => {
     const navigate = useNavigate();
     const notify = () => toast("Under Construction as it involves database!");
@@ -33,6 +34,7 @@ const CreateBlog = (props) => {
     const fileSelectHandler = (e) =>{
         const img = e.target.files[0];
         const reader = new FileReader(img);
+        reader.readAsDataURL(img);
         reader.onload = () => {
             setImage(reader.result);
             console.log(reader.result);
@@ -47,7 +49,7 @@ const CreateBlog = (props) => {
         blogTitle: blogTitle,
         blogImage:  image,
         shortContent : first_line,
-        userId : uuidv4(),
+        userId : getUser()._id,
         timeStamp: Date.now().toString()
      }
      console.log({jsonData});
