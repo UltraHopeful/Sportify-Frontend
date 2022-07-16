@@ -11,6 +11,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Typography } from '@mui/material';
 import "./membership.css";
 import axios from 'axios';
+import { getBackendUrl } from '../../components/getUrl';
+import { getUser } from '../../components/getLocalStorage';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -35,7 +37,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 
 export default function PurchasedMemberships() {
-  const domain = 'https://sportify-backend-prd.herokuapp.com';
+  const domain = getBackendUrl();
   const backendReqBody = JSON.parse(localStorage.getItem("backendReqBody"));
   const queryParams = new URLSearchParams(window.location.search);
   const [payment, setPayment] = React.useState(queryParams.get('payment'));
@@ -46,9 +48,7 @@ export default function PurchasedMemberships() {
   const [dTitle, setDTitle] = React.useState(initialTitle);
   const [dDesc, setDDesc] = React.useState(initialDesc);
 
-  localStorage.setItem("user", '{"_id":"62d125c24709b75db510f79c","firstName":"Soham","lastName":"Patel","email":"sohupatel8828@gmail.com","contactNo":"+1 902-354-4536","address":"","profile":"user"}')
-  const rawUser = localStorage.getItem("user")
-  const user = JSON.parse(rawUser)
+  const user = getUser();
   const userId = user._id;
 
   const handleClose = () => {

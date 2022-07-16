@@ -21,7 +21,8 @@ import axios from 'axios'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import Stack from '@mui/material/Stack';
-
+import { getBackendUrl } from '../../components/getUrl';
+import { getUser } from '../../components/getLocalStorage';
 
 
 const steps = ['Billing Information', 'Review your order'];
@@ -31,12 +32,10 @@ const theme = createTheme();
 
 export default function Checkout() {
   
-  localStorage.setItem("user", '{"_id":"62d125c24709b75db510f79c","firstName":"Soham","lastName":"Patel","email":"sohupatel8828@gmail.com","contactNo":"+1 902-354-4536","address":"","profile":"user"}')
-  const rawUser = localStorage.getItem("user")
-  const user = JSON.parse(rawUser)
+  const user = getUser();
   const userId = user._id;
 
-  const domain = 'https://sportify-backend-prd.herokuapp.com';
+  const domain = getBackendUrl();
   const location = useLocation();
   const product = location.state.product;
   const [activeStep, setActiveStep] = React.useState(0);
