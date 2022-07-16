@@ -5,6 +5,7 @@ import blogs from '../../../blogs';
 import { Box } from '@mui/system';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { getUser } from '../../../components/getLocalStorage';
 /**
 * @author
 * @function YourBlogs
@@ -14,7 +15,7 @@ const YourBlogs = (props) => {
     const [data, setData] = useState([]);
     const navigate = useNavigate();
     useEffect(() => {
-        axios.get(baseURL+ "/" + "b4ddb5c5-0676-41ae-b663-c90cc9189193").then((response) => {
+        axios.get(baseURL+ "/" + getUser()._id).then((response) => {
             console.log(response.data);
             setData(response.data.data);
           });

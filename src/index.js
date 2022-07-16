@@ -138,7 +138,7 @@ root.render(
           <Route element={<ProtectedRoute isAllow={() => checkUser() || checkAdmin()} />}>
             <Route path="membership/checkout" element={<Checkout />} />
           </Route>
-            
+
           <Route path="events" element={<EventsList />} />
           <Route path="events/:eventId" element={<EventDetails />} />
           <Route path="my-events" element={<MyEvents />} />
@@ -147,10 +147,16 @@ root.render(
           <Route path="payment" element={<MembershipPlan />} />
           <Route path="payment-success" element={<PaymentSuccess />} />
           <Route path="blogs" element={<Blogs />} />
-          <Route path="createblog" element={<CreateBlog />} />
-          <Route path="editblogs/:id" element={<EditBlog />} />
+          <Route
+            element={
+              <ProtectedRoute isAllow={() => checkUser() || checkAdmin()} />
+            }
+          >
+            <Route path="createblog" element={<CreateBlog />} />
+            <Route path="editblogs/:id" element={<EditBlog />} />
+            <Route path="yourblogs" element={<YourBlogs />} />
+          </Route>
           <Route exact path="blogpost/:id" element={<BlogPost />} />
-          <Route path="yourblogs" element={<YourBlogs />} />
           <Route path="mainSearch" element={<MainSearch />} />
           <Route path="facilitySearch" element={<AppSearch />} />
           <Route path="eventSearch" element={<EventSearch />} />
