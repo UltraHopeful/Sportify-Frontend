@@ -104,7 +104,7 @@ export default function AppSearch() {
                       <Button
                         variant="contained"
                         size="medium"
-                        href={"../facility/" + facility.id}
+                        href={"/facility/" + facility.id}
                       >
                         Click Here to register
                       </Button>

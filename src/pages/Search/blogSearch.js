@@ -103,7 +103,7 @@ export default function BlogSearch() {
                       <Button
                         variant="contained"
                         size="medium"
-                        href={"../api/blogs/blog" + facility.id}
+                        href={"/blogpost/" + facility.id}
                       >
                         Click Here to View
                       </Button>
