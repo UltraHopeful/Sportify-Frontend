@@ -12,6 +12,7 @@ import './Facilities.css';
 import AddIcon from '@mui/icons-material/Add';
 import { primaryColor, whiteThemeColor } from "../../Theme/colors";
 import Loader from "../../components/Loader";
+import { getUser } from "../../components/getLocalStorage";
 
 export default function Facilities() {
 
@@ -36,6 +37,7 @@ export default function Facilities() {
     const [snackbarMsg] = useState(state?.snackbarMsg);
     const [snackbarOpen, setSnackbarOpen] = useState({ open: (!!state?.snackbar), vertical: 'top', horizontal: 'right' });
     const { open, vertical, horizontal } = snackbarOpen;
+    const [loggedInUserRole] = useState(getUser()?.profile);
 
     const onCloseSnackbar = (event, reason) => {
         if (reason === 'clickaway') {
@@ -128,12 +130,12 @@ export default function Facilities() {
                             />
                         </FormGroup>
                     </Stack>
-                    <Button
+                    {(loggedInUserRole === 'admin') &&<Button
                         sx={{ m: '10px', color: whiteThemeColor, backgroundColor: primaryColor }}
                         variant="contained"
                         onClick={onAddNewFacilityClick}>
                         <AddIcon sx={{ mr: '3px' }} /> Add new Facility
-                    </Button>
+                    </Button>}
                 </FormControl>
             </div>
             {(isLoading) ? (<Loader />) : (

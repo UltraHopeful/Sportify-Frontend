@@ -6,21 +6,32 @@ import { Box } from '@mui/system';
 import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
+const parse = require('html-react-parser');
+
 /**
 * @author
 * @function Blogs
 **/
-
+///api/blogs/allblogs
+const baseURL = "https://sportify-backend-prd.herokuapp.com/blogs/api/blogs/allblogs"
 const Blogs = (props) => {
     const [data, setData] = useState([]);
     const navigate = useNavigate();
     const notify = () => toast("Successfully liked this post!");
+    const removeHTML= (str) =>{ 
+        var tmp = document.createElement("p");
+        tmp.innerHTML = str;
+        return tmp.innerText;
+    };
     useEffect(() => {
-        setData(require('../../../blogs'));
-        // console.log(data);
+        axios.get(baseURL).then((response) => {
+            console.log(response.data);
+            response.data.data.shortContent= removeHTML(response.data.data[0].shortContent);
+            setData(response.data.data);
+            console.log(response.data.data[0].shortContent);
+          });
     }, [])
-    // console.log(data);
-    // sx={{ maxWidth: 345,marginX:"20%",marginY:"5%" }}
     return (
         <Grid>
             <Grid item sx={{marginY:"4%",marginLeft:"20%",alignContent:"center"}}>
@@ -57,15 +68,15 @@ const Blogs = (props) => {
                             <CardMedia
                                 component="img"
                                 height="140"
-                                image={require(`../../../assets/images/${display.image}`)}
+                                image={display.blogImage}
                                 alt={display.id}
                             />
                             <CardContent>
                                 <Typography gutterBottom variant="h5" component="div">
-                                    {display.title}
+                                    {display.blogTitle}
                                 </Typography>
                                 <Typography variant="body2" color="text.secondary">
-                                {display.shortContent}
+                                 {parse(display.shortContent)}
                                 </Typography>
                             </CardContent>
                             

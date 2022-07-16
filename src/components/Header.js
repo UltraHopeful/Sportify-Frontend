@@ -19,6 +19,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 import Logo from "../assets/images/Sportify.png";
+import { getUser } from "./getLocalStorage";
 
 const pages = ["Membership", "Facility", "Events", "Blogs", "Store"];
 // const settings = ['My Account', 'Logout'];
@@ -26,23 +27,32 @@ const pages = ["Membership", "Facility", "Events", "Blogs", "Store"];
 const primaryColor = "#326DD9";
 const secondaryColor = "#234C99";
 
-const profileDropdownList = [
-  {
-    displayName: "My Account",
-    redirectTo: "my-account",
-  },
-  {
-    displayName: "My Events",
-    redirectTo: "my-events",
-  },
-  {
-    displayName: "My Reservations",
-    redirectTo: "my-reservations",
-  },
-];
+const profileDropdownList = {
+  admin: [
+    {
+      displayName: "My Account",
+      redirectTo: "my-account",
+    },
+  ],
+  user: [
+    {
+      displayName: "My Account",
+      redirectTo: "my-account",
+    },
+    {
+      displayName: "My Events",
+      redirectTo: "my-events",
+    },
+    {
+      displayName: "My Reservations",
+      redirectTo: "my-reservations",
+    },
+  ],
+};
 
 const Header = () => {
   const [isLogin, setIsLogin] = useState(false);
+  const [loggedInUserRole] = useState(getUser()?.profile);
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -185,7 +195,7 @@ const Header = () => {
             size="large"
             aria-label="search"
             color="inherit"
-            href="/search"
+            href="/mainSearch"
             sx={{
               color: "black",
               display: { xs: "inline-flex", sm: "none", md: "none" },
@@ -217,7 +227,7 @@ const Header = () => {
             <IconButton
               size="large"
               aria-label="search"
-              href="/search"
+              href="/mainSearch"
               color="inherit"
               sx={{
                 color: "black",
@@ -227,64 +237,71 @@ const Header = () => {
             >
               <SearchIcon />
             </IconButton>
-            {isLogin ? (<><Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="S" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {profileDropdownList.map((setting) => (
-                <MenuItem
-                  key={setting.displayName}
-                  onClick={handleCloseUserMenu}
+            {isLogin ? (
+              <>
+                <Tooltip title="Open settings">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <Avatar alt="S" src="/static/images/avatar/2.jpg" />
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  sx={{ mt: "45px" }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
                 >
-                  <Button
-                    sx={{ color: secondaryColor }}
-                    onClick={() => navigateTo(setting.redirectTo)}
-                    textalign="center"
-                    underline="none"
-                  >
-                    {setting.displayName}
-                  </Button>
-                  {/* <Typography textalign="center">{setting}</Typography> */}
-                </MenuItem>
-              ))}
-              <MenuItem>
+                  {profileDropdownList[loggedInUserRole].map((setting) => (
+                    <MenuItem
+                      key={setting.displayName}
+                      onClick={handleCloseUserMenu}
+                    >
+                      <Button
+                        sx={{ color: secondaryColor }}
+                        onClick={() => navigateTo(setting.redirectTo)}
+                        textalign="center"
+                        underline="none"
+                      >
+                        {setting.displayName}
+                      </Button>
+                      {/* <Typography textalign="center">{setting}</Typography> */}
+                    </MenuItem>
+                  ))}
+                  <MenuItem>
+                    <Button
+                      sx={{ color: secondaryColor }}
+                      onClick={logout}
+                      textalign="center"
+                      underline="none"
+                    >
+                      Logout
+                    </Button>
+                  </MenuItem>
+                </Menu>
+              </>
+            ) : (
+              <>
                 <Button
                   sx={{ color: secondaryColor }}
-                  onClick={logout}
+                  onClick={() => {
+                    navigate("/login");
+                  }}
                   textalign="center"
                   underline="none"
                 >
-                  Logout
+                  Login
                 </Button>
-              </MenuItem>
-            </Menu>
-            </>) : (<>
-                <Button
-                    sx={{ color: secondaryColor }}
-                    onClick={() => {navigate("/login")}}
-                    textalign="center"
-                    underline="none"
-                  >
-                    Login
-                  </Button></>)}
-            
+              </>
+            )}
           </Box>
         </Toolbar>
       </Container>

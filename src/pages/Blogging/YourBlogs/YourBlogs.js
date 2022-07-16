@@ -4,17 +4,21 @@ import React, { useEffect, useState } from 'react'
 import blogs from '../../../blogs';
 import { Box } from '@mui/system';
 import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { getUser } from '../../../components/getLocalStorage';
 /**
 * @author
 * @function YourBlogs
 **/
-
+const baseURL = "https://sportify-backend-prd.herokuapp.com/blogs/api/blogs/yourblog"
 const YourBlogs = (props) => {
     const [data, setData] = useState([]);
     const navigate = useNavigate();
     useEffect(() => {
-        setData(require('../../../yourblogs.json'));
-        console.log(data);
+        axios.get(baseURL+ "/" + getUser()._id).then((response) => {
+            console.log(response.data);
+            setData(response.data.data);
+          });
     }, [])
     console.log(data);
     return (
@@ -55,12 +59,12 @@ const YourBlogs = (props) => {
                             <CardMedia
                                 component="img"
                                 height="140"
-                                image={require(`../../../assets/images/${display.image}`)}
+                                image={display.blogImage}
                                 alt={display.id}
                             />
                             <CardContent>
                                 <Typography gutterBottom variant="h5" component="div">
-                                    {display.title}
+                                    {display.blogTitle}
                                 </Typography>
                                 <Typography variant="body2" color="text.secondary">
                                 {display.shortContent}
