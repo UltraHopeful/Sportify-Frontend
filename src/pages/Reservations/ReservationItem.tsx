@@ -39,7 +39,6 @@ const ReservationItem = (props: any) => {
                                         <Chip label={props.reservationDetails.reservationStatus} color="success" /> :
                                         <Chip label={props.reservationDetails.reservationStatus} color="error" />
                                 }
-                                {/* {props.reservationDetails.reservationStatus} */}
                             </Typography>
                             <Typography variant="body2" color="text.secondary">
                                From: {new Date(props.reservationDetails.reservationFrom).toLocaleString()}
