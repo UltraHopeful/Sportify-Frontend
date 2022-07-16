@@ -67,10 +67,10 @@ function Pricing() {
 
   const user = getUser();
   let userId = "";
-  let isAdmin = false;
+  let disableButton = true;
   if(user!=null){
     userId = user._id;
-    isAdmin = user.profile == 'admin' ? true : false;
+    disableButton = user.profile == 'admin' ? true : false;
   }
 
   const navigate = useNavigate();
@@ -211,7 +211,7 @@ function Pricing() {
                       </ul>
                     </CardContent>
                     <CardActions>
-                      <Button disabled={isAdmin} fullWidth variant={tier.buttonVariant} onClick={() =>moveToBilling(tier)}>
+                      <Button disabled={disableButton} fullWidth variant={tier.buttonVariant} onClick={() =>moveToBilling(tier)}>
                         {tier.buttonText} 
                       </Button>
                     </CardActions>
