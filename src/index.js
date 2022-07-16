@@ -135,7 +135,10 @@ root.render(
             path="purchased-membership"
             element={<PurchasedMemberships />}
           />
-          <Route path="membership/checkout" element={<Checkout />} />
+          <Route element={<ProtectedRoute isAllow={() => checkUser() || checkAdmin()} />}>
+            <Route path="membership/checkout" element={<Checkout />} />
+          </Route>
+            
           <Route path="events" element={<EventsList />} />
           <Route path="events/:eventId" element={<EventDetails />} />
           <Route path="my-events" element={<MyEvents />} />

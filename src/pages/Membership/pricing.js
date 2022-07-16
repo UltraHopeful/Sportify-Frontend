@@ -13,7 +13,9 @@ import GlobalStyles from '@mui/material/GlobalStyles';
 import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router-dom';
 import "./membership.css";
-import axios from 'axios'
+import axios from 'axios';
+import { getBackendUrl } from '../../components/getUrl';
+import { getUser } from '../../components/getLocalStorage';
 
 const tiers = [
   {
@@ -63,13 +65,12 @@ const tiers = [
 
 function Pricing() {
 
-  localStorage.setItem("user", '{"_id":"62d125c24709b75db510f79c","firstName":"Soham","lastName":"Patel","email":"sohupatel8828@gmail.com","contactNo":"+1 902-354-4536","address":"","profile":"user"}')
-  const rawUser = localStorage.getItem("user")
-  const user = JSON.parse(rawUser)
+  const user = getUser();
   const userId = user._id;
+  const isAdmin = user.profile == 'admin' ? true : false;
 
   const navigate = useNavigate();
-  const domain = 'https://sportify-backend-prd.herokuapp.com';
+  const domain = getBackendUrl();
   const [render, setRender] = useState(false);
   useLayoutEffect(() => {
     axios
@@ -206,7 +207,7 @@ function Pricing() {
                       </ul>
                     </CardContent>
                     <CardActions>
-                      <Button fullWidth variant={tier.buttonVariant} onClick={() =>moveToBilling(tier)}>
+                      <Button disabled={isAdmin} fullWidth variant={tier.buttonVariant} onClick={() =>moveToBilling(tier)}>
                         {tier.buttonText} 
                       </Button>
                     </CardActions>
