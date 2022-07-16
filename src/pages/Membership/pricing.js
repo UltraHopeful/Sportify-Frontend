@@ -66,8 +66,12 @@ const tiers = [
 function Pricing() {
 
   const user = getUser();
-  const userId = user._id;
-  const isAdmin = user.profile == 'admin' ? true : false;
+  let userId = "";
+  let isAdmin = false;
+  if(user!=null){
+    userId = user._id;
+    isAdmin = user.profile == 'admin' ? true : false;
+  }
 
   const navigate = useNavigate();
   const domain = getBackendUrl();
