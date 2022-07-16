@@ -1,3 +1,4 @@
+
 # Assignment-3
 
 - _Date Created_: 15 JUL 2022
@@ -8,13 +9,13 @@
 ## Group Repo URLs
 
 - _Gitlab URL Front-End_: <https://git.cs.dal.ca/ajayanthi/5709-group10>
-- _Gitlab URL Back-End: <https://git.cs.dal.ca/kabtiyal/5709-g10-sportify-backend/-/tree/main>
+- _Gitlab URL Back-End_: <https://git.cs.dal.ca/kabtiyal/5709-g10-sportify-backend/-/tree/main>
 
 
 ## Individual Branch URLs
 
 - _Gitlab URL Front-End_: <https://git.cs.dal.ca/ajayanthi/5709-group10/-/tree/alagu_swrnam_karruppiah>
-- _Gitlab URL Back-End: <https://git.cs.dal.ca/kabtiyal/5709-g10-sportify-backend/-/tree/alaguswrnam_karruppiah>
+- _Gitlab URL Back-End_: <https://git.cs.dal.ca/kabtiyal/5709-g10-sportify-backend/-/tree/alaguswrnam_karruppiah>
 
 ## Authors
 
