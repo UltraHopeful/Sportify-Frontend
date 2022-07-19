@@ -39,6 +39,8 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 export default function PurchasedMemberships() {
   const domain = getBackendUrl();
   const backendReqBody = JSON.parse(localStorage.getItem("backendReqBody"));
+  console.log("backendReqBody:");
+  console.log(backendReqBody);
   const queryParams = new URLSearchParams(window.location.search);
   const [payment, setPayment] = React.useState(queryParams.get('payment'));
   let initialTitle = payment === "success" ? "Payment Completed" : "Membership Cancelled";
@@ -48,12 +50,17 @@ export default function PurchasedMemberships() {
   const [dTitle, setDTitle] = React.useState(initialTitle);
   const [dDesc, setDDesc] = React.useState(initialDesc);
 
+  const location = useLocation();
+  const navigate = useNavigate();
+  const initRows = location.state!=null ? location.state.memberships : [];
+  const [rows, setRows] = React.useState(initRows);
+
   const user = getUser();
   const userId = user._id;
 
   const handleClose = () => {
     setOpen(false);
-    
+    console.log('hello');
     if (payment !== "success") {
       navigate('/membership');
     }
@@ -65,21 +72,20 @@ export default function PurchasedMemberships() {
         axios
         .get(domain + '/api/membership/purchase/user/'+userId)
         .then((getres) => {
-          setRows(getres.data.data);
+          navigate("/membership");
         })
       })
-      setPayment("");
     }
 
   };
-  const location = useLocation();
-  const navigate = useNavigate();
-  const initRows = location.state!=null ? location.state.memberships : [];
-  const [rows, setRows] = React.useState(initRows);
+  
   const cancelMembership = () => {
+    const data = {'user_id': userId};
+    console.log(data);
     axios({
       method: 'put',
-      url: domain + "/api/membership/cancel-purchase"
+      url: domain + "/api/membership/cancel-purchase",
+      data: data
     }).then(res => {
       setDTitle("Membership Cancelled");
       setDDesc("We are processing your cancellation request. You will receive refund in your bank account within next 5 business days.")
@@ -149,8 +155,8 @@ export default function PurchasedMemberships() {
                   {row.id}
                 </StyledTableCell>
                 <StyledTableCell align="center">{row.plan_name}</StyledTableCell>
-                <StyledTableCell align="center">{Date(row.start_date)}</StyledTableCell>
-                <StyledTableCell align="center">{Date(row.end_date)}</StyledTableCell>
+                <StyledTableCell align="center">{row.start_date}</StyledTableCell>
+                <StyledTableCell align="center">{row.end_date}</StyledTableCell>
                 <StyledTableCell align="center">{row.status}</StyledTableCell>
               </StyledTableRow>
             ))}
