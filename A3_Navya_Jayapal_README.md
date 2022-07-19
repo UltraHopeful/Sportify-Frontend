@@ -11,7 +11,7 @@
 
 ## Authors
 
-- [Navya Jayapal (B00886554)] (mailto: @dal.ca) - _Developer_
+- [Navya Jayapal (B00886554)] (mailto: nv408879@dal.ca) - _Developer_
 
 ## Assignment 3 - Blogging (Customer)
 
