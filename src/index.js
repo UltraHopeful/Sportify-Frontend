@@ -140,7 +140,7 @@ root.render(
           />
           <Route element={<ProtectedRoute isAllow={() => checkUser() || checkAdmin()} />}>
             <Route path="membership/checkout" element={<Checkout />} />
-            <Route path="rewards" element={<Rewards />}/>
+            <Route path="my-rewards" element={<Rewards />}/>
           </Route>
 
           <Route path="events" element={<EventsList />} />

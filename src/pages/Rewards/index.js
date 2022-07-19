@@ -217,7 +217,7 @@ export default function index() {
         } else {
           console.log(result);
           notify("success", result.message);
-          window.location.replace("/rewards");
+          window.location.replace("/my-rewards");
         }
       })
       .catch((error) => console.log("error", error));
