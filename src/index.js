@@ -26,7 +26,6 @@ import LogIn from "./pages/LogIn/index";
 import Checkout from "./pages/Membership/checkout";
 import Pricing from "./pages/Membership/pricing";
 import PurchasedMemberships from "./pages/Membership/purchasedMembership";
-import Products from "./pages/Merchandise/displayProducts";
 import MyEventDetails from "./pages/MyEventDetails";
 import MyEvents from "./pages/MyEvents/MyEvents";
 import MembershipPlan from "./pages/Payment/membershipPlan";
@@ -42,7 +41,9 @@ import MainSearch from "./pages/Search/mainSearch";
 import MerchandiseSearch from "./pages/Search/merchandiseSearch";
 import Signup from "./pages/Signup/index";
 import VerifyAccount from "./pages/VerifyAccount/index";
-
+import AddProduct from "./pages/Merchandise/addProduct";
+import Products from "./pages/Merchandise/displayProducts";
+import ProductDetails from "./pages/Merchandise/productDetails";
 import NoHeader from "./components/NoHeader";
 import WithHeader from "./components/WithHeader";
 
@@ -124,6 +125,9 @@ root.render(
             <Route path="facility/:resourceId" element={<FacilityDetails />} />
           </Route>
           <Route path="facility" element={<Facilities />} />
+          <Route path="facility/add-new" element={<AddNewFacility />} />
+          <Route path="product/add-new" element={<AddProduct />}/>
+          <Route path="product/:productId" element={<ProductDetails />} />
           <Route element={<ProtectedRoute isAllow={() => checkAdmin()} />}>
             <Route path="facility/add-new" element={<AddNewFacility />} />
           </Route>
