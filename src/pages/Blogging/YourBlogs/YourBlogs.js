@@ -11,8 +11,8 @@ const parse = require('html-react-parser');
 * @author
 * @function YourBlogs
 **/
-const baseURL = "http://localhost:5000/blogs/api/blogs/yourblog"
-const baseURL2 = "http://localhost:5000/blogs/api/blogs/delete"
+const baseURL = "https://sportify-backend-prd.herokuapp.com/blogs/api/blogs/yourblog"
+const baseURL2 = "https://sportify-backend-prd.herokuapp.com/blogs/api/blogs/delete"
 
 const removeHTML= (str) =>{ 
     var tmp = document.createElement("p");

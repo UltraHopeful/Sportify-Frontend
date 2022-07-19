@@ -10,7 +10,7 @@ const parse = require('html-react-parser');
 * @author
 * @function BlogPost
 **/
-const baseURL = "http://localhost:5000/blogs/api/blogs/blog"
+const baseURL = "https://sportify-backend-prd.herokuapp.com/blogs/api/blogs/blog"
 const BlogPost = (props) => {
 
     const navigate = useNavigate();
