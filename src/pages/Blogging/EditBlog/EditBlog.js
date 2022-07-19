@@ -14,8 +14,8 @@ const { v4: uuidv4 } = require('uuid');
 * @function EditBlog
 **/
 
-const baseURL = "https://sportify-backend-prd.herokuapp.com/blogs/api/blogs/blog"
-const baseURL2= "https://sportify-backend-prd.herokuapp.com/blogs/api/blogs/updateBlog"
+const baseURL = "http://localhost:5000/blogs/api/blogs/blog"
+const baseURL2= "http://localhost:5000/blogs/api/blogs/updateBlog"
 const EditBlog = (props) => {
     
     const [data2, setData2] = useState([]);
@@ -26,11 +26,15 @@ const EditBlog = (props) => {
     const navigate = useNavigate();
     let params = useParams();
     const resId = params.id;
+    const shortContent = data2.toString().split(" ");
+    var first_line = shortContent.slice(0,19).join(" ");
+
+    
    
     useEffect(() => {
         axios.get(baseURL+ "/" + resId).then((response) => {
             console.log(response.data);
-           // response.data.data.blogContent = parse(response.data.data.blogContent);
+            // response.data.data.shortContent = parse(response.data.data.shortContent);
             console.log(response.data.data.blogTitle)
             setData(response.data.data);
             console.log(data.blogContent)
@@ -58,7 +62,7 @@ const EditBlog = (props) => {
         blogContent: data2,
         blogTitle: blogTitle,
         blogImage:  image,
-        shortContent : data.shortContent,
+        shortContent : first_line,
         userId : data.userId,
         timeStamp: Date.now().toString()
      }
@@ -98,7 +102,7 @@ const EditBlog = (props) => {
                          Edit Blog
                         </Typography>
                             <div>
-                                <TextField fullWidth label="Title" id="fullWidth" defaultValue= {data.blogTitle}
+                                <TextField fullWidth label="Title" id="fullWidth" 
                                     sx={{
                                         marginX: "5%",
                                         marginY: "5%",
@@ -109,7 +113,7 @@ const EditBlog = (props) => {
                                             opacity: [0.9, 0.8, 0.7],
                                         },
                                     }}
-                                    value = {blogTitle}
+                                    value = {data.blogTitle}
                                     onChange = {handleChange}
                                 />
                             </div>

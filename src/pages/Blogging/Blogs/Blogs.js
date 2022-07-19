@@ -14,7 +14,7 @@ const parse = require('html-react-parser');
 * @function Blogs
 **/
 ///api/blogs/allblogs
-const baseURL = "https://sportify-backend-prd.herokuapp.com/blogs/api/blogs/allblogs"
+const baseURL = "http://localhost:5000/blogs/api/blogs/allblogs"
 const Blogs = (props) => {
     const [data, setData] = useState([]);
     const navigate = useNavigate();
@@ -82,12 +82,12 @@ const Blogs = (props) => {
                             
 
                         </CardActionArea>
-                        <CardActions>
+                        {/* <CardActions>
                                 <IconButton aria-label="add to favorites" onClick={notify}>
                                 <ToastContainer />
                                     <FavoriteIcon />
                                 </IconButton>
-                         </CardActions>
+                         </CardActions> */}
 
                     </Card>
                 </Grid>

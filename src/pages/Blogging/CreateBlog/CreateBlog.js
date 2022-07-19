@@ -15,7 +15,7 @@ const { v4: uuidv4 } = require('uuid');
 * @function CreateBlog
 **/
 
-const baseURL = "https://sportify-backend-prd.herokuapp.com/blogs/api/blogs/postBlog"
+const baseURL = "http://localhost:5000/blogs/api/blogs/postBlog"
 const CreateBlog = (props) => {
     const navigate = useNavigate();
     const notify = () => toast("Under Construction as it involves database!");
@@ -24,7 +24,7 @@ const CreateBlog = (props) => {
     const [image, setImage] = useState(null);
     const [selectedFile,setSelectedFile] = useState([]);
     const shortContent = data2.toString().split(" ");
-    var first_line = shortContent.slice(0,5).join(" ");
+    var first_line = shortContent.slice(0,19).join(" ");
 
     const handleChange = (e) => {
      //   console.log(`Typed => ${e.target.value}`)

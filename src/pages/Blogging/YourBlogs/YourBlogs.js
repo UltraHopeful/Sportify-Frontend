@@ -6,21 +6,40 @@ import { Box } from '@mui/system';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { getUser } from '../../../components/getLocalStorage';
+const parse = require('html-react-parser');
 /**
 * @author
 * @function YourBlogs
 **/
-const baseURL = "https://sportify-backend-prd.herokuapp.com/blogs/api/blogs/yourblog"
+const baseURL = "http://localhost:5000/blogs/api/blogs/yourblog"
+const baseURL2 = "http://localhost:5000/blogs/api/blogs/delete"
+
+const removeHTML= (str) =>{ 
+    var tmp = document.createElement("p");
+    tmp.innerHTML = str;
+    return tmp.innerText;
+};
+
 const YourBlogs = (props) => {
     const [data, setData] = useState([]);
     const navigate = useNavigate();
+
     useEffect(() => {
         axios.get(baseURL+ "/" + getUser()._id).then((response) => {
             console.log(response.data);
+           // response.data.data.shortContent= parse(response.data.data[0].shortContent);
             setData(response.data.data);
           });
-    }, [])
-    console.log(data);
+    }, []);
+    const myFunction = (id,e) =>{
+        e.preventDefault();
+        axios.delete(baseURL2+ "/" + id)
+         .then(() => {
+           navigate("/blogs");
+         }, (error) => {
+           console.log(error);
+         });
+        }
     return (
         <Grid>
             <Grid item sx={{marginY:"4%",marginLeft:"20%",alignContent:"center"}}>
@@ -67,7 +86,7 @@ const YourBlogs = (props) => {
                                     {display.blogTitle}
                                 </Typography>
                                 <Typography variant="body2" color="text.secondary">
-                                {display.shortContent}
+                                {parse(display.shortContent)}
                                 </Typography>
                             </CardContent>
                         </CardActionArea>
@@ -75,10 +94,7 @@ const YourBlogs = (props) => {
                             <Button size="small" onClick={() => {
                                 navigate("/editblogs/"+display.id);
                             }}>Edit</Button>
-                            <Button size="small">Delete</Button>
-                                <IconButton aria-label="add to favorites">
-                                    <FavoriteIcon />
-                                </IconButton>
+                            <Button size="small" onClick={(e)=>myFunction(display.id,e)} >Delete</Button>
                             </CardActions>
                     </Card>
                 </Grid>
