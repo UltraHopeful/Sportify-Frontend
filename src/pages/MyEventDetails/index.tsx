@@ -13,6 +13,7 @@ import axios from "axios";
 import { getUser } from "../../components/getLocalStorage";
 import CloseIcon from '@mui/icons-material/Close';
 import MuiAlert from '@mui/material/Alert';
+import { toast } from "react-toastify";
 
 
 export default function MyEventDetails() {
@@ -47,6 +48,22 @@ export default function MyEventDetails() {
         setCancelDialogOpen(true);
     }
 
+    const notify = (type: String, msg: String) => {
+        if(type === 'success'){
+            toast.success(
+              msg,
+              { position: toast.POSITION.TOP_RIGHT }
+            );
+            
+        }else if(type === 'error'){
+            toast.error(
+              msg,
+              { position: toast.POSITION.TOP_RIGHT }
+            );
+    
+        }
+      };
+
     const cancelConfirmationSnackbar = () => {
         axios({
             method: 'put',
@@ -55,12 +72,12 @@ export default function MyEventDetails() {
                 "access-token": localStorage.getItem('access-token')!
             }
         }).then(res => res.data.data).then(content => {
-            navigate('/my-events', { state: { snackbar: true } });
+            notify('success', 'Successfully cancelled your booking');
+            navigate('/my-events');
         }).catch(err => {
             console.log(err);
             closeDialog();
-            setSnackbarMsg(err.response.data.message);
-            setSnackbarOpen({ ...snackbarOpen, open: true });
+            notify('error', err.response.data.message);
         });
     }
 

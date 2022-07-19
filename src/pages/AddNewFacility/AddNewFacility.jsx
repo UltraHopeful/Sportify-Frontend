@@ -8,6 +8,7 @@ import './AddNewFacility.css';
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { getBackendUrl } from "../../components/getUrl";
+import { toast } from "react-toastify";
 
 const AddNewFacility = () => {
     const navigate = useNavigate();
@@ -131,6 +132,22 @@ const AddNewFacility = () => {
         return true;
     }
 
+    const notify = (type, msg) => {
+        if(type === 'success'){
+            toast.success(
+              msg,
+              { position: toast.POSITION.TOP_RIGHT }
+            );
+            
+        }else if(type === 'error'){
+            toast.error(
+              msg,
+              { position: toast.POSITION.TOP_RIGHT }
+            );
+    
+        }
+      };
+
     const onPostNewFacility = (event) => {
         event.preventDefault();
         if (!validateFormData()) {
@@ -151,7 +168,8 @@ const AddNewFacility = () => {
                 "access-token": localStorage.getItem("access-token"),
             }
         }).then(res => {
-            navigate('/facility', { state: { snackbar: true, snackbarMsg: 'Successfuly added the facility' } })
+            notify('success', 'Successfuly added the facility');
+            navigate('/facility');
             console.log(res);
         }).catch(err => {
             console.log(err);
