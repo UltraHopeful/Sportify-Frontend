@@ -8,6 +8,7 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { getBackendUrl } from "../../components/getUrl";
 
 const AddNewEvent = () => {
@@ -166,6 +167,22 @@ const AddNewEvent = () => {
         });
     }
 
+    const notify = (type, msg) => {
+        if(type === 'success'){
+            toast.success(
+              msg,
+              { position: toast.POSITION.TOP_RIGHT }
+            );
+            
+        }else if(type === 'error'){
+            toast.error(
+              msg,
+              { position: toast.POSITION.TOP_RIGHT }
+            );
+    
+        }
+      };
+
     const onPostNewFacility = (event) => {
         event.preventDefault();
         if (!validateFormData()) {
@@ -188,7 +205,8 @@ const AddNewEvent = () => {
                 "access-token": localStorage.getItem("access-token"),
             }
         }).then(res => {
-            navigate('/events', { state: { snackbar: true, snackbarMsg: 'Successfuly added the event' } })
+            notify('success', 'Successfuly added the event');
+            navigate('/events');
             console.log(res);
         }).catch(err => {
             console.log(err);
