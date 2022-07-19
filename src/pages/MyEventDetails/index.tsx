@@ -91,7 +91,7 @@ export default function MyEventDetails() {
                             {/* Image Grid */}
                             <Grid item xs={12} md={4} sm={6}>
                                 <Card sx={{ margin: '20px', width: '90%', height: '90%', display: 'flex', justifyContent: 'center' }} elevation={6}>
-                                    <img className='image-responsive' src={`../${details.image}`} alt="" />
+                                    <img className='image-responsive' src={`${details.image}`} alt="" />
                                 </Card>
                             </Grid>
                             {/* Primary Reservation Grid */}
