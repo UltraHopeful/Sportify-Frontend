@@ -15,7 +15,6 @@ import Grid from '@mui/material/Grid';
 import Typography from "@mui/material/Typography";
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import * as Yup from "yup";
 
@@ -33,7 +32,6 @@ export default function Main() {
 
   }, []);
 
-  const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
   const handleOpenEditForm = () => {
     formik.values.firstName = userDetails.firstName;
@@ -183,15 +181,7 @@ export default function Main() {
     },
   });
 
-  const [visiblePassword, setVisiblePassword] = useState(false);
-  const showPassword = () => setVisiblePassword(!visiblePassword);
-  const hiddenPassword = () => setVisiblePassword(!visiblePassword);
 
-  const [visibleCPassword, setVisibleCPassword] = useState(false);
-  const showCPassword = () => setVisibleCPassword(!visibleCPassword);
-  const hiddenCPassword = () => setVisibleCPassword(!visibleCPassword);
-
-  let handleChange;
   return (
     <Grid
       container

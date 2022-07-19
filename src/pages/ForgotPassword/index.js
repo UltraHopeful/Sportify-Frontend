@@ -3,7 +3,6 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Formik } from "formik";
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
 import Logo from "../../assets/images/Sportify.png";
@@ -17,8 +16,6 @@ const validations = Yup.object({
 });
 
 export default function InputForm(props) {
-
-  const navigate = useNavigate();
 
   const notify = () => {
       toast.success("Password Reset Request Successfully. Check your mail.",{position: toast.POSITION.TOP_RIGHT});
