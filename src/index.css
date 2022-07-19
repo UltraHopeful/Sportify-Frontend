@@ -17,6 +17,7 @@ code {
 
 .logo-img{
   width:130px;
+  min-width: 6.6rem;
   display: flex;
   margin: 0 auto;
 }
@@ -47,7 +48,7 @@ code {
 }
 
 .homeback{
-  height:100vh;
+  min-height:100vh;
   background:linear-gradient(297deg, rgba(50,109,217,0.4) 35%, rgba(0,0,0,0.6) 100%), url("../public/Homeback.jpg");
   /*background:linear-gradient(130deg, rgba(238,53,42,0.45) 20%, rgba(2,0,36,0.45) 60%, rgba(255,255,255,0.25) 81%), url("assets/images/loginBack.jpg");*/
   /*background: rgba(238, 53, 42,0.5);*/

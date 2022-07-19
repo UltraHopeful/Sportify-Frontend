@@ -10,9 +10,16 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AddNewFacility from "./pages/AddNewFacility";
+import BlogPost from "./pages/Blogging/BlogPost/BlogPost";
+import Blogs from "./pages/Blogging/Blogs/Blogs";
+import CreateBlog from "./pages/Blogging/CreateBlog/CreateBlog";
+import EditBlog from "./pages/Blogging/EditBlog/EditBlog";
+import YourBlogs from "./pages/Blogging/YourBlogs/YourBlogs";
 import ChangePassword from "./pages/ChangePassword/index";
 import { EventDetails } from "./pages/EventDetails";
 import EventsList from "./pages/Events/index";
+import Facilities from "./pages/Facilities";
+import FacilityDetails from "./pages/FacilityDetails";
 import ForgotPassword from "./pages/ForgotPassword/index";
 import Home from "./pages/Home/index";
 import LogIn from "./pages/LogIn/index";
@@ -20,13 +27,6 @@ import Checkout from "./pages/Membership/checkout";
 import Pricing from "./pages/Membership/pricing";
 import PurchasedMemberships from "./pages/Membership/purchasedMembership";
 import Products from "./pages/Merchandise/displayProducts";
-import CreateBlog from "./pages/Blogging/CreateBlog/CreateBlog";
-import EditBlog from "./pages/Blogging/EditBlog/EditBlog";
-import BlogPost from "./pages/Blogging/BlogPost/BlogPost";
-import YourBlogs from "./pages/Blogging/YourBlogs/YourBlogs";
-import Facilities from "./pages/Facilities";
-import FacilityDetails from "./pages/FacilityDetails";
-import Blogs from "./pages/Blogging/Blogs/Blogs";
 import MyEventDetails from "./pages/MyEventDetails";
 import MyEvents from "./pages/MyEvents/MyEvents";
 import MembershipPlan from "./pages/Payment/membershipPlan";
@@ -34,10 +34,11 @@ import PaymentSuccess from "./pages/Payment/paymentSuccess";
 import Profile from "./pages/Profile/index";
 import { ReservationDetails } from "./pages/ReservationDetails";
 import ReservationList from "./pages/Reservations";
-import MainSearch from "./pages/Search/mainSearch";
-import AppSearch from "./pages/Search/facilitySearch";
-import EventSearch from "./pages/Search/eventSearch";
+import Rewards from "./pages/Rewards/index";
 import BlogSearch from "./pages/Search/blogSearch";
+import EventSearch from "./pages/Search/eventSearch";
+import AppSearch from "./pages/Search/facilitySearch";
+import MainSearch from "./pages/Search/mainSearch";
 import MerchandiseSearch from "./pages/Search/merchandiseSearch";
 import Signup from "./pages/Signup/index";
 import VerifyAccount from "./pages/VerifyAccount/index";
@@ -71,7 +72,7 @@ const ProtectedRoute = ({ isAllow, redirectPath = "/login", children }) => {
 
 function checkUser() {
   const isLogin = localStorage.getItem("isLogin");
-  if (getUser() != undefined && getUser() != null) {
+  if (getUser() !== undefined && getUser() != null) {
     const profile = getUser().profile;
     console.log(profile);
     // console.log("check user");
@@ -87,7 +88,7 @@ function checkUser() {
 
 function checkAdmin() {
   const isLogin = localStorage.getItem("isLogin");
-  if (getUser() != undefined && getUser() != null) {
+  if (getUser() !== undefined && getUser() != null) {
     const profile = getUser().profile;
     console.log(profile);
     // console.log("check user");
@@ -139,6 +140,7 @@ root.render(
           />
           <Route element={<ProtectedRoute isAllow={() => checkUser() || checkAdmin()} />}>
             <Route path="membership/checkout" element={<Checkout />} />
+            <Route path="rewards" element={<Rewards />}/>
           </Route>
 
           <Route path="events" element={<EventsList />} />

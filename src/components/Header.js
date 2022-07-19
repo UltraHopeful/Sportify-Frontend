@@ -21,7 +21,7 @@ import { toast } from "react-toastify";
 import Logo from "../assets/images/Sportify.png";
 import { getUser } from "./getLocalStorage";
 
-const pages = ["Membership", "Facility", "Events", "Blogs", "Store"];
+const pages = ["Membership", "Facility", "Events", "Blogs", "Store","Rewards"];
 // const settings = ['My Account', 'Logout'];
 
 const primaryColor = "#326DD9";

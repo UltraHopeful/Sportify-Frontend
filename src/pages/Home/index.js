@@ -1,6 +1,5 @@
-import React from "react";
-import {Accordion, AccordionDetails, AccordionSummary, Box, Grid, Typography} from "@mui/material";
-import {ToastContainer} from "react-toastify";
+import { Accordion, AccordionDetails, AccordionSummary, Box, Grid, Typography } from "@mui/material";
+import { ToastContainer } from "react-toastify";
 
 function ExpandMoreIcon() {
     return null;
@@ -36,12 +35,12 @@ const main = () => {
                 </Grid>
                 <Grid item xl={6} lg={6} md={6} sm={12} xs={12} className="bg-lighter img-box">
                     <Box sx={{objectFit: 'cover'}}>
-                        <img src="./mission.svg" className="img-responsive"/>
+                        <img src="./mission.svg" alt="Mission" className="img-responsive"/>
                     </Box>
                 </Grid>
                 <Grid item xl={6} lg={6} md={6} sm={12} xs={12} className="bg-lighter img-box">
                     <Box sx={{objectFit: 'contain'}}>
-                        <img src="./vision.svg" className="img-responsive"/>
+                        <img src="./vision.svg" alt="Vision" className="img-responsive"/>
                     </Box>
                 </Grid>
                 <Grid item xl={6} lg={6} md={6} sm={12} xs={12} className="bg-dark sideBox" alignItems="center">
