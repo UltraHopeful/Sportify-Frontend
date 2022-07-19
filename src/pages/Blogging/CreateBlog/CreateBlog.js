@@ -24,7 +24,7 @@ const CreateBlog = (props) => {
     const [image, setImage] = useState(null);
     const [selectedFile,setSelectedFile] = useState([]);
     const shortContent = data2.toString().split(" ");
-    var first_line = shortContent.slice(0,5).join(" ");
+    var first_line = shortContent.slice(0,19).join(" ");
 
     const handleChange = (e) => {
      //   console.log(`Typed => ${e.target.value}`)

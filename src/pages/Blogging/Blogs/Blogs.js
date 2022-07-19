@@ -82,12 +82,12 @@ const Blogs = (props) => {
                             
 
                         </CardActionArea>
-                        <CardActions>
+                        {/* <CardActions>
                                 <IconButton aria-label="add to favorites" onClick={notify}>
                                 <ToastContainer />
                                     <FavoriteIcon />
                                 </IconButton>
-                         </CardActions>
+                         </CardActions> */}
 
                     </Card>
                 </Grid>
