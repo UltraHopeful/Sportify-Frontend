@@ -9,6 +9,7 @@ import MuiAlert from '@mui/material/Alert';
 import CloseIcon from '@mui/icons-material/Close';
 import './ReservationDetails.css';
 import { getBackendUrl } from "../../components/getUrl";
+import { toast } from "react-toastify";
 
 const primaryColor = '#326DD9';
 
@@ -89,6 +90,22 @@ const ReservationDetails = () => {
         setCancelDialogOpen(true);
     }
 
+    const notify = (type: String, msg: String) => {
+        if(type === 'success'){
+            toast.success(
+              msg,
+              { position: toast.POSITION.TOP_RIGHT }
+            );
+            
+        }else if(type === 'error'){
+            toast.error(
+              msg,
+              { position: toast.POSITION.TOP_RIGHT }
+            );
+    
+        }
+      };
+
     const cancelConfirmationSnackbar = () => {
         axios.put(`${getBackendUrl()}/reservation/cancel-reservation/${resId}`, {
             headers: {
@@ -96,12 +113,12 @@ const ReservationDetails = () => {
             }
         }).then(res => res.data).then(content => {
             const msg = (!content.message) ? 'Successfuly cancelled your reservation.' : content.message;
-            navigate('/my-reservations', { state: { snackbar: true, snackbarMsg: msg } });
+            notify('success', msg);
+            navigate('/my-reservations');
         }).catch(err => {
             closeDialog();
             if (err.response.status === 400 || err.response.status === 404) {
-                setSnackbarMsg(err.response.data.message);
-                setSnackbarOpen({ ...snackbarOpen, open: true });
+                notify('error', err.response.data.message);
             }
         });
     }

@@ -11,6 +11,7 @@ import { getBackendUrl } from "../../components/getUrl";
 import Loader from "../../components/Loader";
 import NoEvents from "../../components/NoEvents";
 import { getUser } from "../../components/getLocalStorage";
+import { toast } from "react-toastify";
 
 const DetailDescription = (props: any) => {
     return (
@@ -99,6 +100,22 @@ const EventDetails = () => {
         });
     }, []);
 
+    const notify = (type: string, msg: string) => {
+        if(type === 'success'){
+            toast.success(
+              msg,
+              { position: toast.POSITION.TOP_RIGHT }
+            );
+            
+        }else if(type === 'error'){
+            toast.error(
+              msg,
+              { position: toast.POSITION.TOP_RIGHT }
+            );
+    
+        }
+      };
+
     const onSubmitBooking = () => {
         if (!validateForm(selectedSlots)) {
             return;
@@ -120,7 +137,8 @@ const EventDetails = () => {
                     "access-token": localStorage.getItem("access-token")!,
                 }
             }).then(res => {
-                navigate('/events', { state: { snackbar: true, snackbarMsg: 'Successfuly booked ticket(s) for the event!' } })
+                notify('success', 'Successfuly booked ticket(s) for the event!');
+                navigate('/events');
             }).catch((err) => {
                 console.log(err);
             });

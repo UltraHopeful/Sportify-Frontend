@@ -17,6 +17,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import MuiAlert from '@mui/material/Alert';
 import { getUser } from "../../components/getLocalStorage";
 import { getBackendUrl } from "../../components/getUrl";
+import { toast } from "react-toastify";
 
 const DetailDescription = (props: any) => {
     return (
@@ -252,6 +253,22 @@ const FacilityDetails = () => {
         return requestBody;
     }
 
+    const notify = (type: string, msg: string) => {
+        if(type === 'success'){
+            toast.success(
+              msg,
+              { position: toast.POSITION.TOP_RIGHT }
+            );
+            
+        }else if(type === 'error'){
+            toast.error(
+              msg,
+              { position: toast.POSITION.TOP_RIGHT }
+            );
+    
+        }
+      };
+
     const onSubmitBooking = () => {
         if (!validateForm(reservationDetails)) {
             return;
@@ -266,11 +283,11 @@ const FacilityDetails = () => {
                     "access-token": localStorage.getItem("access-token")!,
                 }
             }).then(() => {
-                navigate('/facility', { state: { snackbar: true, snackbarMsg: 'Successfuly booked facility!' } })
+                notify('success', 'Successfuly booked facility!');
+                navigate('/facility');
             }).catch((err) => {
                 if (err.response.status === 400 || err.response.status === 409 || err.response.status === 500) {
-                    setSnackbar({ ...snackbar, open: true });
-                    setSnackbarMsg(err.response.data.message);
+                    notify('error', err.response.data.message);
                 }
                 console.log('Exception occured', err);
             });

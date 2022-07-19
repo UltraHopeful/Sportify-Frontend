@@ -73,7 +73,8 @@ export default function Checkout() {
           'end_date': endDate,
           'status': 'Ongoing'
         }]
-        
+        console.log("backendReqBody:");
+        console.log(backendReqBody);
         localStorage.setItem('backendReqBody', JSON.stringify(backendReqBody))
         axios({
           method: method,

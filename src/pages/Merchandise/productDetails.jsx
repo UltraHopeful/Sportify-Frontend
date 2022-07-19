@@ -9,21 +9,34 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { primaryColor, whiteThemeColor } from "../../Theme/colors";
 import { getUser } from "../../components/getLocalStorage";
 import { getBackendUrl } from "../../components/getUrl";
+import { toast } from 'react-toastify';
 
 function Products() {
     const [product, setProduct] = useState({});
     const { state } = useLocation();
     const navigate = useNavigate();
 
+    const notify = (type, msg) => {
+        if(type === 'success'){
+            toast.success(
+              msg,
+              { position: toast.POSITION.TOP_RIGHT }
+            );
+            
+        }else if(type === 'error'){
+            toast.error(
+              msg,
+              { position: toast.POSITION.TOP_RIGHT }
+            );
+    
+        }
+      };
+
     const redirectToMerchandisePage = (productId) => {
         axios.delete(`${getBackendUrl()}/api/merchandise/delete-merchandise/` + productId).then((res) => {
             console.log(res)
-            navigate('/store', {
-                state: {
-                    snackbar: true,
-                    snackbarMsg: "Successfuly deleted the product",
-                },
-            })
+            notify("success","Successfully deleted the product")
+            navigate('/store')
         }).then((err) => {
             console.log(err)
         })

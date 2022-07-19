@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
-import { Snackbar, Card, CardActions, CardContent, CardMedia, Button } from '@mui/material';
-import MuiAlert from '@mui/material/Alert';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
+import { Card, CardActions, CardContent, CardMedia, Button } from '@mui/material';
 import { Grid, Container, TextField } from '@mui/material';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -32,22 +29,22 @@ function Products() {
         navigate('/product/' + productId);
     }
 
-    const onCloseSnackbar = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        setSnackbarOpen({ ...snackbarOpen, open: false });
-        navigate(".", { replace: true });
-    }
+    // const onCloseSnackbar = (event, reason) => {
+    //     if (reason === 'clickaway') {
+    //         return;
+    //     }
+    //     setSnackbarOpen({ ...snackbarOpen, open: false });
+    //     navigate(".", { replace: true });
+    // }
 
-    const snackbarCloseAction = (<IconButton
-        size="small"
-        aria-label="close"
-        color="inherit"
-        onClick={onCloseSnackbar}
-    >
-        <CloseIcon fontSize="small" />
-    </IconButton>);
+    // const snackbarCloseAction = (<IconButton
+    //     size="small"
+    //     aria-label="close"
+    //     color="inherit"
+    //     onClick={onCloseSnackbar}
+    // >
+    //     <CloseIcon fontSize="small" />
+    // </IconButton>);
 
     const handleSearchChange = (e) => {
         setSearch(e.target.value);
@@ -129,7 +126,8 @@ function Products() {
                                     {product.product_description}
                                 </Typography>
                             </CardContent>
-                            <CardActions
+                            {(loggedInUserRole === 'admin') && 
+                            <CardActions 
                                 sx={{
                                     display: 'flex',
                                     justifyContent: 'flex-end',
@@ -139,16 +137,16 @@ function Products() {
                                 <Button
                                     sx={{ color: whiteThemeColor, width: '100%' }}
                                     onClick={() => redirectToDetailsPage(product.product_id)}>
-                                    {(isLoggedIn === 'false') ? "Login to view details" : ((loggedInUserRole === 'admin') ? "View Details" : " ")}
+                                    View Details
                                 </Button>
-                            </CardActions>
+                            </CardActions>}
                         </Card>
                     </Grid>
                 ))
                 }
 
             </Grid>
-            <Snackbar
+            {/* <Snackbar
                 anchorOrigin={{ vertical, horizontal }}
                 open={open}
                 autoHideDuration={3000}
@@ -158,7 +156,7 @@ function Products() {
                 <MuiAlert onClose={onCloseSnackbar} severity="success" sx={{ width: '100%' }} elevation={6} variant="filled">
                     {snackbarMsg}
                 </MuiAlert>
-            </Snackbar>
+            </Snackbar> */}
         </>
     )
 }
