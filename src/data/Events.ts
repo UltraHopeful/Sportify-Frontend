@@ -10,7 +10,7 @@ let availableEvents: EventInterface[] = [
         location: 'Room - 234',
         description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
         maxCapacity: 200,
-        available: 20,
+        availableCapacity: 20,
         image: './yoga.svg',
     },
     {
@@ -20,7 +20,7 @@ let availableEvents: EventInterface[] = [
         location: 'Room - 283',
         description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
         maxCapacity: 100,
-        available: 5,
+        availableCapacity: 5,
         image: './meditation.svg',
     },
     {
@@ -30,7 +30,7 @@ let availableEvents: EventInterface[] = [
         location: 'Room - 200',
         description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
         maxCapacity: 50,
-        available: 1,
+        availableCapacity: 1,
         image: './zumba.svg',
     },
     {
@@ -40,7 +40,7 @@ let availableEvents: EventInterface[] = [
         location: 'Room - 290',
         description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
         maxCapacity: 200,
-        available: 100,
+        availableCapacity: 100,
         image: './yoga2.svg',
     },
     {
@@ -50,7 +50,7 @@ let availableEvents: EventInterface[] = [
         location: 'Room - 283',
         description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
         maxCapacity: 50,
-        available: 3,
+        availableCapacity: 3,
         image: './meditation.svg',
     },
     {
@@ -60,7 +60,7 @@ let availableEvents: EventInterface[] = [
         location: 'Room - 283',
         description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
         maxCapacity: 50,
-        available: 3,
+        availableCapacity: 3,
         image: './meditation.svg',
     },
     {
@@ -70,7 +70,7 @@ let availableEvents: EventInterface[] = [
         location: 'Room - 283',
         description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
         maxCapacity: 50,
-        available: 3,
+        availableCapacity: 3,
         image: './meditation.svg',
     },
     {
@@ -80,7 +80,7 @@ let availableEvents: EventInterface[] = [
         location: 'Room - 283',
         description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
         maxCapacity: 50,
-        available: 3,
+        availableCapacity: 3,
         image: './meditation.svg',
     },
     {
@@ -90,7 +90,7 @@ let availableEvents: EventInterface[] = [
         location: 'Room - 283',
         description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
         maxCapacity: 50,
-        available: 3,
+        availableCapacity: 3,
         image: './meditation.svg',
     },
     {
@@ -100,7 +100,7 @@ let availableEvents: EventInterface[] = [
         location: 'Room - 283',
         description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
         maxCapacity: 50,
-        available: 3,
+        availableCapacity: 3,
         image: './meditation.svg',
     },
 ]

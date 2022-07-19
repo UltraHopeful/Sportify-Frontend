@@ -1,26 +1,30 @@
-//Author: Aravind Jayanthi (B00868943)
-//Email: ar687531@dal.ca
+/* Author: Aravind Jayanthi (B00868943)
+   Email: ar687531@dal.ca */
 import { Delete, PhotoCamera } from "@mui/icons-material";
-import FormControl from '@mui/material/FormControl';
-import { Button, Container, Grid, IconButton, Input, InputLabel, MenuItem, Paper, Select, TextField, Typography, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
-import { useState } from "react";
-import './AddNewFacility.css';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, Grid, IconButton, Input, Paper, TextField, Typography } from "@mui/material";
+import { Container } from "@mui/system";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import axios from "axios";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getBackendUrl } from "../../components/getUrl";
 
-const AddNewFacility = () => {
+const AddNewEvent = () => {
     const navigate = useNavigate();
     const [image, setImage] = useState(null);
     const [imageUrl, setImageUrl] = useState(null);
+    let minDate = new Date();
+    minDate.setDate(minDate.getDate() + 1);
     const [facilityData, setFacilityData] = useState({
-        facilityName: '',
+        eventName: '',
         location: '',
         description: '',
-        category: 'Gym'
+        date: null,
+        slots: 1,
     });
     const [facilityFormErrors, setFacilityFormErrors] = useState({
-        facilityName: {
+        eventName: {
             required: false,
             maxLen: false,
         },
@@ -32,12 +36,16 @@ const AddNewFacility = () => {
             required: false,
             maxLen: false,
         },
-        category: {
+        date: {
             required: false,
         },
         image: {
             required: false,
         },
+        slots: {
+            required: false,
+            rangeError: false,
+        }
     });
     const [backDialogOpen, setBackDialogOpen] = useState(false);
 
@@ -45,6 +53,14 @@ const AddNewFacility = () => {
         facilityName: 50,
         location: 50,
         description: 5000
+    }
+
+    const minValues = {
+        slots: 1
+    };
+
+    const maxValues = {
+        slots: 500
     }
 
     const onImageUpload = (event) => {
@@ -84,7 +100,7 @@ const AddNewFacility = () => {
     }
 
     const validateFormChange = (propName, propValue) => {
-        if (!propValue || propValue==='' || propValue.trim() === '') {
+        if (((propName === 'date' || propName === 'slots') && !propValue) && (!propValue || propValue === '' || propValue.trim() === '')) {
             setFacilityFormErrors({
                 ...facilityFormErrors,
                 [propName]: {
@@ -103,18 +119,30 @@ const AddNewFacility = () => {
             });
             return true;
         }
+        else if ((minValues[propName] && minValues[propName] > propValue)
+            || (maxValues[propName] && maxValues[propName] < propValue)) {
+            setFacilityFormErrors({
+                ...facilityFormErrors,
+                [propName]: {
+                    required: false,
+                    rangeError: true,
+                }
+            });
+            return true;
+        }
         setFacilityFormErrors({
             ...facilityFormErrors,
             [propName]: {
                 required: false,
                 maxLen: false,
+                rangeError: false,
             }
         });
         return false;
     }
 
     const validateFormData = () => {
-        for (let prop of ['facilityName', 'location', 'description']) {
+        for (let prop of ['eventName', 'location', 'description', 'date', 'slots']) {
             if (validateFormChange(prop, facilityData[prop])) {
                 return false;
             }
@@ -131,32 +159,41 @@ const AddNewFacility = () => {
         return true;
     }
 
+    const onDateChange = async (updatedDate) => {
+        setFacilityData({
+            ...facilityData,
+            'date': updatedDate,
+        });
+    }
+
     const onPostNewFacility = (event) => {
         event.preventDefault();
         if (!validateFormData()) {
-            return ;
+            return;
         }
         const reqBody = {
-            name: facilityData.facilityName,
+            name: facilityData.eventName,
             location: facilityData.location,
             description: facilityData.description,
-            category: facilityData.category,
+            date: facilityData.date,
+            maxCapacity: facilityData.slots,
+            availableCapacity: facilityData.slots,
             image: image
         };
         axios({
             method: 'post',
-            url: `${getBackendUrl()}/facility`,
+            url: `${getBackendUrl()}/events/create`,
             data: reqBody,
             headers: {
                 "access-token": localStorage.getItem("access-token"),
             }
         }).then(res => {
-            navigate('/facility', { state: { snackbar: true, snackbarMsg: 'Successfuly added the facility' } })
+            navigate('/events', { state: { snackbar: true, snackbarMsg: 'Successfuly added the event' } })
             console.log(res);
         }).catch(err => {
             console.log(err);
         })
-        
+
     }
 
     const onBackClick = () => {
@@ -169,31 +206,31 @@ const AddNewFacility = () => {
 
     const backConfirmation = () => {
         closeDialog();
-        navigate('/facility');
+        navigate('/events');
     }
 
     return (
         <Container maxWidth="sm" sx={{ mb: "4" }}>
             <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
-                <Typography component="h1" variant="h4" align="center">Add New Facility Details</Typography>
+                <Typography component="h1" variant="h4" align="center">Add New Event Details</Typography>
                 <form onSubmit={onPostNewFacility}>
                     <Grid container spacing={3} sx={{ mt: '20px' }}>
                         <Grid item xs={12}>
                             <TextField
-                                sx ={{
+                                sx={{
                                     '.MuiFormHelperText-root': {
                                         color: 'red'
                                     }
                                 }}
                                 fullWidth
-                                label={"Facility Name"}
-                                name="facilityName"
-                                value={facilityData?.facilityName}
+                                label={"Event Name"}
+                                name="eventName"
+                                value={facilityData?.eventName}
                                 onChange={onFacilityDataChange}
                                 helperText={
-                                    facilityFormErrors.facilityName.required ?
+                                    facilityFormErrors.eventName.required ?
                                         'Please enter Facility Name' :
-                                        (facilityFormErrors.facilityName.maxLen ?
+                                        (facilityFormErrors.eventName.maxLen ?
                                             "Name can't exceed 50 characters" :
                                             '')}
                             />
@@ -206,7 +243,7 @@ const AddNewFacility = () => {
                                     }
                                 }}
                                 fullWidth
-                                label={"Facility Location"}
+                                label={"Event Location"}
                                 name="location"
                                 value={facilityData?.location}
                                 onChange={onFacilityDataChange}
@@ -241,21 +278,37 @@ const AddNewFacility = () => {
                         </Grid>
                         <Grid item xs={12}>
                             <FormControl fullWidth>
-                                <InputLabel id="facility-category-label">Category</InputLabel>
-                                <Select
-                                    labelId="facility-category-label"
-                                    id="facility-category"
-                                    name="category"
-                                    value={facilityData.category}
-                                    onChange={onFacilityDataChange}
-                                    label="Category"
-                                    fullWidth>
-                                    <MenuItem value={'Gym'}>Gym</MenuItem>
-                                    <MenuItem value={'Badminton'}>Badminton</MenuItem>
-                                    <MenuItem value={'Swimming Pool'}>Swimming Pool</MenuItem>
-                                    <MenuItem value={'Basket Ball'}>Basket Ball</MenuItem>
-                                </Select>
+                                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                    <DatePicker
+                                        label="Choose Date"
+                                        value={facilityData.date}
+                                        minDate={minDate}
+                                        onChange={(newValue) => {
+                                            onDateChange(newValue);
+                                        }}
+                                        renderInput={(params) => <TextField {...params} />}
+                                    />
+                                    {facilityFormErrors.date.required && <p className="Error">Please pick a date!</p>}
+                                </LocalizationProvider>
                             </FormControl>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                fullWidth
+                                required
+                                name='slots'
+                                label="Available Slots"
+                                type='number'
+                                value={facilityData.slots}
+                                onChange={onFacilityDataChange}
+                                inputProps={{ min: minValues.slots, max: maxValues.slots }}
+                                helperText={facilityFormErrors.slots.required ? 'Please enter total participants!' : (facilityFormErrors.slots.rangeError ? `Available slots must be between ${minValues.slots} and ${maxValues.slots}` : '')}
+                                sx={{
+                                    '.MuiFormHelperText-root': {
+                                        color: 'red'
+                                    }
+                                }}
+                            />
                         </Grid>
                         <Grid item xs={12}>
                             {image !== null && <div className="ImageWrapper">
@@ -269,7 +322,7 @@ const AddNewFacility = () => {
                                     color: '#ffffff'
                                 }}
                                     onClick={onDeleteImage}>
-                                    <Delete fontSize="large" />
+                                    <Delete sx={{color: 'black'}} fontSize="large" />
                                 </IconButton>
                             </div>}
                             <label htmlFor="icon-button-file">
@@ -328,4 +381,4 @@ const AddNewFacility = () => {
     );
 }
 
-export default AddNewFacility;
+export default AddNewEvent;

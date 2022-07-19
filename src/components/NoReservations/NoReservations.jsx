@@ -5,7 +5,6 @@ import { Link, useNavigate } from "react-router-dom";
 import './NoReservations.css';
 
 const NoReservations = () => {
-    const navigate = useNavigate();
    
     return (
         <Container maxWidth="xl" sx={{ mb: "4", width: {xs: "100%", sm: "100%", md:"70%", lg: "70%", xl: "50%"} }}>

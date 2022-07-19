@@ -7,6 +7,6 @@ export interface EventInterface {
     location: string,
     description: string,
     maxCapacity: number,
-    available: number,
+    availableCapacity: number,
     image: string,
 }
