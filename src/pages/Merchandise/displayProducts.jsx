@@ -121,7 +121,7 @@ function Products() {
                                 </Typography>
                                 <Typography align="center" gutterBottom variant="subtitle1" component="div"
                                     style={{ textTransform: 'capitalize' }}>
-                                    {product.product_price}
+                                    CAD {product.product_price}
                                 </Typography>
                                 <Typography align="center" gutterBottom variant="body2" component="div"
                                     style={{ textTransform: 'capitalize' }}>

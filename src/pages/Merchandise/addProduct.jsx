@@ -163,7 +163,7 @@ const AddNewProduct = () => {
 
   const backConfirmation = () => {
     closeDialog();
-    navigate("/");
+    navigate("/store");
   };
 
   return (
@@ -205,7 +205,7 @@ const AddNewProduct = () => {
                     color: "red",
                   },
                 }}
-                type='number'
+                type="number"
                 id="outlined-required"
                 label={"Product Price"}
                 name="productPrice"

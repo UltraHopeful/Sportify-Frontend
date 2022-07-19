@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
-import { Card, CardContent, CardMedia, Button } from '@mui/material';
+import { Card, CardContent, CardMedia, Button, CardActions } from '@mui/material';
 import { Grid } from '@mui/material';
 import Sportify from '../../assets/images/Sportify.png'
-import DeleteIcon from '@mui/icons-material/Delete';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import axios from 'axios';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
@@ -15,8 +14,18 @@ function Products() {
     const { state } = useLocation();
     const navigate = useNavigate();
 
-    const onDeleteProductClick = () => {
-
+    const redirectToMerchandisePage = (productId) => {
+        axios.delete("http://localhost:5000/api/merchandise/delete-merchandise/" + productId).then((res) => {
+            console.log(res)
+            navigate('/store', {
+                state: {
+                    snackbar: true,
+                    snackbarMsg: "Successfuly deleted the product",
+                },
+            })
+        }).then((err) => {
+            console.log(err)
+        })
     }
 
     const onBack = () => {
@@ -38,20 +47,12 @@ function Products() {
     return (
 
         <>
-            <div style={{ display: "flex", justifyContent: 'flex-end' }}>
+            <div style={{ display: "flex", justifyContent: 'flex-start' }}>
                 <Button
                     sx={{ m: '10px', color: whiteThemeColor, backgroundColor: primaryColor }}
                     variant="contained"
                     onClick={onBack}>
                     <ArrowBackIcon sx={{ mr: '3px' }} /> Back
-                </Button>
-                <div class="space">
-                </div>
-                <Button
-                    sx={{ m: '10px', color: whiteThemeColor, backgroundColor: primaryColor }}
-                    variant="contained"
-                    onClick={onDeleteProductClick}>
-                    <DeleteIcon sx={{ mr: '3px' }} /> Delete Product
                 </Button>
             </div>
             <Grid
@@ -71,7 +72,7 @@ function Products() {
                                 height="300"
                                 width="300"
                                 margin="15px auto 15px auto"
-                                image={product.product_image ?? Sportify}
+                                image={product.product_image}
                                 alt={product.product_id}
                             />
                             <CardContent>
@@ -81,13 +82,26 @@ function Products() {
                                 </Typography>
                                 <Typography align="center" gutterBottom variant="subtitle1" component="div"
                                     style={{ textTransform: 'capitalize' }}>
-                                    {product.product_price}
+                                   CAD {product.product_price}
                                 </Typography>
                                 <Typography align="center" gutterBottom variant="body2" component="div"
                                     style={{ textTransform: 'capitalize' }}>
                                     {product.product_description}
                                 </Typography>
                             </CardContent>
+                            <CardActions
+                                sx={{
+                                    display: 'flex',
+                                    justifyContent: 'flex-end',
+                                    backgroundColor: '#ff1744'
+                                }}
+                            >
+                                <Button
+                                    sx={{ color: whiteThemeColor, width: '100%' }}
+                                    onClick={() => redirectToMerchandisePage(product.product_id)}>
+                                    Delete Product
+                                </Button>
+                            </CardActions>
                         </Card>
                     </Grid>
                     : <div>Loading</div>
