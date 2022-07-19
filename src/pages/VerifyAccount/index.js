@@ -2,12 +2,11 @@ import { Card, Grid, Link } from "@mui/material";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { getBackendUrl } from "../../components/getUrl";
 // import verifiedImage from "./public/MailConfirmed.svg";
 const Main = () => {
-  const navigate = useNavigate();
+
   const [isVerified, setIsVerified] = useState(null);
 
   const queryParams = new URLSearchParams(window.location.search);
@@ -59,8 +58,8 @@ const Main = () => {
         }
       })
       .catch((error) => console.log("error", error));
+      // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
   return (
     <Grid
       container
@@ -72,10 +71,10 @@ const Main = () => {
     >
       <Grid item xl={3} lg={4} md={5} sm={7} xs={11}>
         <Card sx={{ p: "1.5rem" }} elevation={5}>
-            {isVerified == true  ? (<><img src="/MailConfirmed.svg" className="img-responsive" />
+            {isVerified === true  ? (<><img src="/MailConfirmed.svg" className="img-responsive" alt="mailConfirm" />
           <Typography variant="h5" align="center">
             Link Verified Successfully
-          </Typography></>) : (isVerified == false ? (<><img src="/400Error.svg" className="img-responsive" />
+          </Typography></>) : (isVerified === false ? (<><img src="/400Error.svg" alt="error" className="img-responsive" />
           <Typography variant="h5" align="center">
             Link is broken or bad request </Typography></>) : <Typography variant="h5" align="center">
             Content is loading </Typography>)}

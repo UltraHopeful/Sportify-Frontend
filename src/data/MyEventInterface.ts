@@ -9,4 +9,5 @@ export interface MyEventInterface {
     bookedTickets: number,
     eventDescription: string,
     image: string,
+    status?: 'Active' | 'Cancelled',
 }

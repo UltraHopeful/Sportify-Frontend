@@ -9,24 +9,23 @@ import reportWebVitals from "./reportWebVitals";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import userReservations from "./data/Data";
 import AddNewFacility from "./pages/AddNewFacility";
+import BlogPost from "./pages/Blogging/BlogPost/BlogPost";
+import Blogs from "./pages/Blogging/Blogs/Blogs";
+import CreateBlog from "./pages/Blogging/CreateBlog/CreateBlog";
+import EditBlog from "./pages/Blogging/EditBlog/EditBlog";
+import YourBlogs from "./pages/Blogging/YourBlogs/YourBlogs";
 import ChangePassword from "./pages/ChangePassword/index";
 import { EventDetails } from "./pages/EventDetails";
 import EventsList from "./pages/Events/index";
+import Facilities from "./pages/Facilities";
+import FacilityDetails from "./pages/FacilityDetails";
 import ForgotPassword from "./pages/ForgotPassword/index";
 import Home from "./pages/Home/index";
 import LogIn from "./pages/LogIn/index";
 import Checkout from "./pages/Membership/checkout";
 import Pricing from "./pages/Membership/pricing";
 import PurchasedMemberships from "./pages/Membership/purchasedMembership";
-import CreateBlog from "./pages/Blogging/CreateBlog/CreateBlog";
-import EditBlog from "./pages/Blogging/EditBlog/EditBlog";
-import BlogPost from "./pages/Blogging/BlogPost/BlogPost";
-import YourBlogs from "./pages/Blogging/YourBlogs/YourBlogs";
-import Facilities from "./pages/Facilities";
-import FacilityDetails from "./pages/FacilityDetails";
-import Blogs from "./pages/Blogging/Blogs/Blogs";
 import MyEventDetails from "./pages/MyEventDetails";
 import MyEvents from "./pages/MyEvents/MyEvents";
 import MembershipPlan from "./pages/Payment/membershipPlan";
@@ -34,10 +33,11 @@ import PaymentSuccess from "./pages/Payment/paymentSuccess";
 import Profile from "./pages/Profile/index";
 import { ReservationDetails } from "./pages/ReservationDetails";
 import ReservationList from "./pages/Reservations";
-import MainSearch from "./pages/Search/mainSearch";
-import AppSearch from "./pages/Search/facilitySearch";
-import EventSearch from "./pages/Search/eventSearch";
+import Rewards from "./pages/Rewards/index";
 import BlogSearch from "./pages/Search/blogSearch";
+import EventSearch from "./pages/Search/eventSearch";
+import AppSearch from "./pages/Search/facilitySearch";
+import MainSearch from "./pages/Search/mainSearch";
 import MerchandiseSearch from "./pages/Search/merchandiseSearch";
 import Signup from "./pages/Signup/index";
 import VerifyAccount from "./pages/VerifyAccount/index";
@@ -48,6 +48,7 @@ import NoHeader from "./components/NoHeader";
 import WithHeader from "./components/WithHeader";
 
 import { getUser } from "./components/getLocalStorage";
+import AddNewEvent from "./pages/AddNewEvent";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 const theme = createTheme({
@@ -72,7 +73,7 @@ const ProtectedRoute = ({ isAllow, redirectPath = "/login", children }) => {
 
 function checkUser() {
   const isLogin = localStorage.getItem("isLogin");
-  if (getUser() != undefined && getUser() != null) {
+  if (getUser() !== undefined && getUser() != null) {
     const profile = getUser().profile;
     console.log(profile);
     // console.log("check user");
@@ -88,7 +89,7 @@ function checkUser() {
 
 function checkAdmin() {
   const isLogin = localStorage.getItem("isLogin");
-  if (getUser() != undefined && getUser() != null) {
+  if (getUser() !== undefined && getUser() != null) {
     const profile = getUser().profile;
     console.log(profile);
     // console.log("check user");
@@ -119,7 +120,7 @@ root.render(
           >
             <Route
               path="my-reservations"
-              element={<ReservationList reservations={userReservations} />}
+              element={<ReservationList />}
             />
             <Route path="facility/:resourceId" element={<FacilityDetails />} />
           </Route>
@@ -127,6 +128,9 @@ root.render(
           <Route path="facility/add-new" element={<AddNewFacility />} />
           <Route path="product/add-new" element={<AddProduct />}/>
           <Route path="product/:productId" element={<ProductDetails />} />
+          <Route element={<ProtectedRoute isAllow={() => checkAdmin()} />}>
+            <Route path="facility/add-new" element={<AddNewFacility />} />
+          </Route>
           <Route
             path="my-reservations/:reservationId"
             element={<ReservationDetails />}
@@ -140,12 +144,18 @@ root.render(
           />
           <Route element={<ProtectedRoute isAllow={() => checkUser() || checkAdmin()} />}>
             <Route path="membership/checkout" element={<Checkout />} />
+            <Route path="my-rewards" element={<Rewards />}/>
           </Route>
 
           <Route path="events" element={<EventsList />} />
-          <Route path="events/:eventId" element={<EventDetails />} />
-          <Route path="my-events" element={<MyEvents />} />
-          <Route path="my-events/:bookingId" element={<MyEventDetails />} />
+          <Route element={<ProtectedRoute isAllow={() => checkAdmin()}/>}>
+            <Route path="events/add-new" element={<AddNewEvent/>}/>
+          </Route>
+          <Route element={<ProtectedRoute isAllow={() => checkUser() || checkAdmin()} />}>
+            <Route path="events/:eventId" element={<EventDetails />} />
+            <Route path="my-events" element={<MyEvents />} />
+            <Route path="my-events/:bookingId" element={<MyEventDetails />} />
+          </Route>
           <Route path="rewards" element={<Home />} />
           <Route path="payment" element={<MembershipPlan />} />
           <Route path="payment-success" element={<PaymentSuccess />} />

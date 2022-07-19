@@ -66,8 +66,12 @@ const tiers = [
 function Pricing() {
 
   const user = getUser();
-  const userId = user._id;
-  const isAdmin = user.profile == 'admin' ? true : false;
+  let userId = "";
+  let disableButton = true;
+  if(user!=null){
+    userId = user._id;
+    disableButton = user.profile == 'admin' ? true : false;
+  }
 
   const navigate = useNavigate();
   const domain = getBackendUrl();
@@ -207,7 +211,7 @@ function Pricing() {
                       </ul>
                     </CardContent>
                     <CardActions>
-                      <Button disabled={isAdmin} fullWidth variant={tier.buttonVariant} onClick={() =>moveToBilling(tier)}>
+                      <Button disabled={disableButton} fullWidth variant={tier.buttonVariant} onClick={() =>moveToBilling(tier)}>
                         {tier.buttonText} 
                       </Button>
                     </CardActions>

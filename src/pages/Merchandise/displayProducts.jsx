@@ -13,6 +13,7 @@ import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { primaryColor, whiteThemeColor } from "../../Theme/colors";
 import { getUser } from "../../components/getLocalStorage";
+import {getBackendUrl} from "../../components/getUrl" 
 
 function Products() {
     const [products, setProducts] = useState([]);
@@ -57,7 +58,7 @@ function Products() {
     }
 
     useEffect(() => {
-        axios.get("http://localhost:5000/api/merchandise/display-merchandise/all").then((res) => {
+        axios.get(`${getBackendUrl()}/api/merchandise/display-merchandise/all`).then((res) => {
             console.log(res)
             setProducts(res.data)
         }).then((err) => {

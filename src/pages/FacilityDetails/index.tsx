@@ -16,6 +16,7 @@ import { AvailabilitySlots } from "../../data/AvailaibilitySlots";
 import CloseIcon from '@mui/icons-material/Close';
 import MuiAlert from '@mui/material/Alert';
 import { getUser } from "../../components/getLocalStorage";
+import { getBackendUrl } from "../../components/getUrl";
 
 const DetailDescription = (props: any) => {
     return (
@@ -157,7 +158,11 @@ const FacilityDetails = () => {
     let params = useParams();
     let resourceId: string = (!params.resourceId) ? "1" : params.resourceId;
     useEffect(() => {
-        axios.get("https://sportify-backend-prd.herokuapp.com/facility/" + resourceId)
+        axios.get(`${getBackendUrl()}/facility/${resourceId}`,{
+            headers: {
+                "access-token": localStorage.getItem("access-token")!,
+            }
+        })
             .then(response => response.data)
             .then(content => {
                 setResource(content.data);
@@ -193,7 +198,10 @@ const FacilityDetails = () => {
         setTimeslotsLoading(true);
         axios({
             method: 'get',
-            url: `https://sportify-backend-prd.herokuapp.com/facility/booked-slots?facilityId=${resourceId}&date=${updatedDate?.getTime()}`
+            url: `${getBackendUrl()}/facility/booked-slots?facilityId=${resourceId}&date=${updatedDate?.getTime()}`,
+            headers: {
+                "access-token": localStorage.getItem("access-token")!,
+            }
         }).then(res => {
             setTimeslotsLoading(false);
             setAvailableSlots(getRemainingAvailableSlots(res.data.data));
@@ -252,8 +260,11 @@ const FacilityDetails = () => {
             const reqBody = getReservationApiReqBody(reservationDetails);
             axios({
                 method: 'post',
-                url: 'https://sportify-backend-prd.herokuapp.com/reservation',
-                data: reqBody
+                url: `${getBackendUrl()}/reservation`,
+                data: reqBody,
+                headers: {
+                    "access-token": localStorage.getItem("access-token")!,
+                }
             }).then(() => {
                 navigate('/facility', { state: { snackbar: true, snackbarMsg: 'Successfuly booked facility!' } })
             }).catch((err) => {

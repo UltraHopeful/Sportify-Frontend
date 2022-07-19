@@ -47,6 +47,10 @@ const profileDropdownList = {
       displayName: "My Reservations",
       redirectTo: "my-reservations",
     },
+    {
+      displayName: "My Rewards",
+      redirectTo: "my-rewards",
+    },
   ],
 };
 

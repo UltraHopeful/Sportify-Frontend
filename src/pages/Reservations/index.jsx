@@ -13,9 +13,10 @@ import Loader from "../../components/Loader";
 import axios from "axios";
 import NoReservations from "../../components/NoReservations";
 import { getUser } from "../../components/getLocalStorage";
+import { getBackendUrl } from "../../components/getUrl";
 
 
-const ReservationList = (props) => {
+const ReservationList = () => {
 
     const itemsPerPage = 5;
     const [isLoading, setIsLoading] = useState(true);
@@ -37,8 +38,11 @@ const ReservationList = (props) => {
     const maxPagesXs = -1;
 
     useEffect(() => {
-        axios.get('https://sportify-backend-prd.herokuapp.com/reservation/my-reservations/' + getUser()?._id)
-            .then(res => res.data).then(content => {
+        axios.get(`${getBackendUrl()}/reservation/my-reservations/${getUser()?._id}`,{
+            headers: {
+                "access-token": localStorage.getItem("access-token"),
+            }
+        }).then(res => res.data).then(content => {
                 setIsLoading(false);
                 setCompleteList(content.data);
                 setList(content.data.slice(0, Math.min(5, content.data.length)));

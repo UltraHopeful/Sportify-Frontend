@@ -4,6 +4,7 @@ import { useState } from "react";
 import "./addProduct.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { getBackendUrl } from "../../components/getUrl";
 
 const AddNewProduct = () => {
   const navigate = useNavigate();
@@ -136,7 +137,7 @@ const AddNewProduct = () => {
     };
     axios({
       method: "post",
-      url: "http://localhost:5000/api/merchandise/add-merchandise",
+      url: `${getBackendUrl()}/api/merchandise/add-merchandise`,
       data: reqBody,
     })
       .then((res) => {

@@ -8,6 +8,7 @@ import axios from 'axios';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { primaryColor, whiteThemeColor } from "../../Theme/colors";
 import { getUser } from "../../components/getLocalStorage";
+import { getBackendUrl } from "../../components/getUrl";
 
 function Products() {
     const [product, setProduct] = useState({});
@@ -15,7 +16,7 @@ function Products() {
     const navigate = useNavigate();
 
     const redirectToMerchandisePage = (productId) => {
-        axios.delete("http://localhost:5000/api/merchandise/delete-merchandise/" + productId).then((res) => {
+        axios.delete(`${getBackendUrl()}/api/merchandise/delete-merchandise/` + productId).then((res) => {
             console.log(res)
             navigate('/store', {
                 state: {
@@ -36,7 +37,7 @@ function Products() {
     let productId = params.productId;
 
     useEffect(() => {
-        axios.get("http://localhost:5000/api/merchandise/display-merchandise/" + productId).then((res) => {
+        axios.get(`${getBackendUrl()}/api/merchandise/display-merchandise/` + productId).then((res) => {
             console.log(res)
             setProduct(res.data.data)
         }).then((err) => {
