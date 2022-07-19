@@ -1,4 +1,4 @@
-import { Button, Container, Skeleton } from "@mui/material";
+import { Button, Card, Container, Skeleton } from "@mui/material";
 import Box from "@mui/material/Box";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -7,10 +7,10 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import FormControl from "@mui/material/FormControl";
 import FormHelperText from "@mui/material/FormHelperText";
-import Grid from '@mui/material/Grid';
+import Grid from "@mui/material/Grid";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
-import Paper from '@mui/material/Paper';
+import Paper from "@mui/material/Paper";
 import Select from "@mui/material/Select";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
@@ -139,7 +139,7 @@ export default function index() {
         if (statusCode === 500) {
           notify("error", result.message);
         } else {
-          //   console.log(result);
+          console.log(result);
           //   remainingPoints =
           result.reward["remainingPoints"] =
             result.reward.total_earned_points - result.reward.reedemed_points;
@@ -147,7 +147,7 @@ export default function index() {
             result.reward.total_earned_points - result.reward.reedemed_points
           );
           setRedeem(result.reward);
-          console.log(redeem);
+          // console.log(redeem);
           //   localStorage.setItem("user", JSON.stringify(result.user));
           //   notify("success", result.message);
           //   window.location.replace("/my-account");
@@ -246,39 +246,60 @@ export default function index() {
             </Tabs>
           </Box>
           <TabPanel value={rewardTab} index={0}>
-            <Typography variant="h5">Redeem Points</Typography>
+            <Typography variant="h5" pb={2}>
+              Redeem Points
+            </Typography>
+            <Grid container spacing={3}>
+              <Grid item xl={4} lg={4} md={6} sm={11} xs={11}>
+                <Card sx={{backgroundColor:"#326dd9",py:"25px"}}>
+                  {redeem.remainingPoints >= 0 ? (
+                    <Typography variant="h6" color="white" textAlign="center">
+                      <b>{redeem.remainingPoints}</b>
+                      <br/>
+                      Remaining points
+                    </Typography>
+                  ) : (
+                    <Skeleton variant="text" width="250px" />
+                  )}
+                </Card>
+              </Grid>
 
-            {redeem.total_earned_points ? (
-              <Typography variant="h6" color="primary">
-                Remaining points : {redeem.remainingPoints}
-              </Typography>
-            ) : (
-              <Skeleton variant="text" width="250px" />
-            )}
-
-            {redeem.reedemed_points ? (
-              <Typography variant="body2">
-                Redeemed points : {redeem.reedemed_points}
-              </Typography>
-            ) : (
-              <Skeleton variant="text" width="150px" />
-            )}
-
-            {redeem.total_earned_points ? (
-              <Typography variant="body1">
-                Total earned points : {redeem.total_earned_points}
-              </Typography>
-            ) : (
-              <Skeleton variant="text" width="150px" />
-            )}
-
-            {redeem.total_spent_money ? (
-              <Typography variant="body2">
-                Total spent money : {redeem.total_spent_money}
+              <Grid item xl={4} lg={4} md={6} sm={11} xs={11}>
+                <Card sx={{backgroundColor:"#bbb",py:"25px"}}>
+                {redeem.reedemed_points >= 0 ? (
+              <Typography variant="h6" textAlign="center">
+                {redeem.reedemed_points}
+                <br/>
+                Redeemed points
               </Typography>
             ) : (
               <Skeleton variant="text" width="150px" />
             )}
+                </Card>
+              </Grid>
+            </Grid>
+
+            <Grid container mt={2} spacing={3}>
+              <Grid item xl={4} lg={4} md={6} sm={11} xs={11}>
+                <Card sx={{backgroundColor:"#eee",py:"25px"}}>
+                {redeem.total_earned_points >= 0 ? (
+                  <Typography variant="h6" textAlign="center">
+                    {redeem.total_earned_points}
+                    <br/>
+                    Total Earned Points
+                    <br/>
+                    Equivalent Cash : CA$ {redeem.total_spent_money}
+                  </Typography>
+                ) : (
+                  <Skeleton variant="text" width="150px" />
+                )}
+                </Card>
+              </Grid>
+            </Grid>
+
+            
+
+
 
             <Button
               variant="contained"
@@ -317,24 +338,32 @@ export default function index() {
                       sx={{
                         p: 2,
                         margin: "auto",
-                        height:"92%",
+                        height: "92%",
                         flexGrow: 1,
                         backgroundColor: (theme) =>
                           theme.palette.mode === "dark" ? "#1A2027" : "#fff",
                       }}
                     >
                       <Grid container spacing={2} justifyContent="center">
-                        <Grid item xl={4} lg={4} md={5} sm={11} xs={11} alignItems="center">
-                            <Box sx={{height:"100%",display:"flex"}}>
-                          <img
-                            alt="complex"
-                            src={
-                              coupon.coupon_brand
-                                .replaceAll(" ", "")
-                                .toLowerCase() + ".svg"
-                            }
-                            className="img-responsive"
-                          />
+                        <Grid
+                          item
+                          xl={4}
+                          lg={4}
+                          md={5}
+                          sm={11}
+                          xs={11}
+                          alignItems="center"
+                        >
+                          <Box sx={{ height: "100%", display: "flex" }}>
+                            <img
+                              alt="complex"
+                              src={
+                                coupon.coupon_brand
+                                  .replaceAll(" ", "")
+                                  .toLowerCase() + ".svg"
+                              }
+                              className="img-responsive"
+                            />
                           </Box>
                         </Grid>
                         <Grid item xs={12} sm container>
@@ -348,18 +377,16 @@ export default function index() {
                             <Grid item xs>
                               <Typography
                                 gutterBottom
-                                variant="subtitle1"
+                                variant="body1"
                                 component="div"
                               >
-                                {coupon.coupon_brand}
+                                <b>{coupon.coupon_brand}</b>
                               </Typography>
                               <Typography variant="body2" gutterBottom>
                                 {coupon.coupon_description}
                               </Typography>
-                              <Typography
-                                variant="body1"
-                                color="primary"
-                              >
+                              <Typography variant="body1" color="primary">
+                                Coupon Code: <br/>
                                 {coupon.coupon_code}
                               </Typography>
                             </Grid>
@@ -376,7 +403,7 @@ export default function index() {
                           </Grid>
                           <Grid item>
                             <Typography variant="subtitle1" component="div">
-                              {coupon.coupon_discount}% OFF
+                              <b>{coupon.coupon_discount}% OFF</b>
                             </Typography>
                           </Grid>
                         </Grid>

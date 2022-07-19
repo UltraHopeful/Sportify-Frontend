@@ -26,7 +26,7 @@ const validations = Yup.object({
   contactNo: Yup.string("Enter your contact number")
     .matches(
       "^([+]{1}\\d{1}[\\s]|)\\d{3}[-]{1}\\d{3}[-]{1}\\d{4}$",
-      "Enter valid contact number"
+      "Enter valid contact number  902-999-9999 or +1 902-999-9999"
     )
     .required("Contact number is required"),
   password: Yup.string("")
