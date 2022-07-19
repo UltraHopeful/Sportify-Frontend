@@ -5,6 +5,7 @@ import "./addProduct.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { getBackendUrl } from "../../components/getUrl";
+import { toast } from "react-toastify";
 
 const AddNewProduct = () => {
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ const AddNewProduct = () => {
 
   const maxLengths = {
     productName: 50,
-    productDescription: 100,
+    productDescription: 500,
   };
 
   const onImageUpload = (event) => {
@@ -124,6 +125,22 @@ const AddNewProduct = () => {
     return true;
   };
 
+  const notify = (type, msg) => {
+    if(type === 'success'){
+        toast.success(
+          msg,
+          { position: toast.POSITION.TOP_RIGHT }
+        );
+        
+    }else if(type === 'error'){
+        toast.error(
+          msg,
+          { position: toast.POSITION.TOP_RIGHT }
+        );
+
+    }
+  };
+
   const onPostNewproduct = (event) => {
     event.preventDefault();
     if (!validateFormData()) {
@@ -141,12 +158,8 @@ const AddNewProduct = () => {
       data: reqBody,
     })
       .then((res) => {
-        navigate("/store", {
-          state: {
-            snackbar: true,
-            snackbarMsg: "Successfuly added the product",
-          },
-        });
+        notify("success","Successfuly added the product")
+        navigate("/store")
         console.log(res);
       })
       .catch((err) => {
@@ -235,7 +248,7 @@ const AddNewProduct = () => {
                   productFormErrors.productDescription.required ?
                     'Please enter Product Description' :
                     (productFormErrors.productDescription.maxLen ?
-                      "Description can't exceed 100 characters" :
+                      "Description can't exceed 500 characters" :
                       '')}
               />
             </Grid>
