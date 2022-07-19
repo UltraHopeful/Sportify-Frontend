@@ -1,49 +1,83 @@
-import React, { useState } from 'react'
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
+import React, { useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
-import { CardMedia } from '@mui/material';
+import { Snackbar, Card, CardActions, CardContent, CardMedia, Button } from '@mui/material';
+import MuiAlert from '@mui/material/Alert';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 import { Grid, Container, TextField } from '@mui/material';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import InputAdornment from '@mui/material/InputAdornment';
 import Sportify from '../../assets/images/Sportify.png'
+import AddIcon from '@mui/icons-material/Add';
+import axios from 'axios';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { primaryColor, whiteThemeColor } from "../../Theme/colors";
+import { getUser } from "../../components/getLocalStorage";
 
 function Products() {
-    const [products, setProducts] = useState([
-        { id: '1', name: 'Product Name 1', price: 12312, desc: 'Description text 1' },
-        { id: '2', name: 'Product Name 2', price: 12312, desc: 'Description text 2' },
-        { id: '3', name: 'Product Name 3', price: 12312, desc: 'Description text 3' },
-        { id: '4', name: 'Product Name 4', price: 12312, desc: 'Description text 4' },
-        { id: '5', name: 'Product Name 5', price: 12312, desc: 'Description text 5' },
-        { id: '6', name: 'Product Name 6', price: 12312, desc: 'Description text 6' },
-        { id: '7', name: 'Product Name 7', price: 12312, desc: 'Description text 7' },
-        { id: '8', name: 'Product Name 8', price: 12312, desc: 'Description text 8' },
-        { id: '9', name: 'Product Name 9', price: 12312, desc: 'Description text 9' },
-        { id: '10', name: 'Product Name 10', price: 12312, desc: 'Description text 10' },
-        { id: '11', name: 'Product Name 11', price: 12312, desc: 'Description text 11' },
-        { id: '12', name: 'Product Name 12', price: 12312, desc: 'Description text 12' },
-        { id: '13', name: 'Product Name 13', price: 12312, desc: 'Description text 13' },
-        { id: '14', name: 'Product Name 14', price: 12312, desc: 'Description text 14' },
-        { id: '15', name: 'Product Name 15', price: 12312, desc: 'Description text 15' },
-        { id: '16', name: 'Product Name 16', price: 12312, desc: 'Description text 16' },
-        { id: '17', name: 'Product Name 17', price: 12312, desc: 'Description text 17' },
-        { id: '18', name: 'Product Name 18', price: 12312, desc: 'Description text 18' },
-        { id: '19', name: 'Product Name 19', price: 12312, desc: 'Description text 19' },
-        { id: '20', name: 'Product Name 20', price: 12312, desc: 'Description text 20' },
-        { id: '21', name: 'Product Name 21', price: 12312, desc: 'Description text 21' },
-        { id: '22', name: 'Product Name 22', price: 12312, desc: 'Description text 22' },
-        { id: '23', name: 'Product Name 23', price: 12312, desc: 'Description text 23' },
-    ]);
+    const [products, setProducts] = useState([]);
 
     const [search, setSearch] = useState('');
+
+    const navigate = useNavigate();
+    const [isLoggedIn] = useState(localStorage.getItem('isLogin'));
+    const [loggedInUserRole] = useState(getUser()?.profile);
+    const { state } = useLocation();
+    const [snackbarMsg] = useState(state?.snackbarMsg);
+    const [snackbarOpen, setSnackbarOpen] = useState({ open: (!!state?.snackbar), vertical: 'top', horizontal: 'right' });
+    const { open, vertical, horizontal } = snackbarOpen;
+
+    const redirectToDetailsPage = (productId) => {
+        navigate('/product/' + productId);
+    }
+
+    const onCloseSnackbar = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setSnackbarOpen({ ...snackbarOpen, open: false });
+        navigate(".", { replace: true });
+    }
+
+    const snackbarCloseAction = (<IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={onCloseSnackbar}
+    >
+        <CloseIcon fontSize="small" />
+    </IconButton>);
 
     const handleSearchChange = (e) => {
         setSearch(e.target.value);
     };
 
+    const onAddNewProductClick = () => {
+        navigate('/product/add-new');
+    }
+
+    useEffect(() => {
+        axios.get("http://localhost:5000/api/merchandise/display-merchandise/all").then((res) => {
+            console.log(res)
+            setProducts(res.data)
+        }).then((err) => {
+            console.log(err);
+        });
+    }, [])
+
     return (
 
         <>
+         {(loggedInUserRole === 'admin') &&
+                <div style={{ display: "flex", justifyContent: 'flex-end'}}> 
+                    <Button 
+                        sx={{ m: '10px', color: whiteThemeColor, backgroundColor: primaryColor }}
+                        style={{display:'flex',justifyContent:'right'}}
+                        variant="contained"
+                        onClick={onAddNewProductClick}>
+                        <AddIcon sx={{ mr: '3px' }} /> Add new Product
+                </Button>
+                </div>}
             <Container maxWidth="md" sx={{ mb: 3, mt: 4 }}>
                 <Typography gutterBottom variant="h3" component="div" align='center' marginBottom={3}>
                     Products
@@ -62,43 +96,68 @@ function Products() {
             </Container>
             <Grid
                 container
-                style={{ padding:20 }}
+                style={{ padding: 20 }}
                 // height="100%"
                 alignItems="center"
                 justifyContent="center"
                 // className="bg-gray padding-ub"
                 rowSpacing={{ xs: 5, sm: 5, md: 5, lg: 5, xl: 7 }}
                 columnSpacing={{ xs: 1, sm: 2, md: 5, lg: 6, xl: 8 }}>
-                {products.filter((product)=>product.name.toLowerCase().includes(search.toLowerCase())).map((product) => (
+                {products.filter((product) => product.product_name.toLowerCase().includes(search.toLowerCase())).map((product) => (
                     <Grid item xl={3} lg={4} md={6} sm={6} xs={11}>
                         <Card elevation={7}>
                             <CardMedia
                                 component="img"
-                                height="150"
-                                width="150"
+                                height="300"
+                                width="300"
                                 margin="15px auto 15px auto"
-                                image={Sportify}
-                                alt={product.id}
+                                image={product.product_image ?? Sportify}
+                                alt={product.product_id}
                             />
                             <CardContent>
                                 <Typography align="center" gutterBottom variant="h6" component="div"
                                     style={{ textTransform: 'capitalize' }}>
-                                    {product.name}
+                                    {product.product_name}
                                 </Typography>
                                 <Typography align="center" gutterBottom variant="subtitle1" component="div"
                                     style={{ textTransform: 'capitalize' }}>
-                                    {product.price}
+                                    {product.product_price}
                                 </Typography>
                                 <Typography align="center" gutterBottom variant="body2" component="div"
                                     style={{ textTransform: 'capitalize' }}>
-                                    {product.desc}
+                                    {product.product_description}
                                 </Typography>
                             </CardContent>
+                            <CardActions
+                                sx={{
+                                    display: 'flex',
+                                    justifyContent: 'flex-end',
+                                    backgroundColor: primaryColor
+                                }}
+                            >
+                                <Button
+                                    sx={{ color: whiteThemeColor, width: '100%' }}
+                                    onClick={() => redirectToDetailsPage(product.product_id)}>
+                                    {(isLoggedIn === 'false') ? "Login to view details" : ((loggedInUserRole === 'admin') ? "View Details" : " ")}
+                                </Button>
+                            </CardActions>
                         </Card>
                     </Grid>
                 ))
                 }
+
             </Grid>
+            <Snackbar
+                anchorOrigin={{ vertical, horizontal }}
+                open={open}
+                autoHideDuration={3000}
+                onClose={onCloseSnackbar}
+                action={snackbarCloseAction}
+            >
+                <MuiAlert onClose={onCloseSnackbar} severity="success" sx={{ width: '100%' }} elevation={6} variant="filled">
+                    {snackbarMsg}
+                </MuiAlert>
+            </Snackbar>
         </>
     )
 }

@@ -20,7 +20,6 @@ import LogIn from "./pages/LogIn/index";
 import Checkout from "./pages/Membership/checkout";
 import Pricing from "./pages/Membership/pricing";
 import PurchasedMemberships from "./pages/Membership/purchasedMembership";
-import Products from "./pages/Merchandise/displayProducts";
 import CreateBlog from "./pages/Blogging/CreateBlog/CreateBlog";
 import EditBlog from "./pages/Blogging/EditBlog/EditBlog";
 import BlogPost from "./pages/Blogging/BlogPost/BlogPost";
@@ -42,7 +41,9 @@ import BlogSearch from "./pages/Search/blogSearch";
 import MerchandiseSearch from "./pages/Search/merchandiseSearch";
 import Signup from "./pages/Signup/index";
 import VerifyAccount from "./pages/VerifyAccount/index";
-
+import AddProduct from "./pages/Merchandise/addProduct";
+import Products from "./pages/Merchandise/displayProducts";
+import ProductDetails from "./pages/Merchandise/productDetails";
 import NoHeader from "./components/NoHeader";
 import WithHeader from "./components/WithHeader";
 
@@ -124,6 +125,8 @@ root.render(
           </Route>
           <Route path="facility" element={<Facilities />} />
           <Route path="facility/add-new" element={<AddNewFacility />} />
+          <Route path="product/add-new" element={<AddProduct />}/>
+          <Route path="product/:productId" element={<ProductDetails />} />
           <Route
             path="my-reservations/:reservationId"
             element={<ReservationDetails />}
