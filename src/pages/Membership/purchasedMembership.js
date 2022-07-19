@@ -1,4 +1,5 @@
-import * as React from 'react';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Typography } from '@mui/material';
+import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -6,13 +7,12 @@ import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Typography } from '@mui/material';
-import "./membership.css";
 import axios from 'axios';
-import { getBackendUrl } from '../../components/getUrl';
+import * as React from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { getUser } from '../../components/getLocalStorage';
+import { getBackendUrl } from '../../components/getUrl';
+import "./membership.css";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -155,8 +155,8 @@ export default function PurchasedMemberships() {
                   {row.id}
                 </StyledTableCell>
                 <StyledTableCell align="center">{row.plan_name}</StyledTableCell>
-                <StyledTableCell align="center">{row.start_date}</StyledTableCell>
-                <StyledTableCell align="center">{row.end_date}</StyledTableCell>
+                <StyledTableCell align="center">{row.start_date.slice(0,10)}</StyledTableCell>
+                <StyledTableCell align="center">{row.end_date.slice(0,10)}</StyledTableCell>
                 <StyledTableCell align="center">{row.status}</StyledTableCell>
               </StyledTableRow>
             ))}

@@ -16,7 +16,8 @@
 
 .backgroundClassPricing{
     background-image: url("../../assets/images/mem2.webp");
-    height: 100vh;
+    min-height: 100vh;
     background-size: cover;
+    padding-bottom: 50px;
 }
 

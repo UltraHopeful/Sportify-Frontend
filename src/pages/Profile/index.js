@@ -68,13 +68,13 @@ export default function Main() {
     contactNo: Yup.string("Enter your contact number")
       .matches(
         "^([+]{1}\\d{1}[\\s]|)\\d{3}[-]{1}\\d{3}[-]{1}\\d{4}$",
-        "Enter valid contact number"
+        "Enter valid contact number like 902-999-9999 or +1 902-999-9999"
       )
       .required("Contact number is required"),
     address: Yup.string("Enter address")
       .matches(
         "(([A-Za-z0-9 \\S]+),([A-Za-z0-9 ]+),([A-Za-z0-9 ]+),([A-Za-z0-9 ]+))",
-        "Enter valid address"
+        "Enter valid address like street name,City,Province,Canada"
       )
       .required("Address is required"),
   });
@@ -367,7 +367,7 @@ export default function Main() {
                   type="text"
                   value={formik.values.address}
                   variant="filled"
-                  placeholder="Enter your contact number"
+                  placeholder="Enter your address"
                   onChange={formik.handleChange}
                 />
               </Grid>
