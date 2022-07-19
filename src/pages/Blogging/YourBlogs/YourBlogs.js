@@ -1,10 +1,7 @@
-import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Grid, IconButton, Typography } from '@mui/material';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import React, { useEffect, useState } from 'react'
-import blogs from '../../../blogs';
-import { Box } from '@mui/system';
-import { Link, useNavigate } from 'react-router-dom';
+import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Grid, Typography } from '@mui/material';
 import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getUser } from '../../../components/getLocalStorage';
 const parse = require('html-react-parser');
 /**
@@ -68,10 +65,10 @@ const YourBlogs = (props) => {
                         
                         
                     </Grid>
-            <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+            <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }} alignItems="stretch">
             {data.map((display, index) => (
-                <Grid item xs={12} sm={4} md={4} key={index}>
-                    <Card sx={{ maxWidth: 345, marginY: "5%", marginLeft: "15%" ,marginRight:"10%",}}>
+                <Grid item xs={12} sm={4} md={4} key={index} sx={{display:'flex'}}>
+                    <Card sx={{ maxWidth: 345, marginY: "5%", marginLeft: "15%" ,marginRight:"10%",display: 'flex', justifyContent: 'space-between', flexDirection: 'column'}}>
                         <CardActionArea onClick={() => {
                                 navigate("/blogpost/"+display.id);
                             }}>

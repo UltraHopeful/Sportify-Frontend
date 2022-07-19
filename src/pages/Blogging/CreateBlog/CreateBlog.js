@@ -1,12 +1,12 @@
-import React, { useState } from 'react'
-import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import parse from 'html-react-parser';
-import { Box, Button, Grid, TextField, Typography } from '@mui/material';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { useNavigate } from 'react-router-dom';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import { Delete, PhotoCamera } from "@mui/icons-material";
+import { Box, Button, Grid, IconButton, Input, TextField, Typography } from '@mui/material';
 import axios from 'axios';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { getUser } from '../../../components/getLocalStorage';
 const { v4: uuidv4 } = require('uuid');
 
@@ -21,24 +21,43 @@ const CreateBlog = (props) => {
     const notify = () => toast("Under Construction as it involves database!");
     const [data2, setData2] = useState([]);
     const [blogTitle,setBlogTitle] = useState([]);
-    const [image, setImage] = useState(null);
+    // const [image, setImage] = useState(null);
     const [selectedFile,setSelectedFile] = useState([]);
     const shortContent = data2.toString().split(" ");
     var first_line = shortContent.slice(0,19).join(" ");
+
+    const [image, setImage] = useState(null);
+    const [imageUrl, setImageUrl] = useState(null);
 
     const handleChange = (e) => {
      //   console.log(`Typed => ${e.target.value}`)
         setBlogTitle(e.target.value);
     }
 
-    const fileSelectHandler = (e) =>{
-        const img = e.target.files[0];
+    // const fileSelectHandler = (e) =>{
+    //     const img = e.target.files[0];
+    //     const reader = new FileReader(img);
+    //     reader.readAsDataURL(img);
+    //     reader.onload = () => {
+    //         setImage(reader.result);
+    //         console.log(reader.result);
+    //     }
+    // }
+
+
+    const onImageUpload = (event) => {
+        const img = event.target.files[0];
         const reader = new FileReader(img);
         reader.readAsDataURL(img);
         reader.onload = () => {
             setImage(reader.result);
-            console.log(reader.result);
+            setImageUrl(URL.createObjectURL(img));
         }
+    }
+
+    const onDeleteImage = () => {
+        setImageUrl(null);
+        setImage(null);
     }
 
     const myFunction = (e) =>{
@@ -150,8 +169,33 @@ const CreateBlog = (props) => {
                         > */}
 
                         <div>
-                            <input type="file" onChange={fileSelectHandler}></input>
-                            <button onClick={fileSelectHandler}/>
+                            {/* <input type="file" onChange={fileSelectHandler}></input>
+                            <button onClick={fileSelectHandler}/> */}
+
+                            {image !== null && <div className="ImageWrapper">
+                                <img alt="no" src={imageUrl} className="ImagePreview" />
+                                <IconButton sx={{
+                                    position: 'absolute',
+                                    top: '2%',
+                                    right: '2%',
+                                    zIndex: 100,
+                                    filter: { invert: '100%', brightness: 1.25 },
+                                    color: '#ffffff'
+                                }}
+                                    onClick={onDeleteImage}>
+                                    <Delete fontSize="large" />
+                                </IconButton>
+                            </div>}
+                            <label htmlFor="icon-button-file">
+                                <Input
+                                    type="file"
+                                    accept="image/*"
+                                    sx={{ display: 'none' }}
+                                    id="icon-button-file"
+                                    onChange={onImageUpload}
+                                />
+                                <PhotoCamera />
+                            </label>
                         </div>
                          <Button sx={{width:"50%"}} variant="contained" onClick={myFunction}><ToastContainer />Create Blog</Button>
                         </Box>
