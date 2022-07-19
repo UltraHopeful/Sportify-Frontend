@@ -8,6 +8,7 @@ import Loader from "../../components/Loader";
 import MuiAlert from '@mui/material/Alert';
 import CloseIcon from '@mui/icons-material/Close';
 import './ReservationDetails.css';
+import { getBackendUrl } from "../../components/getUrl";
 
 const primaryColor = '#326DD9';
 
@@ -64,16 +65,19 @@ const ReservationDetails = () => {
     const resId = (!params.reservationId) ? 1 : params.reservationId;
 
     useEffect(() => {
-        axios.get('https://sportify-backend-prd.herokuapp.com/reservation/my-single-reservation/' + resId)
-            .then(res => res.data).then(content => {
-                setDetails(content.data);
+        axios.get(`${getBackendUrl()}/reservation/my-single-reservation/${resId}`, {
+            headers: {
+                "access-token": localStorage.getItem("access-token")!,
+            }
+        }).then(res => res.data).then(content => {
+            setDetails(content.data);
+            setIsLoading(false);
+        }).catch((err) => {
+            if (err.response.status === 404) {
                 setIsLoading(false);
-            }).catch((err) => {
-                if (err.response.status === 404) {
-                    setIsLoading(false);
-                    setDetailsNotFound(true);
-                }
-            });
+                setDetailsNotFound(true);
+            }
+        });
     }, [resId]);
 
 
@@ -86,17 +90,20 @@ const ReservationDetails = () => {
     }
 
     const cancelConfirmationSnackbar = () => {
-        axios.put('https://sportify-backend-prd.herokuapp.com/reservation/cancel-reservation/' + resId)
-            .then(res => res.data).then(content => {
-                const msg = (!content.message) ? 'Successfuly cancelled your reservation.' : content.message;
-                navigate('/my-reservations', { state: { snackbar: true, snackbarMsg: msg } });
-            }).catch(err => {
-                closeDialog();
-                if (err.response.status === 400 || err.response.status === 404) {
-                    setSnackbarMsg(err.response.data.message);
-                    setSnackbarOpen({ ...snackbarOpen, open: true });
-                }
-            });
+        axios.put(`${getBackendUrl()}/reservation/cancel-reservation/${resId}`, {
+            headers: {
+                "access-token": localStorage.getItem("access-token")
+            }
+        }).then(res => res.data).then(content => {
+            const msg = (!content.message) ? 'Successfuly cancelled your reservation.' : content.message;
+            navigate('/my-reservations', { state: { snackbar: true, snackbarMsg: msg } });
+        }).catch(err => {
+            closeDialog();
+            if (err.response.status === 400 || err.response.status === 404) {
+                setSnackbarMsg(err.response.data.message);
+                setSnackbarOpen({ ...snackbarOpen, open: true });
+            }
+        });
     }
 
     const onCloseSnackbar = (event: SyntheticEvent | Event, reason?: any) => {
@@ -104,7 +111,7 @@ const ReservationDetails = () => {
             return;
         }
         setSnackbarOpen({ ...snackbarOpen, open: false });
-        navigate(".", {replace: true});
+        navigate(".", { replace: true });
     }
 
     const snackbarCloseAction = (<IconButton

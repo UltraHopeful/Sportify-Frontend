@@ -13,6 +13,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { primaryColor, whiteThemeColor } from "../../Theme/colors";
 import Loader from "../../components/Loader";
 import { getUser } from "../../components/getLocalStorage";
+import { getBackendUrl } from "../../components/getUrl";
 
 export default function Facilities() {
 
@@ -25,8 +26,7 @@ export default function Facilities() {
     });
     const [isLoading, setIsLoading] = useState(true);
     useEffect(() => {
-        axios.get("https://sportify-backend-prd.herokuapp.com/facility/all")
-            .then(response => response.data)
+        axios.get(`${getBackendUrl()}/facility/all`).then(response => response.data)
             .then(content => {
                 setIsLoading(false);
                 setOriginalList(content.data);
@@ -44,7 +44,7 @@ export default function Facilities() {
             return;
         }
         setSnackbarOpen({ ...snackbarOpen, open: false });
-        navigate(".", {replace: true});
+        navigate(".", { replace: true });
     }
 
     const snackbarCloseAction = (<IconButton
@@ -130,7 +130,7 @@ export default function Facilities() {
                             />
                         </FormGroup>
                     </Stack>
-                    {(loggedInUserRole === 'admin') &&<Button
+                    {(loggedInUserRole === 'admin') && <Button
                         sx={{ m: '10px', color: whiteThemeColor, backgroundColor: primaryColor }}
                         variant="contained"
                         onClick={onAddNewFacilityClick}>
@@ -139,13 +139,13 @@ export default function Facilities() {
                 </FormControl>
             </div>
             {(isLoading) ? (<Loader />) : (
-            <Grid container spacing={2}>
-                {displayList.map((facility) => {
-                    return (
-                        <FacilityItem key={facility.id} facility={facility}></FacilityItem>
-                    );
-                })}
-            </Grid>)}
+                <Grid container spacing={2}>
+                    {displayList.map((facility) => {
+                        return (
+                            <FacilityItem key={facility.id} facility={facility}></FacilityItem>
+                        );
+                    })}
+                </Grid>)}
             <Snackbar
                 anchorOrigin={{ vertical, horizontal }}
                 open={open}

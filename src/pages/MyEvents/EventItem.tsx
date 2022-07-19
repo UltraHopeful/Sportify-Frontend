@@ -1,6 +1,6 @@
 //Author: Aravind Jayanthi (B00868943)
 //Email: ar687531@dal.ca
-import { Box, Button, Grid, Paper, Typography } from "@mui/material";
+import { Box, Button, Chip, Grid, Paper, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import './MyEvents.css'
 
@@ -33,10 +33,17 @@ const EventItem = (props: any) => {
                                 {props.reservationDetails.eventName}
                             </Typography>
                             <Typography variant="body2" gutterBottom>
-                                {props.reservationDetails.eventDate.toDateString()}
+                                {new Date(props.reservationDetails.eventDate).toDateString()}
+                            </Typography>
+                            <Typography variant = "body2" gutterBottom>
+                            {
+                                    (props.reservationDetails.bookingStatus === 'Active') ?
+                                        <Chip label={props.reservationDetails.bookingStatus} color="success" /> :
+                                        <Chip label={props.reservationDetails.bookingStatus} color="error" />
+                                }
                             </Typography>
                             <Typography variant="body2" color="text.secondary">
-                                Reference Id: {props.reservationDetails.bookingId}
+                                Tickets Booked: {props.reservationDetails.ticketsBooked}
                             </Typography>
                         </Grid>
                         <Grid item sx={{display: {sm: 'block', xs: 'block', md: 'none'}}}>

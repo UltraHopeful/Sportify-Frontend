@@ -1,7 +1,7 @@
 //Author: Aravind Jayanthi (B00868943)
 //Email: ar687531@dal.ca
 import { Box, FormControl, MenuItem, Pagination, Select, Snackbar } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import '../../App.css';
 import '../Reservations/Reservations.css';
 import { useLocation } from "react-router-dom";
@@ -10,17 +10,22 @@ import CloseIcon from '@mui/icons-material/Close';
 import MuiAlert from '@mui/material/Alert';
 import eventsRegistered from "../../data/MyEvents";
 import EventItem from "./EventItem";
+import axios from "axios";
+import { getBackendUrl } from "../../components/getUrl";
+import { getUser } from "../../components/getLocalStorage";
+import Loader from "../../components/Loader";
 
-export default function MyEvents () {
+export default function MyEvents() {
     const [page, setPage] = useState(1);
-
-    const [list, setList] = useState(eventsRegistered.slice(0, 5));
+    const [fullList, setFullList] = useState([]);
+    const [list, setList] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     const itemsPerPage = 5;
 
     const [defaultItemsPerPage, setDetaultItemsPerPage] = useState(itemsPerPage);
 
-    const [totalPages, setTotalPages] = useState(Math.ceil(eventsRegistered.length / defaultItemsPerPage));
+    const [totalPages, setTotalPages] = useState(Math.ceil(fullList.length / defaultItemsPerPage));
 
     const { state } = useLocation();
 
@@ -33,6 +38,21 @@ export default function MyEvents () {
     const maxPagesSm = 3;
 
     const maxPagesXs = -1;
+
+    useEffect(() => {
+        axios.get(`${getBackendUrl()}/event-bookings/my-bookings/${getUser()._id}`, {
+            headers: {
+                'access-token': localStorage.getItem('access-token')
+            }
+        }).then(res => res.data.data).then(content => {
+            setIsLoading(false);
+            setFullList(content);
+            setList(content.slice(0, Math.min(defaultItemsPerPage, content.length)));
+            setTotalPages(Math.ceil(content.length / defaultItemsPerPage))
+        }).catch((err) => {
+            console.log(err);
+        });
+    }, []);
 
     const updateDefaulItemsPerPage = (event) => {
         const itemsPerPageTemp = (+event.target.value);
@@ -79,81 +99,82 @@ export default function MyEvents () {
     </IconButton>);
 
     return (
-        <div>
-            <Box sx={{ margin: '10px 15%', display: { md: 'flex', xs: 'none', sm: 'none' }, flexDirection: 'column' }}>
-                {reservationList}
-            </Box>
-            <Box sx={{ margin: '10px 5%', display: { xs: 'none', sm: 'flex', md: 'none' }, flexDirection: 'column' }}>
-                {reservationList}
-            </Box>
-            <Box sx={{ margin: '10px 0%', display: { xs: 'flex', sm: 'none', md: 'none' }, flexDirection: 'column' }}>
-                {reservationList}
-            </Box>
-            <div className="Footer">
-                {totalPages > 1 &&
-                    (<div className="Pagination">
+        (isLoading) ? (<Loader />) : (
+            <div>
+                <Box sx={{ margin: '10px 15%', display: { md: 'flex', xs: 'none', sm: 'none' }, flexDirection: 'column' }}>
+                    {reservationList}
+                </Box>
+                <Box sx={{ margin: '10px 5%', display: { xs: 'none', sm: 'flex', md: 'none' }, flexDirection: 'column' }}>
+                    {reservationList}
+                </Box>
+                <Box sx={{ margin: '10px 0%', display: { xs: 'flex', sm: 'none', md: 'none' }, flexDirection: 'column' }}>
+                    {reservationList}
+                </Box>
+                <div className="Footer">
+                    {totalPages > 1 &&
+                        (<div className="Pagination">
 
-                        <Pagination sx={{
-                            my: "15px",
-                            display: { md: 'flex', sm: 'none', xs: 'none' },
-                            justifyContent: 'center',
-                        }}
-                            count={totalPages}
-                            siblingCount={Math.min(totalPages, maxPagesMd)}
-                            page={page}
-                            onChange={onPaginationChange}
-                        />
-                        <Pagination sx={{
-                            my: "15px",
-                            display: { md: 'none', sm: 'flex', xs: 'none' },
-                            justifyContent: 'center'
-                        }}
-                            count={totalPages}
-                            siblingCount={Math.min(totalPages, maxPagesSm)}
-                            page={page}
-                            onChange={onPaginationChange}
-                        />
-                        <Pagination sx={{
-                            my: "15px",
-                            display: { md: 'none', xs: 'flex', sm: 'none' },
-                            justifyContent: 'center'
-                        }}
-                            count={totalPages}
-                            siblingCount={Math.min(totalPages, maxPagesXs)}
-                            boundaryCount={0}
-                            page={page}
-                            onChange={onPaginationChange}
-                            showLastButton={false}
-                        />
-                    </div>)
-                }
-                <div className="Select-items">
-                    <FormControl sx={{ m: 1, minWidth: 120 }}>
-                        <Select
-                            labelId="demo-controlled-open-select-label"
-                            id="demo-controlled-open-select"
-                            value={defaultItemsPerPage}
-                            onChange={updateDefaulItemsPerPage}
-                        >
-                            <MenuItem value={5}>5 per page</MenuItem>
-                            <MenuItem value={10}>10 per page</MenuItem>
-                            <MenuItem value={20}>20 per page</MenuItem>
-                            <MenuItem value={30}>30 per page</MenuItem>
-                        </Select>
-                    </FormControl>
+                            <Pagination sx={{
+                                my: "15px",
+                                display: { md: 'flex', sm: 'none', xs: 'none' },
+                                justifyContent: 'center',
+                            }}
+                                count={totalPages}
+                                siblingCount={Math.min(totalPages, maxPagesMd)}
+                                page={page}
+                                onChange={onPaginationChange}
+                            />
+                            <Pagination sx={{
+                                my: "15px",
+                                display: { md: 'none', sm: 'flex', xs: 'none' },
+                                justifyContent: 'center'
+                            }}
+                                count={totalPages}
+                                siblingCount={Math.min(totalPages, maxPagesSm)}
+                                page={page}
+                                onChange={onPaginationChange}
+                            />
+                            <Pagination sx={{
+                                my: "15px",
+                                display: { md: 'none', xs: 'flex', sm: 'none' },
+                                justifyContent: 'center'
+                            }}
+                                count={totalPages}
+                                siblingCount={Math.min(totalPages, maxPagesXs)}
+                                boundaryCount={0}
+                                page={page}
+                                onChange={onPaginationChange}
+                                showLastButton={false}
+                            />
+                        </div>)
+                    }
+                    <div className="Select-items">
+                        <FormControl sx={{ m: 1, minWidth: 120 }}>
+                            <Select
+                                labelId="demo-controlled-open-select-label"
+                                id="demo-controlled-open-select"
+                                value={defaultItemsPerPage}
+                                onChange={updateDefaulItemsPerPage}
+                            >
+                                <MenuItem value={5}>5 per page</MenuItem>
+                                <MenuItem value={10}>10 per page</MenuItem>
+                                <MenuItem value={20}>20 per page</MenuItem>
+                                <MenuItem value={30}>30 per page</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </div>
                 </div>
-            </div>
-            <Snackbar
-                anchorOrigin={{ vertical, horizontal }}
-                open={open}
-                autoHideDuration={3000}
-                onClose={onCloseSnackbar}
-                action={snackbarCloseAction}
-            >
-                <MuiAlert onClose={onCloseSnackbar} severity="success" sx={{ width: '100%' }} elevation={6} variant="filled">
-                    Successfuly cancelled your reservation.
-                </MuiAlert>
-            </Snackbar>
-        </div>
+                <Snackbar
+                    anchorOrigin={{ vertical, horizontal }}
+                    open={open}
+                    autoHideDuration={3000}
+                    onClose={onCloseSnackbar}
+                    action={snackbarCloseAction}
+                >
+                    <MuiAlert onClose={onCloseSnackbar} severity="success" sx={{ width: '100%' }} elevation={6} variant="filled">
+                        Successfuly cancelled your reservation.
+                    </MuiAlert>
+                </Snackbar>
+            </div>)
     );
 }

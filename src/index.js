@@ -9,7 +9,6 @@ import reportWebVitals from "./reportWebVitals";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import userReservations from "./data/Data";
 import AddNewFacility from "./pages/AddNewFacility";
 import ChangePassword from "./pages/ChangePassword/index";
 import { EventDetails } from "./pages/EventDetails";
@@ -47,6 +46,7 @@ import NoHeader from "./components/NoHeader";
 import WithHeader from "./components/WithHeader";
 
 import { getUser } from "./components/getLocalStorage";
+import AddNewEvent from "./pages/AddNewEvent";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 const theme = createTheme({
@@ -118,12 +118,14 @@ root.render(
           >
             <Route
               path="my-reservations"
-              element={<ReservationList reservations={userReservations} />}
+              element={<ReservationList />}
             />
             <Route path="facility/:resourceId" element={<FacilityDetails />} />
           </Route>
           <Route path="facility" element={<Facilities />} />
-          <Route path="facility/add-new" element={<AddNewFacility />} />
+          <Route element={<ProtectedRoute isAllow={() => checkAdmin()} />}>
+            <Route path="facility/add-new" element={<AddNewFacility />} />
+          </Route>
           <Route
             path="my-reservations/:reservationId"
             element={<ReservationDetails />}
@@ -140,9 +142,14 @@ root.render(
           </Route>
 
           <Route path="events" element={<EventsList />} />
-          <Route path="events/:eventId" element={<EventDetails />} />
-          <Route path="my-events" element={<MyEvents />} />
-          <Route path="my-events/:bookingId" element={<MyEventDetails />} />
+          <Route element={<ProtectedRoute isAllow={() => checkAdmin()}/>}>
+            <Route path="events/add-new" element={<AddNewEvent/>}/>
+          </Route>
+          <Route element={<ProtectedRoute isAllow={() => checkUser() || checkAdmin()} />}>
+            <Route path="events/:eventId" element={<EventDetails />} />
+            <Route path="my-events" element={<MyEvents />} />
+            <Route path="my-events/:bookingId" element={<MyEventDetails />} />
+          </Route>
           <Route path="rewards" element={<Home />} />
           <Route path="payment" element={<MembershipPlan />} />
           <Route path="payment-success" element={<PaymentSuccess />} />
