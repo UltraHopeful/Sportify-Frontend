@@ -62,7 +62,7 @@ export default function InputForm(props) {
   };
 
   const signUpRequest = (values) => {
-    console.log(values);
+    // console.log(values);
     const requiredValues = (({ confirmPassword, ...restValues }) => restValues)(
       values
     );
@@ -83,7 +83,7 @@ export default function InputForm(props) {
         if (statusCode === 500) {
           notify("error", result.message);
         } else {
-          console.log(result);
+          // console.log(result);
           notify("success", result.message);
           navigate("/login");
         }

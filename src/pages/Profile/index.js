@@ -22,12 +22,11 @@ import { EditTextField, ReadOnlyTextField } from '../../components/TextfieldCust
 
 import { getUser } from '../../components/getLocalStorage';
 import { getBackendUrl } from '../../components/getUrl';
-
 export default function Main() {
   const [userDetails, setUserDetails] = useState([]);
   // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
-    console.log("user profile page");
+    // console.log("user profile page");
     setUserDetails(getUser());
 
   }, []);
@@ -39,7 +38,7 @@ export default function Main() {
     formik.values.email = userDetails.email;
     formik.values.contactNo = userDetails.contactNo;
     formik.values.address = userDetails.address;
-    console.log(formik.values);
+    // console.log(formik.values);
     setOpen(true);
   };
   const handleClose = () => {
@@ -102,12 +101,12 @@ export default function Main() {
   };
 
   const editProfileRequest = (values) => {
-    console.log(values);
+    // console.log(values);
     const editProfileUrl = getBackendUrl()+"/api/edit-profile";
     let body = {}
     body['_id'] = getUser()._id;
     body['user'] = values;
-    console.log(body);
+    // console.log(body);
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json","access-token":localStorage.getItem("access-token") },
@@ -123,7 +122,7 @@ export default function Main() {
         if (statusCode === 500) {
           notify("error", result.message);
         } else {
-          console.log(result);
+          // console.log(result);
           localStorage.setItem('user',JSON.stringify(result.user));
           notify("success", result.message);
           window.location.replace("/my-account");
@@ -134,11 +133,11 @@ export default function Main() {
   };
 
   const deleteProfileRequest = (values) => {
-    console.log(values);
+    // console.log(values);
     const deleteProfileUrl = getBackendUrl()+"/api/delete-profile";
     let body = {}
     body['id'] = getUser()._id;
-    console.log(body);
+    // console.log(body);
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json","access-token":localStorage.getItem("access-token") },
@@ -154,7 +153,7 @@ export default function Main() {
         if (statusCode === 500) {
           notify("error", result.message);
         } else {
-          console.log(result);
+          // console.log(result);
           localStorage.setItem('user',JSON.stringify(result.user));
           notify("success", result.message);
           localStorage.clear()
@@ -176,7 +175,7 @@ export default function Main() {
     validationSchema: validations,
     onSubmit: (values) => {
       // alert(JSON.stringify(formik.values, null, 2));
-      console.log("Update profile");
+      // console.log("Update profile");
       editProfileRequest(values);
     },
   });
@@ -199,7 +198,7 @@ export default function Main() {
       </Grid>
       <Grid item xl={4} lg={4} md={4} sm={4} xs={10} alignItems="center">
         <Box sx={{ display: "flex", alignItems: "center", height: "100%" }}>
-          <Avatar alt="John" src="#" className="profile-img" />
+          <Avatar alt={userDetails.firstName} src="#" className="profile-img" />
         </Box>
         {/*<img alt="complex" className="profile-img" src="https://source.unsplash.com/random/?portrait,men" />*/}
       </Grid>

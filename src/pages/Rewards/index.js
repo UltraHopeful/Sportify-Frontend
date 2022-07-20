@@ -70,7 +70,7 @@ export default function index() {
   // handle brand name in redeem points
   const handleBrand = (event) => {
     setBrand(event.target.value);
-    console.log(brand);
+    // console.log(brand);
   };
   //   cite : https://mui.com/material-ui/react-tabs/#basic-tabs
   //   handle tab change with props
@@ -139,7 +139,7 @@ export default function index() {
         if (statusCode === 500) {
           notify("error", result.message);
         } else {
-          console.log(result);
+          // console.log(result);
           //   remainingPoints =
           result.reward["remainingPoints"] =
             result.reward.total_earned_points - result.reward.reedemed_points;
@@ -175,7 +175,7 @@ export default function index() {
         if (statusCode === 500) {
           notify("error", result.message);
         } else {
-          console.log(result.coupons);
+          // console.log(result.coupons);
           setCoupons(result.coupons);
         }
       })
@@ -184,19 +184,19 @@ export default function index() {
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
-    console.log("get redeem points");
+    // console.log("get redeem points");
     getPoints();
     getCoupons();
   }, []);
 
   const redeemPoints = () => {
-    console.log(brand, redeemValue);
+    // console.log(brand, redeemValue);
     const updatePointsUrl = getBackendUrl() + "/api/update-points";
     let body = {};
     body["id"] = getUser()._id;
     body["reedemed_points"] = redeemValue + redeem.reedemed_points;
     body["brand"] = brand;
-    console.log(body);
+    // console.log(body);
     const requestOptions = {
       method: "POST",
       headers: {
@@ -215,7 +215,7 @@ export default function index() {
         if (statusCode === 500) {
           notify("error", result.message);
         } else {
-          console.log(result);
+          // console.log(result);
           notify("success", result.message);
           window.location.replace("/my-rewards");
         }

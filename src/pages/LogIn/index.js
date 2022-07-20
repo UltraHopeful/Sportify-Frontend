@@ -47,7 +47,7 @@ export default function InputForm(props) {
       };
     
     const signin = (values) => {
-        console.log(values);
+        // console.log(values);
         const signinUrl = getBackendUrl()+"/api/signin";
         const requestOptions = {
           method: "POST",
@@ -62,7 +62,7 @@ export default function InputForm(props) {
           })
           .then((result) => {
             if (statusCode === 200) {
-              console.log(result);
+              // console.log(result);
               localStorage.setItem('user',JSON.stringify(result.user));
               localStorage.setItem('access-token',result.accessToken);
               localStorage.setItem('isLogin',true);
@@ -113,7 +113,7 @@ export default function InputForm(props) {
                                 onSubmit={(values) => {
                                     // alert("Login Successfully");
                                     signin(values);
-                                    console.log(values);
+                                    // console.log(values);
                                 }}>
                             {(props) => (<LoginForm {...props} />)}
                         </Formik>

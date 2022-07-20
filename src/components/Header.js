@@ -21,6 +21,8 @@ import { toast } from "react-toastify";
 import Logo from "../assets/images/Sportify.png";
 import { getUser } from "./getLocalStorage";
 
+import { getBackendUrl } from './getUrl';
+
 const pages = ["Membership", "Facility", "Events", "Blogs", "Store"];
 // const settings = ['My Account', 'Logout'];
 
@@ -90,14 +92,58 @@ const Header = () => {
     navigate(path);
   };
 
-  const logout = () => {
-    localStorage.clear();
-    localStorage.setItem("isLogin", false);
-    toast.success("Your successfully logged out", {
-      position: toast.POSITION.TOP_RIGHT,
-    });
-    window.location.replace("/");
+  const notify = (type, msg) => {
+    if(type === 'success'){
+        toast.success(
+          msg,
+          { position: toast.POSITION.TOP_RIGHT }
+        );
+        
+    }else if(type === 'error'){
+        toast.error(
+          msg,
+          { position: toast.POSITION.TOP_RIGHT }
+        );
+
+    }
   };
+
+  const logout = () => {
+    // console.log(values);
+    const logoutUrl = getBackendUrl()+"/api/signout";
+    const requestOptions = {
+      method: "GET",
+      headers: { "Content-Type": "application/json","access-token":localStorage.getItem("access-token") },
+    };
+    let statusCode;
+    fetch(logoutUrl, requestOptions)
+      .then((response) => {
+        statusCode = response.status;
+        return response.json();
+      })
+      .then((result) => {
+        if (statusCode === 500) {
+          notify("error", result.message);
+        } else {
+          console.log(result);
+          localStorage.clear();
+          localStorage.setItem("isLogin", false);
+          notify("success", result.message);
+          window.location.replace("/");
+        }
+      })
+      .catch((error) => console.log("error", error));
+  };
+
+
+  // const logout = () => {
+  //   localStorage.clear();
+  //   localStorage.setItem("isLogin", false);
+  //   toast.success("Your successfully logged out", {
+  //     position: toast.POSITION.TOP_RIGHT,
+  //   });
+  //   window.location.replace("/");
+  // };
   return (
     <AppBar position="static" sx={{ bgcolor: "white" }}>
       <Container maxWidth="xl">
@@ -245,7 +291,7 @@ const Header = () => {
               <>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt="S" src="/static/images/avatar/2.jpg" />
+                    <Avatar alt={getUser().firstName} src="/static/images/avatar/2.jpg" />
                   </IconButton>
                 </Tooltip>
                 <Menu
