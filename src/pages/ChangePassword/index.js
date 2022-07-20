@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
 import Logo from "../../assets/images/Sportify.png";
+import { hashText } from "../../components/encryptText";
 import { getBackendUrl } from "../../components/getUrl";
 import { ValidationTextField } from "../../components/TextfieldCustom";
 // cite : https://dev.to/finallynero/react-form-using-formik-material-ui-and-yup-2e8h
@@ -88,35 +89,40 @@ export default function InputForm(props) {
 
   const changePasswordRequest = (values) => {
     console.log(values);
-    console.log(isVerified)
+    console.log(isVerified);
     const editPasswordUrl = getBackendUrl() + "/api/change-password";
     let body = {};
-    body["password"] = formik.values.password;
+
     body["email"] = formik.values.email;
-    console.log(body);
-    const requestOptions = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(body),
-    };
-    let statusCode;
-    fetch(editPasswordUrl, requestOptions)
-      .then((response) => {
-        statusCode = response.status;
-        return response.json();
-      })
-      .then((result) => {
-        if (statusCode === 500 || statusCode === 404) {
-          notify("error", result.message);
-        } else {
-          console.log(result);
-          notify("success", result.message);
-        //   window.location.replace("/");
-        }
-      })
-      .catch((error) => console.log("error", error));
+    hashText(formik.values.password).then((result) => {
+      // values.password = result
+      // console.log("hashed Password" + values.password);
+      body["password"] = result;
+      console.log(body);
+      const requestOptions = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      };
+      let statusCode;
+      fetch(editPasswordUrl, requestOptions)
+        .then((response) => {
+          statusCode = response.status;
+          return response.json();
+        })
+        .then((result) => {
+          if (statusCode === 500 || statusCode === 404) {
+            notify("error", result.message);
+          } else {
+            console.log(result);
+            notify("success", result.message);
+            window.location.replace("/login");
+          }
+        })
+        .catch((error) => console.log("error", error));
+    });
   };
 
   const formik = useFormik({
@@ -199,7 +205,7 @@ export default function InputForm(props) {
 
               <ValidationTextField
                 name="password"
-                disabled = {!isVerified}
+                disabled={!isVerified}
                 helperText={
                   formik.errors.password ? formik.errors.password : " "
                 }
@@ -233,7 +239,7 @@ export default function InputForm(props) {
               />
               <ValidationTextField
                 name="confirmPassword"
-                disabled = {!isVerified}
+                disabled={!isVerified}
                 helperText={
                   formik.errors.confirmPassword
                     ? formik.errors.confirmPassword

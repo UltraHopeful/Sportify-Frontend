@@ -7,7 +7,8 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
 import Logo from "../../assets/images/Sportify.png";
-import { getBackendUrl } from "../../components/getUrl";
+import { hashText } from "../../components/encryptText";
+import { getBackendUrl } from '../../components/getUrl';
 import { SignupForm } from "./signupForm";
 
 // cite : https://dev.to/finallynero/react-form-using-formik-material-ui-and-yup-2e8h
@@ -63,32 +64,40 @@ export default function InputForm(props) {
 
   const signUpRequest = (values) => {
     // console.log(values);
-    const requiredValues = (({ confirmPassword, ...restValues }) => restValues)(
-      values
-    );
-    console.log(requiredValues);
-    const signupUrl = getBackendUrl()+"/api/signup";
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(requiredValues),
-    };
-    let statusCode;
-    fetch(signupUrl, requestOptions)
-      .then((response) => {
-        statusCode = response.status;
-        return response.json();
-      })
-      .then((result) => {
-        if (statusCode === 500) {
-          notify("error", result.message);
-        } else {
-          // console.log(result);
-          notify("success", result.message);
-          navigate("/login");
-        }
-      })
-      .catch((error) => console.log("error", error));
+    console.log(values.password);
+    hashText(values.password).then((result) => {
+      // values.password = result
+      // console.log("hashed Password" + values.password);
+      const requiredValues = (({ confirmPassword,password, ...restValues }) => restValues)(
+        values
+      );
+      requiredValues['password'] = result;
+      console.log(requiredValues);
+      const signupUrl = getBackendUrl()+"/api/signup";
+      const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(requiredValues),
+      };
+      let statusCode;
+      fetch(signupUrl, requestOptions)
+        .then((response) => {
+          statusCode = response.status;
+          return response.json();
+        })
+        .then((result) => {
+          if (statusCode === 500) {
+            notify("error", result.message);
+          } else {
+            // console.log(result);
+            notify("success", result.message);
+            navigate("/login");
+          }
+        })
+        .catch((error) => console.log("error", error));
+    });
+
+    
   };
 
   const values = {

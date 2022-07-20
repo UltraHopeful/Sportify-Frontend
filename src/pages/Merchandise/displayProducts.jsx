@@ -65,7 +65,7 @@ function Products() {
 
     return (
 
-        <>
+        <div>
          {(loggedInUserRole === 'admin') &&
                 <div style={{ display: "flex", justifyContent: 'flex-end'}}> 
                     <Button 
@@ -157,7 +157,7 @@ function Products() {
                     {snackbarMsg}
                 </MuiAlert>
             </Snackbar> */}
-        </>
+        </div>
     )
 }
 

@@ -1,15 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import Typography from '@mui/material/Typography';
-import { Card, CardContent, CardMedia, Button, CardActions } from '@mui/material';
-import { Grid } from '@mui/material';
-import Sportify from '../../assets/images/Sportify.png'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { Button, Card, CardActions, CardContent, CardMedia, Grid } from '@mui/material';
+import Typography from '@mui/material/Typography';
 import axios from 'axios';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { primaryColor, whiteThemeColor } from "../../Theme/colors";
-import { getUser } from "../../components/getLocalStorage";
-import { getBackendUrl } from "../../components/getUrl";
 import { toast } from 'react-toastify';
+import { getBackendUrl } from "../../components/getUrl";
+import { primaryColor, whiteThemeColor } from "../../Theme/colors";
 
 function Products() {
     const [product, setProduct] = useState({});
@@ -60,7 +57,7 @@ function Products() {
 
     return (
 
-        <>
+        <div>
             <div style={{ display: "flex", justifyContent: 'flex-start' }}>
                 <Button
                     sx={{ m: '10px', color: whiteThemeColor, backgroundColor: primaryColor }}
@@ -121,7 +118,7 @@ function Products() {
                     : <div>Loading</div>
                 }
             </Grid>
-        </>
+        </div>
     )
 }
 
