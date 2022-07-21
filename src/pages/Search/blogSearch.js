@@ -43,7 +43,9 @@ export default function BlogSearch() {
     const keyword = e.target.value;
     if (keyword !== "") {
       const results = data.filter((facility) => {
-        return facility.title.toLowerCase().startsWith(keyword.toLowerCase());
+        return facility.blogTitle
+          .toLowerCase()
+          .startsWith(keyword.toLowerCase());
       });
       setSearched(results);
     } else {
@@ -62,7 +64,7 @@ export default function BlogSearch() {
         id="free-solo-2-demo"
         disableClearable
         onChange={filter}
-        options={data.map((facility) => facility.title)}
+        options={data.map((facility) => facility.blogTitle)}
         renderInput={(params) => (
           <TextField
             {...params}
